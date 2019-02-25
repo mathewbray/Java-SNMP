@@ -53,22 +53,62 @@ HAIPE-MIB DEFINITIONS ::= BEGIN
          stateChangeRequest OBJECT-TYPE
             SYNTAX  INTEGER {
                         restart(1),
-                        confidential(5),
-                        secret(6)
+                        network-active(5),
+                        secure-communications(6)
                     }
             ACCESS  write-only
             STATUS  mandatory
             DESCRIPTION
-                    "Classification level.
-                    1   unclassified
-                    2   confidential
-                    3   secret
-                    4   top-secret
-                    5   none
+                    "INE state change.
+                    1   restart
+                    5   network-active
+                    6   secure-communications
                     "
             ::= { taclaneSystemGroup 3 }       
 
+         currentState OBJECT-TYPE
+            SYNTAX  INTEGER {
+                        network-active(5),
+                        secure-communications(6)
+                    }
+            ACCESS  read-only
+            STATUS  mandatory
+            DESCRIPTION
+                    "INE current state.
+                    5   network-active
+                    6   secure-communications
+                    "
+            ::= { taclaneSystemGroup 4 }    
 
+         audLog OBJECT-TYPE
+            SYNTAX  INTEGER {
+                        less-than-80-full(1),
+                        between-80-and-100-full(2),
+                        full(3)
+                    }
+            ACCESS  read-only
+            STATUS  mandatory
+            DESCRIPTION
+                    "Audit log status.
+                    1   less-than-80-full
+                    2   between-80-and-100-full
+                    3   full
+                    "
+            ::= { taclaneSystemGroup 5 }  
+
+         batteryAlarmStatus OBJECT-TYPE
+            SYNTAX  INTEGER {
+                        off(1),
+                        on(2)
+                    }
+            ACCESS  read-only
+            STATUS  mandatory
+            DESCRIPTION
+                    "Audit log status.
+                    0   off
+                    1   on
+                    "
+            ::= { taclaneSystemGroup 5 }  
 
 
 

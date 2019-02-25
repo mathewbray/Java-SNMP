@@ -44,8 +44,6 @@ HAIPE-MIB DEFINITIONS ::= BEGIN
             SYNTAX  DisplayString (SIZE (0..255))
             ACCESS  read-only
             STATUS  mandatory
-
-
             DESCRIPTION
                     "Time."
             ::= { taclaneSystemGroup 2 }
@@ -108,7 +106,35 @@ HAIPE-MIB DEFINITIONS ::= BEGIN
                     0   off
                     1   on
                     "
-            ::= { taclaneSystemGroup 5 }  
+            ::= { taclaneSystemGroup 6 }  
+
+        batteryChangeDate OBJECT-TYPE
+            SYNTAX  DisplayString (SIZE (0..255))
+            ACCESS  read-only
+            STATUS  mandatory
+            DESCRIPTION
+                    "Battery Change Date."
+            ::= { taclaneSystemGroup 7 }
+
+        netKmidCount OBJECT-TYPE
+            SYNTAX  INTEGER (0..1)
+            ACCESS  read-only
+            STATUS  mandatory
+            DESCRIPTION
+                    "KMID Count."
+            ::= { taclaneSystemGroup 8 }
+
+        netKmid OBJECT-TYPE
+            SYNTAX  OCTET STRING(SIZE(6))
+            ACCESS  read-only
+            STATUS  mandatory
+            DESCRIPTION
+                    "KMID."
+            ::= { taclaneSystemGroup 9 }
+
+
+
+
 
 
 

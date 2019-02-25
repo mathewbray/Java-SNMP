@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,18 +18,23 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -62,6 +68,7 @@ import javax.swing.tree.DefaultTreeModel;
 import mibblebrowser.MibNode;
 import mibblebrowser.MibTreeBuilder;
 import net.percederberg.mibble.Mib;
+import net.percederberg.mibble.MibLoader;
 import net.percederberg.mibble.MibLoaderException;
 import net.percederberg.mibble.MibType;
 import net.percederberg.mibble.MibTypeTag;
@@ -100,7 +107,10 @@ import puppeteer.WALK.walk;
  * @author Mathew
  */
 public class AppGo extends javax.swing.JFrame {
+String pathUserProfile = System.getenv("USERPROFILE");
 File pathDesktop = new File(System.getProperty("user.home"), "Desktop");
+String pathApplicationFolder = pathDesktop + "\\SNMP\\";
+String strPersonalFolder = pathUserProfile + "\\.SNMP\\";
 String strSessionListDefault = pathDesktop + "\\SNMP\\SessionList.csv";
 DefaultListModel defaultListModelFilteredItems = new DefaultListModel();
 
@@ -257,7 +267,10 @@ private String nameOfTheProgram = "Super Neat Master Puppeteer";
      * Creates new form AppGo
      */
     public AppGo() throws ClassNotFoundException, InstantiationException, IllegalAccessException, IOException, FileNotFoundException, URISyntaxException {
+        new File(pathApplicationFolder).mkdirs();
+        new File(strPersonalFolder).mkdirs();
         initComponents();
+        unzipfiles();
         getSessionList();
                try {
         UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
@@ -1792,90 +1805,90 @@ private String nameOfTheProgram = "Super Neat Master Puppeteer";
 
 
 		//----------------------------------Pantalla de Set----------------------------------------	      	
-	    jp_snmpv3_Set = new JPanel();
-	    //jp_snmpv3_Set.setBackground(Color.white);
-		//jp_snmpv3_Set.setBorder(BorderFactory.createTitledBorder("Set"));
-		jp_snmpv3_Set.setBounds(new Rectangle(0,30,483,483));
-		jp_snmpv3_Set.setBorder(BorderFactory.createTitledBorder("Comando Set"));
-		jp_snmpv3_Set.setLayout(null);
-		jp_snmpv3_Set.setVisible(false);
-		snmpv3.add(jp_snmpv3_Set,null);
-
-    	jsp_snmpv3_SetDescrip = new JScrollPane();
-    	jsp_snmpv3_SetDescrip.setBounds(new Rectangle(10,20,465,240));  
+//	    jp_snmpv3_Set = new JPanel();
+//	    //jp_snmpv3_Set.setBackground(Color.white);
+//		//jp_snmpv3_Set.setBorder(BorderFactory.createTitledBorder("Set"));
+//		jp_snmpv3_Set.setBounds(new Rectangle(0,30,483,483));
+//		jp_snmpv3_Set.setBorder(BorderFactory.createTitledBorder("Comando Set"));
+//		jp_snmpv3_Set.setLayout(null);
+//		jp_snmpv3_Set.setVisible(false);
+//		snmpv3.add(jp_snmpv3_Set,null);
+//
+//    	jsp_snmpv3_SetDescrip = new JScrollPane();
+//    	jsp_snmpv3_SetDescrip.setBounds(new Rectangle(10,20,465,240));  
     	jsp_snmpv3_SetDescrip.setWheelScrollingEnabled(true);
-    	jp_snmpv3_Set.add(jsp_snmpv3_SetDescrip,null);
-
-    	jta_snmpv3_SetDescrip = new JTextArea();           
+//    	jp_snmpv3_Set.add(jsp_snmpv3_SetDescrip,null);
+//
+//    	jta_snmpv3_SetDescrip = new JTextArea();           
     	jta_snmpv3_SetDescrip.setText("");
     	jta_snmpv3_SetDescrip.setEditable(false);
-    	jsp_snmpv3_SetDescrip.getViewport().add(jta_snmpv3_SetDescrip,null);
+//    	jsp_snmpv3_SetDescrip.getViewport().add(jta_snmpv3_SetDescrip,null);
 
-	    jsp_snmpv3_SetResp = new JScrollPane();
-    	jsp_snmpv3_SetResp.setBounds(new Rectangle(10,360,465,111));    
+//	    jsp_snmpv3_SetResp = new JScrollPane();
+//    	jsp_snmpv3_SetResp.setBounds(new Rectangle(10,360,465,111));    
     	jsp_snmpv3_SetResp.setWheelScrollingEnabled(true);
-    	jp_snmpv3_Set.add(jsp_snmpv3_SetResp,null);
+//    	jp_snmpv3_Set.add(jsp_snmpv3_SetResp,null);
 
-    	jta_snmpv3_SetResp = new JTextArea();
+//    	jta_snmpv3_SetResp = new JTextArea();
     	jta_snmpv3_SetResp.setText("");
     	jta_snmpv3_SetResp.setEditable(false);
-    	jsp_snmpv3_SetResp.getViewport().add(jta_snmpv3_SetResp,null);
+//    	jsp_snmpv3_SetResp.getViewport().add(jta_snmpv3_SetResp,null);
     	
-    	jl_snmpv3_SetEtiSet = new JLabel("OID");
-	    jl_snmpv3_SetEtiSet.setBounds(new Rectangle(10,270,20,20));   
-	    jp_snmpv3_Set.add(jl_snmpv3_SetEtiSet,null);
+//    	jl_snmpv3_SetEtiSet = new JLabel("OID");
+//	    jl_snmpv3_SetEtiSet.setBounds(new Rectangle(10,270,20,20));   
+//	    jp_snmpv3_Set.add(jl_snmpv3_SetEtiSet,null);
 
-	    jtf_snmpv3_SetSet = new JTextField();
-	    jtf_snmpv3_SetSet.setBounds(new Rectangle(50,270,200,20));    
+//	    jtf_snmpv3_SetSet = new JTextField();
+//	    jtf_snmpv3_SetSet.setBounds(new Rectangle(50,270,200,20));    
 	    jtf_snmpv3_SetSet.setEditable(true);
-	    jp_snmpv3_Set.add(jtf_snmpv3_SetSet,null);
+//	    jp_snmpv3_Set.add(jtf_snmpv3_SetSet,null);
 
-    	jl_snmpv3_SetEtiTipo = new JLabel("Tipo de Dato");
-	    jl_snmpv3_SetEtiTipo.setBounds(new Rectangle(260,270,80,20));
-	    jl_snmpv3_SetEtiTipo.setEnabled(false);   
-	    jp_snmpv3_Set.add(jl_snmpv3_SetEtiTipo,null);
+//    	jl_snmpv3_SetEtiTipo = new JLabel("Tipo de Dato");
+//	    jl_snmpv3_SetEtiTipo.setBounds(new Rectangle(260,270,80,20));
+//	    jl_snmpv3_SetEtiTipo.setEnabled(false);   
+//	    jp_snmpv3_Set.add(jl_snmpv3_SetEtiTipo,null);
  
-	    jcb_snmpv3_SetTipo = new JComboBox();//USO DEL JCOMBOBOX
-	  	jcb_snmpv3_SetTipo.setBounds(new Rectangle(339,270,135,20));  // 350,226,70,20
-		jcb_snmpv3_SetTipo.addItem("---------------------------");
-	  	jcb_snmpv3_SetTipo.addItem("INTEGER");
-	  	jcb_snmpv3_SetTipo.addItem("OCTET STRING");
-	  	jcb_snmpv3_SetTipo.addItem("OBJECT IDENTIFIER");	  	
-	  	jcb_snmpv3_SetTipo.addItem("IpAddress");
-	  	jcb_snmpv3_SetTipo.addItem("Counter");
-	  	jcb_snmpv3_SetTipo.addItem("Counter64");
-	  	jcb_snmpv3_SetTipo.addItem("Gauge");
-	  	jcb_snmpv3_SetTipo.addItem("TimeTicks");
-	  	jcb_snmpv3_SetTipo.addItem("Opaque");
-	  	jcb_snmpv3_SetTipo.setSelectedIndex(0);	  	 
+//	    jcb_snmpv3_SetTipo = new JComboBox();//USO DEL JCOMBOBOX
+//	  	jcb_snmpv3_SetTipo.setBounds(new Rectangle(339,270,135,20));  // 350,226,70,20
+//		jcb_snmpv3_SetTipo.addItem("---------------------------");
+//	  	jcb_snmpv3_SetTipo.addItem("INTEGER");
+//	  	jcb_snmpv3_SetTipo.addItem("OCTET STRING");
+//	  	jcb_snmpv3_SetTipo.addItem("OBJECT IDENTIFIER");	  	
+//	  	jcb_snmpv3_SetTipo.addItem("IpAddress");
+//	  	jcb_snmpv3_SetTipo.addItem("Counter");
+//	  	jcb_snmpv3_SetTipo.addItem("Counter64");
+//	  	jcb_snmpv3_SetTipo.addItem("Gauge");
+//	  	jcb_snmpv3_SetTipo.addItem("TimeTicks");
+//	  	jcb_snmpv3_SetTipo.addItem("Opaque");
+//	  	jcb_snmpv3_SetTipo.setSelectedIndex(0);	  	 
 	  	jcb_snmpv3_SetTipo.setEnabled(false);
-	  	jp_snmpv3_Set.add(jcb_snmpv3_SetTipo,null);
+//	  	jp_snmpv3_Set.add(jcb_snmpv3_SetTipo,null);
 
 	  	jcb_snmpv3_SetTipo.addActionListener(new ActionListener(){
 	      public void actionPerformed(ActionEvent e) {
 	      }
 	    });
 
-     	jb_snmpv3_setAdd = new JButton("Aadir");
-	    jb_snmpv3_setAdd.setBounds(new Rectangle(226,330,79,20));  //9999
-	    jb_snmpv3_setAdd.setToolTipText("Presione para agregar el OID.");
+//     	jb_snmpv3_setAdd = new JButton("Aadir");
+//	    jb_snmpv3_setAdd.setBounds(new Rectangle(226,330,79,20));  //9999
+//	    jb_snmpv3_setAdd.setToolTipText("Presione para agregar el OID.");
 	    jb_snmpv3_setAdd.setEnabled(false);    //   ***
-	    jp_snmpv3_Set.add(jb_snmpv3_setAdd,null);
+//	    jp_snmpv3_Set.add(jb_snmpv3_setAdd,null);
 	    
-    	jb_snmpv3_setUndo = new JButton("Deshacer");
-	    jb_snmpv3_setUndo.setBounds(new Rectangle(315,330,89,20));  //9999
-	    jb_snmpv3_setUndo.setToolTipText("Presione para eliminar el ltimo OID de los objetos.");
+//    	jb_snmpv3_setUndo = new JButton("Deshacer");
+//	    jb_snmpv3_setUndo.setBounds(new Rectangle(315,330,89,20));  //9999
+//	    jb_snmpv3_setUndo.setToolTipText("Presione para eliminar el ltimo OID de los objetos.");
 	    jb_snmpv3_setUndo.setEnabled(false);    //   ***
-	    jp_snmpv3_Set.add(jb_snmpv3_setUndo,null);
+//	    jp_snmpv3_Set.add(jb_snmpv3_setUndo,null);
 	    
-   		jl_snmpv3_setObjs = new JLabel("Objetos");
-	    jl_snmpv3_setObjs.setBounds(new Rectangle(10,330,60,20));
-	    jp_snmpv3_Set.add(jl_snmpv3_setObjs,null);
+//   		jl_snmpv3_setObjs = new JLabel("Objetos");
+//	    jl_snmpv3_setObjs.setBounds(new Rectangle(10,330,60,20));
+//	    jp_snmpv3_Set.add(jl_snmpv3_setObjs,null);
 	    
-	    jtf_snmpv3_setObjs = new JTextField();
-	    jtf_snmpv3_setObjs.setBounds(new Rectangle(60,330,150,20));   
+//	    jtf_snmpv3_setObjs = new JTextField();
+//	    jtf_snmpv3_setObjs.setBounds(new Rectangle(60,330,150,20));   
 	    jtf_snmpv3_setObjs.setEditable(false);	    	    
-	    jp_snmpv3_Set.add(jtf_snmpv3_setObjs,null);
+//	    jp_snmpv3_Set.add(jtf_snmpv3_setObjs,null);
 
 
 
@@ -1899,38 +1912,38 @@ private String nameOfTheProgram = "Super Neat Master Puppeteer";
 
 
 	  		  	
-	    jl_snmpv3_SetEtiSetValor = new JLabel("Valor");
-	    jl_snmpv3_SetEtiSetValor.setBounds(new Rectangle(10,300,35,20));
-	    jl_snmpv3_SetEtiSetValor.setEnabled(false);   
-	    jp_snmpv3_Set.add(jl_snmpv3_SetEtiSetValor,null);
+//	    jl_snmpv3_SetEtiSetValor = new JLabel("Valor");
+//	    jl_snmpv3_SetEtiSetValor.setBounds(new Rectangle(10,300,35,20));
+//	    jl_snmpv3_SetEtiSetValor.setEnabled(false);   
+//	    jp_snmpv3_Set.add(jl_snmpv3_SetEtiSetValor,null);
 
-	    jtf_snmpv3_SetSetValor = new JTextField();
-	    jtf_snmpv3_SetSetValor.setBounds(new Rectangle(50,300,214,20));    
+//	    jtf_snmpv3_SetSetValor = new JTextField();
+//	    jtf_snmpv3_SetSetValor.setBounds(new Rectangle(50,300,214,20));    
 	    jtf_snmpv3_SetSetValor.setEditable(true);
-	    jp_snmpv3_Set.add(jtf_snmpv3_SetSetValor,null);	 
+//	    jp_snmpv3_Set.add(jtf_snmpv3_SetSetValor,null);	 
 
-    	jl_snmpv3_setModSeg = new JLabel("Seguridad");
-	    jl_snmpv3_setModSeg.setBounds(new Rectangle(279,300,60,20));
-	    jl_snmpv3_setModSeg.setEnabled(false); 
-	    jp_snmpv3_Set.add(jl_snmpv3_setModSeg,null);
+//    	jl_snmpv3_setModSeg = new JLabel("Seguridad");
+//	    jl_snmpv3_setModSeg.setBounds(new Rectangle(279,300,60,20));
+//	    jl_snmpv3_setModSeg.setEnabled(false); 
+//	    jp_snmpv3_Set.add(jl_snmpv3_setModSeg,null);
 
-	    jcb_snmpv3_setModSeg = new JComboBox();//USO DEL JCOMBOBOX
-	  	jcb_snmpv3_setModSeg.setBounds(new Rectangle(349,300,125,20));  
-		jcb_snmpv3_setModSeg.addItem("AUTH_NOPRIV");
-		jcb_snmpv3_setModSeg.addItem("AUTH_PRIV");
-		jcb_snmpv3_setModSeg.addItem("NOAUTH_NOPRIV");
-		//jcb_snmpv3_setModSeg.addItem("NOAUTH_PRIV");	  	
-	  	//jcb_snmpv3_setModSeg.setSelectedIndex(1);
+//	    jcb_snmpv3_setModSeg = new JComboBox();//USO DEL JCOMBOBOX
+//	  	jcb_snmpv3_setModSeg.setBounds(new Rectangle(349,300,125,20));  
+//		jcb_snmpv3_setModSeg.addItem("AUTH_NOPRIV");
+//		jcb_snmpv3_setModSeg.addItem("AUTH_PRIV");
+//		jcb_snmpv3_setModSeg.addItem("NOAUTH_NOPRIV");
+//		//jcb_snmpv3_setModSeg.addItem("NOAUTH_PRIV");	  	
+//	  	//jcb_snmpv3_setModSeg.setSelectedIndex(1);
 	  	jcb_snmpv3_setModSeg.setEnabled(false);	  	 
-	  	jp_snmpv3_Set.add(jcb_snmpv3_setModSeg,null);
+//	  	jp_snmpv3_Set.add(jcb_snmpv3_setModSeg,null);
 	  	
-    	jb_snmpv3_SetSet = new JButton("Set");
-	    jb_snmpv3_SetSet.setBounds(new Rectangle(415,330,59,20));   
+//    	jb_snmpv3_SetSet = new JButton("Set");
+//	    jb_snmpv3_SetSet.setBounds(new Rectangle(415,330,59,20));   
         jb_snmpv3_SetSet.setEnabled(false);
         jtf_snmpv3_SetSetValor.setEnabled(false); 	 
         jtf_snmpv3_SetSetValor.setText("");
-	    jb_snmpv3_SetSet.setToolTipText("Presione para especificar el valor.");
-	    jp_snmpv3_Set.add(jb_snmpv3_SetSet,null);
+//	    jb_snmpv3_SetSet.setToolTipText("Presione para especificar el valor.");
+//	    jp_snmpv3_Set.add(jb_snmpv3_SetSet,null);
 
 		//AQUI DEBE DE IR EL EVENTO DE SETEAR UNA VARIABLE VIA SNMP
 		
@@ -2077,10 +2090,10 @@ private String nameOfTheProgram = "Super Neat Master Puppeteer";
               jcb_snmpv3_SetTipo.setEnabled(true);//combobox
               jb_snmpv3_SetSet.setEnabled(true); //boton
               jtf_snmpv3_SetSetValor.setEnabled(true); //valor	
-              jl_snmpv3_SetEtiTipo.setEnabled(true);
-              jl_snmpv3_SetEtiSetValor.setEnabled(true);   
+//              jl_snmpv3_SetEtiTipo.setEnabled(true);
+//              jl_snmpv3_SetEtiSetValor.setEnabled(true);   
               jcb_snmpv3_setModSeg.setEnabled(true);   
-              jl_snmpv3_setModSeg.setEnabled(true);
+//              jl_snmpv3_setModSeg.setEnabled(true);
 			  jb_snmpv3_setAdd.setEnabled(true);    //   ***
 			  jb_snmpv3_setUndo.setEnabled(true);    //   ***        	       	                 
             }
@@ -3174,18 +3187,18 @@ private String nameOfTheProgram = "Super Neat Master Puppeteer";
 		
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   	    //--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET
-  	    jp_snmpv3_Set.setBorder(BorderFactory.createTitledBorder("Set Command"));
-  	    jl_snmpv3_SetEtiSet.setText("OID");
-  	    jl_snmpv3_SetEtiTipo.setText("Data Type");
-  	    jl_snmpv3_SetEtiSetValor.setText("Value");
+//  	    jp_snmpv3_Set.setBorder(BorderFactory.createTitledBorder("Set Command"));
+//  	    jl_snmpv3_SetEtiSet.setText("OID");
+//  	    jl_snmpv3_SetEtiTipo.setText("Data Type");
+//  	    jl_snmpv3_SetEtiSetValor.setText("Value");
   	    jb_snmpv3_setAdd.setText("Add");
   	    jb_snmpv3_setAdd.setToolTipText("Press to add the OID.");
-  	    jl_snmpv3_setObjs.setText("Objects");
+//  	    jl_snmpv3_setObjs.setText("Objects");
   	    jb_snmpv3_setUndo.setText("Undo");
   	    jb_snmpv3_setUndo.setToolTipText("Press to erase the last OID added.");
   	    jb_snmpv3_SetSet.setText("Set");
   	    jb_snmpv3_SetSet.setToolTipText("Press to set the new value(s).");
-  	    jl_snmpv3_setModSeg.setText("Security");
+//  	    jl_snmpv3_setModSeg.setText("Security");
   	    //--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET
   	    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
@@ -3289,11 +3302,11 @@ private String nameOfTheProgram = "Super Neat Master Puppeteer";
 		private JTextArea jta_snmpv3_WalkResp;
 		////////////////////////////SET
 		// GUI private JScrollPane jsp_snmpv3_SetDescrip, jsp_snmpv3_SetResp;
-		private JTextArea jta_snmpv3_SetDescrip, jta_snmpv3_SetResp;
-		private JLabel jl_snmpv3_SetEtiSet, jl_snmpv3_SetEtiTipo, jl_snmpv3_SetEtiSetValor, jl_snmpv3_setModSeg,jl_snmpv3_setObjs;
-		private JTextField jtf_snmpv3_SetSet, jtf_snmpv3_SetSetValor,jtf_snmpv3_setObjs;
-		private JComboBox jcb_snmpv3_SetTipo, jcb_snmpv3_setModSeg;
-		private JButton jb_snmpv3_SetSet,jb_snmpv3_setAdd,jb_snmpv3_setUndo;
+		// GUI private JTextArea jta_snmpv3_SetDescrip, jta_snmpv3_SetResp;
+		// REMOVED private JLabel jl_snmpv3_SetEtiSet, jl_snmpv3_SetEtiTipo, jl_snmpv3_SetEtiSetValor, jl_snmpv3_setModSeg,jl_snmpv3_setObjs;
+		// GUI private JTextField jtf_snmpv3_SetSet, jtf_snmpv3_SetSetValor,jtf_snmpv3_setObjs;
+		// GUI private JComboBox jcb_snmpv3_SetTipo, jcb_snmpv3_setModSeg;
+		// GUI private JButton jb_snmpv3_SetSet,jb_snmpv3_setAdd,jb_snmpv3_setUndo;
 		private int jtf_snmpv3_SetSetDigitos;		
 		private Vector compuestoSetSNMPv3; //Para pasar los multiples parametros
 		private Vector compuestoSetSNMPv3TempOID;
@@ -3336,7 +3349,9 @@ private String nameOfTheProgram = "Super Neat Master Puppeteer";
     //       MibLoader instead
     private ArrayList loadedMibs;
     private ArrayList loadedMibsParaBuscarNombres;
-        
+    
+    MibLoader loaderMibs = new MibLoader();
+
 	/**
      * Loads MIB file or URL.
      *
@@ -3353,6 +3368,13 @@ private String nameOfTheProgram = "Super Neat Master Puppeteer";
 
         mb = MibTreeBuilder.getInstance();
         mib = null;
+        
+            File file = new File("mibs/Enterprise/GDC4S-ENCRYPTION-PRODUCTS-MIB.txt");
+    // The MIB file may import other MIBs (often in same dir)
+    loaderMibs.addDir(file.getParentFile());
+
+    // Once initialized, MIB loading is straight-forward
+    loaderMibs.load(file);
 
         // TODO: handle URLs
 
@@ -3429,6 +3451,7 @@ private String nameOfTheProgram = "Super Neat Master Puppeteer";
         int           result;
 
         dialog.setCurrentDirectory(currentDir);
+        System.out.println(currentDir.toString());
         dialog.setMultiSelectionEnabled(true);
         result = dialog.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
@@ -3448,7 +3471,22 @@ private String nameOfTheProgram = "Super Neat Master Puppeteer";
     protected void loadMib() throws Exception{
     	
             //loadMibInternal("RFC1213-MIB");
-            loadMibInternal("HAIPE-MIB");
+            //loadMibInternal("HAIPE-MIB");
+
+           //loadMib("mibs/Enterprise/GDC4S-ENCRYPTION-PRODUCTS-MIB.txt");
+            
+            //loadMibInternal("release4.1v7mibs/MIBs/Enterprise/GDC4S-ASSIGNMENTS-MIB.txt");
+            //loadMibInternal("release4.1v7mibs/MIBs/Enterprise/GDC4S-COMMON-NOTIFICATIONS-MIB.txt");
+            //loadMibInternal("release4.1v7mibs/MIBs/Enterprise/GDC4S-ENCRYPTION-PRODUCTS-COMMON-MIB.txt");
+//            loadMibInternal("release4.1v7mibs/MIBs/Enterprise/GDC4S-EXTENSION-MIB.txt");
+//            loadMibInternal("release4.1v7mibs/MIBs/Enterprise/GDC4S-FEATURE-MIB.txt");
+//            loadMibInternal("release4.1v7mibs/MIBs/Enterprise/GDC4S-VLAN-MIB.txt");
+            //loadMibInternal("release4.1v7mibs/MIBs/Enterprise/NETWORKENCRYPTOR-ENTERPRISE-MIB.txt");
+//            loadMibInternal("release4.1v7mibs/MIBs/Enterprise/TACLANE-MICRO-COMMON-MIB.txt");
+//            loadMibInternal("release4.1v7mibs/MIBs/Enterprise/TACLANE-PRODUCTS-REGISTRATION-MIB.txt");
+//            loadMibInternal("release4.1v7mibs/MIBs/Haipe V3/HAIPE-COMPLIANCE-MIB.txt");
+            //loadMibInternal("release4.1v7mibs/MIBs/Haipe V3/.txt");
+
             refreshTree();
             //loadMib("RFC1271-MIB");
             //	refreshTree();
@@ -3643,10 +3681,10 @@ private String nameOfTheProgram = "Super Neat Master Puppeteer";
         	    jb_snmpv3_SetSet.setEnabled(true);
         	    jtf_snmpv3_SetSetValor.setEnabled(true);
         	    jcb_snmpv3_SetTipo.setEnabled(true);     
-        	    jl_snmpv3_SetEtiTipo.setEnabled(true);	 
-        	    jl_snmpv3_SetEtiSetValor.setEnabled(true);   
+//        	    jl_snmpv3_SetEtiTipo.setEnabled(true);	 
+//        	    jl_snmpv3_SetEtiSetValor.setEnabled(true);   
 				jcb_snmpv3_setModSeg.setEnabled(true);
-		        jl_snmpv3_setModSeg.setEnabled(true);
+//		        jl_snmpv3_setModSeg.setEnabled(true);
 				jb_snmpv3_setAdd.setEnabled(true);    //   ***
 				jb_snmpv3_setUndo.setEnabled(true);    //   ***        	       			                	    	
         	    if (tipoDatoReconocido.equals("INTEGER")) {jcb_snmpv3_SetTipo.setSelectedIndex(1);}    
@@ -3703,10 +3741,10 @@ private String nameOfTheProgram = "Super Neat Master Puppeteer";
 		        jtf_snmpv3_SetSetValor.setEnabled(false); 	 
 		        jtf_snmpv3_SetSetValor.setText("");
 		        jcb_snmpv3_setModSeg.setEnabled(false);
-		        jl_snmpv3_setModSeg.setEnabled(false);
+//		        jl_snmpv3_setModSeg.setEnabled(false);
         	    jcb_snmpv3_SetTipo.setEnabled(false);    
-        	    jl_snmpv3_SetEtiTipo.setEnabled(false); 
-        	    jl_snmpv3_SetEtiSetValor.setEnabled(false);
+//        	    jl_snmpv3_SetEtiTipo.setEnabled(false); 
+//        	    jl_snmpv3_SetEtiSetValor.setEnabled(false);
 				jb_snmpv3_setAdd.setEnabled(false);    //   ***
 				jb_snmpv3_setUndo.setEnabled(false);    //   ***        	       	
         	    if (tipoDatoReconocido.equals("INTEGER")) {jcb_snmpv3_SetTipo.setSelectedIndex(1);}    
@@ -3750,10 +3788,10 @@ private String nameOfTheProgram = "Super Neat Master Puppeteer";
 		        jtf_snmpv3_SetSetValor.setEnabled(false); 	 
 		        jtf_snmpv3_SetSetValor.setText("");
 		        jcb_snmpv3_setModSeg.setEnabled(false);
-		        jl_snmpv3_setModSeg.setEnabled(false);
+//		        jl_snmpv3_setModSeg.setEnabled(false);
 	    	    jcb_snmpv3_SetTipo.setEnabled(false);    
-	    	    jl_snmpv3_SetEtiTipo.setEnabled(false); 
-	    	    jl_snmpv3_SetEtiSetValor.setEnabled(false);   	
+//	    	    jl_snmpv3_SetEtiTipo.setEnabled(false); 
+//	    	    jl_snmpv3_SetEtiSetValor.setEnabled(false);   	
         	  	jcb_snmpv3_SetTipo.setSelectedIndex(0);
 				jb_snmpv3_setAdd.setEnabled(false);    //   ***
 				jb_snmpv3_setUndo.setEnabled(false);    //   ***        	       	
@@ -4004,7 +4042,64 @@ private String nameOfTheProgram = "Super Neat Master Puppeteer";
 				//JOptionPane.showMessageDialog(AppGo.this, configParamResult01,nameOfTheProgram,JOptionPane.INFORMATION_MESSAGE,(new ImageIcon("images/help.gif")));  	          	  	          	  
                             }	
   }
+    private void unzipfiles() {
+          //Open the file
+          
   
+          
+        try {
+            InputStream input = getClass().getResourceAsStream("mibs.zip"); 
+                File tempfile = File.createTempFile("tempfile", ".zip");
+                        OutputStream out = new FileOutputStream(tempfile);
+            int read;
+            byte[] bytes = new byte[1024];
+
+            while ((read = input.read(bytes)) != -1) {
+                out.write(bytes, 0, read);
+            }
+            tempfile.deleteOnExit(); 
+            
+            ZipFile zipFile = new ZipFile(tempfile);
+            Enumeration<?> enu = zipFile.entries();
+            while (enu.hasMoreElements()) {
+                ZipEntry zipEntry = (ZipEntry) enu.nextElement();
+
+                String name = zipEntry.getName();
+                long size = zipEntry.getSize();
+                long compressedSize = zipEntry.getCompressedSize();
+                System.out.printf("name: %-20s | size: %6d | compressed size: %6d\n", 
+                        name, size, compressedSize);
+
+                // Do we need to create a directory ?
+                File file = new File(name);
+                if (name.endsWith("/")) {
+                    file.mkdirs();
+                    continue;
+                }
+
+                File parent = file.getParentFile();
+                if (parent != null) {
+                    parent.mkdirs();
+                }
+
+                // Extract the file
+                InputStream is = zipFile.getInputStream(zipEntry);
+                FileOutputStream fos = new FileOutputStream(file);
+                bytes = new byte[1024];
+                int length;
+                while ((length = is.read(bytes)) >= 0) {
+                    fos.write(bytes, 0, length);
+                }
+                is.close();
+                fos.close();
+
+            }
+            zipFile.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+    }
        private ArrayList getSessionList() throws FileNotFoundException, IOException, URISyntaxException
     {
         String strSessionList;
@@ -4140,20 +4235,22 @@ private String nameOfTheProgram = "Super Neat Master Puppeteer";
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        jtf_snmpv3_SetSet = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jcb_snmpv3_SetTipo = new javax.swing.JComboBox<>();
         jLabel16 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        jtf_snmpv3_SetSetValor = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        jcb_snmpv3_setModSeg = new javax.swing.JComboBox<>();
         jLabel18 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        jtf_snmpv3_setObjs = new javax.swing.JTextField();
+        jb_snmpv3_setAdd = new javax.swing.JButton();
+        jb_snmpv3_setUndo = new javax.swing.JButton();
+        jb_snmpv3_SetSet = new javax.swing.JButton();
         jsp_snmpv3_SetDescrip = new javax.swing.JScrollPane();
+        jta_snmpv3_SetDescrip = new javax.swing.JTextArea();
         jsp_snmpv3_SetResp = new javax.swing.JScrollPane();
+        jta_snmpv3_SetResp = new javax.swing.JTextArea();
         jPanel7 = new javax.swing.JPanel();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jp_mibtree = new javax.swing.JPanel();
@@ -4430,9 +4527,9 @@ private String nameOfTheProgram = "Super Neat Master Puppeteer";
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtf_snmpv3_getObjs)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jb_snmpv3_getGet)))
+                        .addComponent(jtf_snmpv3_getObjs, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jb_snmpv3_getGet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -4518,27 +4615,35 @@ private String nameOfTheProgram = "Super Neat Master Puppeteer";
 
         jLabel15.setText("Data Type:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--------------------------------", "INTEGER", "OCTET STRING", "OBJECT IDENTIFIER", "IpAddress", "Counter", "Counter64", "Gauge", "TimeTicks", "Opaque" }));
+        jcb_snmpv3_SetTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--------------------------------", "INTEGER", "OCTET STRING", "OBJECT IDENTIFIER", "IpAddress", "Counter", "Counter64", "Gauge", "TimeTicks", "Opaque" }));
 
         jLabel16.setText("Value:");
 
         jLabel17.setText("Security:");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "AUTH_PRIV", "AUTH_NOPRIV", "NOAUTH_NOPRIV" }));
+        jcb_snmpv3_setModSeg.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "AUTH_PRIV", "AUTH_NOPRIV", "NOAUTH_NOPRIV" }));
 
         jLabel18.setText("Objects:");
 
-        jButton1.setText("Add");
+        jb_snmpv3_setAdd.setText("Add");
 
-        jButton2.setText("Undo");
+        jb_snmpv3_setUndo.setText("Undo");
 
-        jButton3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jButton3.setText("SET!");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        jb_snmpv3_SetSet.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jb_snmpv3_SetSet.setText("SET!");
+        jb_snmpv3_SetSet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                jb_snmpv3_SetSetActionPerformed(evt);
             }
         });
+
+        jta_snmpv3_SetDescrip.setColumns(20);
+        jta_snmpv3_SetDescrip.setRows(5);
+        jsp_snmpv3_SetDescrip.setViewportView(jta_snmpv3_SetDescrip);
+
+        jta_snmpv3_SetResp.setColumns(20);
+        jta_snmpv3_SetResp.setRows(5);
+        jsp_snmpv3_SetResp.setViewportView(jta_snmpv3_SetResp);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -4552,29 +4657,29 @@ private String nameOfTheProgram = "Super Neat Master Puppeteer";
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(jLabel14)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jtf_snmpv3_SetSet, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel15)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jcb_snmpv3_SetTipo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(jLabel16)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jtf_snmpv3_SetSetValor, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel17)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox2, 0, 186, Short.MAX_VALUE))
+                        .addComponent(jcb_snmpv3_setModSeg, 0, 186, Short.MAX_VALUE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(jLabel18)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jtf_snmpv3_setObjs)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jb_snmpv3_setAdd)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jb_snmpv3_setUndo)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jb_snmpv3_SetSet, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
@@ -4585,22 +4690,22 @@ private String nameOfTheProgram = "Super Neat Master Puppeteer";
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtf_snmpv3_SetSet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel15)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jcb_snmpv3_SetTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel16)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtf_snmpv3_SetSetValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel17)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jcb_snmpv3_setModSeg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel18)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(jtf_snmpv3_setObjs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jb_snmpv3_setAdd)
+                    .addComponent(jb_snmpv3_setUndo)
+                    .addComponent(jb_snmpv3_SetSet))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jsp_snmpv3_SetResp, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
                 .addContainerGap())
@@ -4844,20 +4949,16 @@ private String nameOfTheProgram = "Super Neat Master Puppeteer";
         jta_snmpv3_getResp.setText((jta_snmpv3_getResp.getText()).concat("Running: SNMPv3 Get...\n"));
     }//GEN-LAST:event_jb_snmpv3_getGetMousePressed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void jb_snmpv3_SetSetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_snmpv3_SetSetActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_jb_snmpv3_SetSetActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        String pathUserProfile = System.getenv("USERPROFILE");
-        File pathDesktop = new File(System.getProperty("user.home"), "Desktop");
-        String pathApplicationFolder = pathDesktop + "\\SNMP\\";
-        String strSessionListFavoritesFolder = pathUserProfile + "\\.SNMP\\";
-        new File(pathApplicationFolder).mkdirs();
-        new File(strSessionListFavoritesFolder).mkdirs();
+
+
         
         
         /* Set the Nimbus look and feel */
@@ -4912,11 +5013,6 @@ private String nameOfTheProgram = "Super Neat Master Puppeteer";
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -4953,19 +5049,21 @@ private String nameOfTheProgram = "Super Neat Master Puppeteer";
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextFieldFilter;
     private javax.swing.JButton jb_mibtree;
+    private javax.swing.JButton jb_snmpv3_SetSet;
     private javax.swing.JButton jb_snmpv3_getAdd;
     private javax.swing.JButton jb_snmpv3_getGet;
     private javax.swing.JButton jb_snmpv3_getUndo;
+    private javax.swing.JButton jb_snmpv3_setAdd;
+    private javax.swing.JButton jb_snmpv3_setUndo;
+    private javax.swing.JComboBox<String> jcb_snmpv3_SetTipo;
     private javax.swing.JComboBox<String> jcb_snmpv3_VerUsr;
     private javax.swing.JComboBox<String> jcb_snmpv3_getModSeg;
     private javax.swing.JComboBox<String> jcb_snmpv3_metAut;
     private javax.swing.JComboBox<String> jcb_snmpv3_metPriv;
+    private javax.swing.JComboBox<String> jcb_snmpv3_setModSeg;
     private javax.swing.JMenuBar jmenubar;
     private javax.swing.JMenuItem jmi_about;
     private javax.swing.JMenuItem jmi_helpHelp;
@@ -4979,12 +5077,17 @@ private String nameOfTheProgram = "Super Neat Master Puppeteer";
     private javax.swing.JScrollPane jsp_snmpv3_SetResp;
     private javax.swing.JScrollPane jsp_snmpv3_getDescrip;
     private javax.swing.JScrollPane jsp_snmpv3_getResp;
+    private javax.swing.JTextArea jta_snmpv3_SetDescrip;
+    private javax.swing.JTextArea jta_snmpv3_SetResp;
     private javax.swing.JTextArea jta_snmpv3_getDescrip;
     private javax.swing.JTextArea jta_snmpv3_getResp;
     private javax.swing.JTextField jtf_snmpv3_IP;
+    private javax.swing.JTextField jtf_snmpv3_SetSet;
+    private javax.swing.JTextField jtf_snmpv3_SetSetValor;
     private javax.swing.JTextField jtf_snmpv3_getGet;
     private javax.swing.JTextField jtf_snmpv3_getObjs;
     private javax.swing.JTextField jtf_snmpv3_pto;
+    private javax.swing.JTextField jtf_snmpv3_setObjs;
     private javax.swing.JTextField jtf_snmv3_inten;
     private javax.swing.JTextField jtt_snmpv3_timeOut;
     private javax.swing.JMenuItem openMenuItem;

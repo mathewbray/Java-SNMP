@@ -792,6 +792,7 @@ public class MibLoader {
             for (Mib mib : processed) {
                 mibs.remove(mib.getName());
                 mib.clear();
+
             }
             throw new MibLoaderException(log);
         }

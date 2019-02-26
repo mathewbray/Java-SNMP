@@ -111,13 +111,12 @@ DefaultListModel defaultListModelFilteredItems = new DefaultListModel();
 private String nameOfTheProgram = "Super Neat Master Puppeteer";
 
 private String ConfigureParameters = "Configure Parameters";
-private String ComandoGet = "Comando Get";
-private String ComandoGetNext = "Comando GetNext";
-private String ComandoGetBulk = "Comando GetBulk";
-private String ComandoGetTable = "Comando GetTable";
-private String ComandoWalk = "Comando Walk";
-private String ComandoSet = "Comando Set";
-private String EnviarVerTraps = "Enviar/Ver Traps";
+private String CommandGet = "Command Get";
+private String CommandGetNext = "Command GetNext";
+private String CommandGetBulk = "Command GetBulk";
+private String CommandGetTable = "Command GetTable";
+private String CommandWalk = "Command Walk";
+private String CommandSet = "Command Set";
 
 private String IP = "192.168.0.23";
 private long pto = 161;
@@ -273,12 +272,12 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
     jcb_snmpv3_sel = new JComboBox();//USO DEL JCOMBOBOX
   	jcb_snmpv3_sel.setBounds(new Rectangle(110,5,373,20));
 	jcb_snmpv3_sel.addItem("Configure Parameters");
-  	jcb_snmpv3_sel.addItem("Comando Get");
-  	jcb_snmpv3_sel.addItem("Comando GetNext");
-  	jcb_snmpv3_sel.addItem("Comando GetBulk");
-  	jcb_snmpv3_sel.addItem("Comando GetTable");
-  	jcb_snmpv3_sel.addItem("Comando Walk");
-  	jcb_snmpv3_sel.addItem("Comando Set");
+  	jcb_snmpv3_sel.addItem("Command Get");
+  	jcb_snmpv3_sel.addItem("Command GetNext");
+  	jcb_snmpv3_sel.addItem("Command GetBulk");
+  	jcb_snmpv3_sel.addItem("Command GetTable");
+  	jcb_snmpv3_sel.addItem("Command Walk");
+  	jcb_snmpv3_sel.addItem("Command Set");
   	jcb_snmpv3_sel.addItem("Enviar/Ver Traps");  	//jcb_snmpv1_sel.setMaximumRowCount(2);
   	snmpv3.add(jcb_snmpv3_sel,null);
   	
@@ -482,9 +481,9 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
  		//----------------------------------Pantalla de GetNext------------------------------------	      	
 		jp_snmpv3_GetNext = new JPanel();
 	    //jp_snmpv3_GetNext.setBackground(Color.blue);
-		//jp_snmpv3_GetNext.setBorder(BorderFactory.createTitledBorder("Comando GetNext de SNMPv1"));
+		//jp_snmpv3_GetNext.setBorder(BorderFactory.createTitledBorder("Command GetNext de SNMPv1"));
 		jp_snmpv3_GetNext.setBounds(new Rectangle(0,30,483,483));  
-		jp_snmpv3_GetNext.setBorder(BorderFactory.createTitledBorder("Comando GetNext"));
+		jp_snmpv3_GetNext.setBorder(BorderFactory.createTitledBorder("Command GetNext"));
 		jp_snmpv3_GetNext.setLayout(null);
 		jp_snmpv3_GetNext.setVisible(false);
 		snmpv3.add(jp_snmpv3_GetNext,null);
@@ -739,7 +738,7 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
 	    //jp_snmpv3_GetBulk.setBackground(Color.white);
 		//jp_snmpv3_GetBulk.setBorder(BorderFactory.createTitledBorder("Set"));
 		jp_snmpv3_GetBulk.setBounds(new Rectangle(0,30,483,483));
-		jp_snmpv3_GetBulk.setBorder(BorderFactory.createTitledBorder("Comando GetBulk"));
+		jp_snmpv3_GetBulk.setBorder(BorderFactory.createTitledBorder("Command GetBulk"));
 		jp_snmpv3_GetBulk.setLayout(null);
 		jp_snmpv3_GetBulk.setVisible(false);
 		snmpv3.add(jp_snmpv3_GetBulk,null);
@@ -1010,9 +1009,9 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
 
 		jp_snmpv3_getTable = new JPanel();
 	    //jp_snmpv3_getTable.setBackground(Color.blue);
-		//jp_snmpv3_getTable.setBorder(BorderFactory.createTitledBorder("Comando GetNext de SNMPv1"));
+		//jp_snmpv3_getTable.setBorder(BorderFactory.createTitledBorder("Command GetNext de SNMPv1"));
 		jp_snmpv3_getTable.setBounds(new Rectangle(0,30,483,483));  
-		jp_snmpv3_getTable.setBorder(BorderFactory.createTitledBorder("Comando GetTable"));
+		jp_snmpv3_getTable.setBorder(BorderFactory.createTitledBorder("Command GetTable"));
 		jp_snmpv3_getTable.setLayout(null);
 		jp_snmpv3_getTable.setVisible(false);
 		snmpv3.add(jp_snmpv3_getTable,null);
@@ -1201,7 +1200,7 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
 		jp_snmpv3_walk= new JPanel();
 	    //jp_snmpv3_walk.setBackground(Color.white);
 	    jp_snmpv3_walk.setBounds(new Rectangle(0,30,483,483));
-		jp_snmpv3_walk.setBorder(BorderFactory.createTitledBorder("Comando Walk"));
+		jp_snmpv3_walk.setBorder(BorderFactory.createTitledBorder("Command Walk"));
 		jp_snmpv3_walk.setLayout(null);
 		jp_snmpv3_walk.setVisible(false);
 		snmpv3.add(jp_snmpv3_walk,null);
@@ -1349,165 +1348,43 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
          	}
        	});
 		
-		//----------------------------------End de Pantalla del Walk-------------------------------
+		//----------------------------------End Walk-------------------------------
 
 
 
-		//----------------------------------Pantalla de Set----------------------------------------	      	
-//	    jp_snmpv3_Set = new JPanel();
-//	    //jp_snmpv3_Set.setBackground(Color.white);
-//		//jp_snmpv3_Set.setBorder(BorderFactory.createTitledBorder("Set"));
-//		jp_snmpv3_Set.setBounds(new Rectangle(0,30,483,483));
-//		jp_snmpv3_Set.setBorder(BorderFactory.createTitledBorder("Comando Set"));
-//		jp_snmpv3_Set.setLayout(null);
-//		jp_snmpv3_Set.setVisible(false);
-//		snmpv3.add(jp_snmpv3_Set,null);
-//
-//    	jsp_snmpv3_SetDescrip = new JScrollPane();
-//    	jsp_snmpv3_SetDescrip.setBounds(new Rectangle(10,20,465,240));  
+		//----------------------------------Set----------------------------------------	      	
+
     	jsp_snmpv3_SetDescrip.setWheelScrollingEnabled(true);
-//    	jp_snmpv3_Set.add(jsp_snmpv3_SetDescrip,null);
-//
-//    	jta_snmpv3_SetDescrip = new JTextArea();           
     	jta_snmpv3_SetDescrip.setText("");
     	jta_snmpv3_SetDescrip.setEditable(false);
-//    	jsp_snmpv3_SetDescrip.getViewport().add(jta_snmpv3_SetDescrip,null);
-
-//	    jsp_snmpv3_SetResp = new JScrollPane();
-//    	jsp_snmpv3_SetResp.setBounds(new Rectangle(10,360,465,111));    
     	jsp_snmpv3_SetResp.setWheelScrollingEnabled(true);
-//    	jp_snmpv3_Set.add(jsp_snmpv3_SetResp,null);
-
-//    	jta_snmpv3_SetResp = new JTextArea();
     	jta_snmpv3_SetResp.setText("");
     	jta_snmpv3_SetResp.setEditable(false);
-//    	jsp_snmpv3_SetResp.getViewport().add(jta_snmpv3_SetResp,null);
-    	
-//    	jl_snmpv3_SetEtiSet = new JLabel("OID");
-//	    jl_snmpv3_SetEtiSet.setBounds(new Rectangle(10,270,20,20));   
-//	    jp_snmpv3_Set.add(jl_snmpv3_SetEtiSet,null);
-
-//	    jtf_snmpv3_SetSet = new JTextField();
-//	    jtf_snmpv3_SetSet.setBounds(new Rectangle(50,270,200,20));    
 	    jtf_snmpv3_SetSet.setEditable(true);
-//	    jp_snmpv3_Set.add(jtf_snmpv3_SetSet,null);
-
-//    	jl_snmpv3_SetEtiTipo = new JLabel("Tipo de Dato");
-//	    jl_snmpv3_SetEtiTipo.setBounds(new Rectangle(260,270,80,20));
-//	    jl_snmpv3_SetEtiTipo.setEnabled(false);   
-//	    jp_snmpv3_Set.add(jl_snmpv3_SetEtiTipo,null);
- 
-//	    jcb_snmpv3_SetTipo = new JComboBox();//USO DEL JCOMBOBOX
-//	  	jcb_snmpv3_SetTipo.setBounds(new Rectangle(339,270,135,20));  // 350,226,70,20
-//		jcb_snmpv3_SetTipo.addItem("---------------------------");
-//	  	jcb_snmpv3_SetTipo.addItem("INTEGER");
-//	  	jcb_snmpv3_SetTipo.addItem("OCTET STRING");
-//	  	jcb_snmpv3_SetTipo.addItem("OBJECT IDENTIFIER");	  	
-//	  	jcb_snmpv3_SetTipo.addItem("IpAddress");
-//	  	jcb_snmpv3_SetTipo.addItem("Counter");
-//	  	jcb_snmpv3_SetTipo.addItem("Counter64");
-//	  	jcb_snmpv3_SetTipo.addItem("Gauge");
-//	  	jcb_snmpv3_SetTipo.addItem("TimeTicks");
-//	  	jcb_snmpv3_SetTipo.addItem("Opaque");
-//	  	jcb_snmpv3_SetTipo.setSelectedIndex(0);	  	 
 	  	jcb_snmpv3_SetTipo.setEnabled(false);
-//	  	jp_snmpv3_Set.add(jcb_snmpv3_SetTipo,null);
-
 	  	jcb_snmpv3_SetTipo.addActionListener(new ActionListener(){
 	      public void actionPerformed(ActionEvent e) {
 	      }
 	    });
 
-//     	jb_snmpv3_setAdd = new JButton("Aadir");
-//	    jb_snmpv3_setAdd.setBounds(new Rectangle(226,330,79,20));  //9999
-//	    jb_snmpv3_setAdd.setToolTipText("Presione para agregar el OID.");
 	    jb_snmpv3_setAdd.setEnabled(false);    //   ***
-//	    jp_snmpv3_Set.add(jb_snmpv3_setAdd,null);
-	    
-//    	jb_snmpv3_setUndo = new JButton("Deshacer");
-//	    jb_snmpv3_setUndo.setBounds(new Rectangle(315,330,89,20));  //9999
-//	    jb_snmpv3_setUndo.setToolTipText("Presione para eliminar el ltimo OID de los objetos.");
+
 	    jb_snmpv3_setUndo.setEnabled(false);    //   ***
-//	    jp_snmpv3_Set.add(jb_snmpv3_setUndo,null);
-	    
-//   		jl_snmpv3_setObjs = new JLabel("Objetos");
-//	    jl_snmpv3_setObjs.setBounds(new Rectangle(10,330,60,20));
-//	    jp_snmpv3_Set.add(jl_snmpv3_setObjs,null);
-	    
-//	    jtf_snmpv3_setObjs = new JTextField();
-//	    jtf_snmpv3_setObjs.setBounds(new Rectangle(60,330,150,20));   
+ 
 	    jtf_snmpv3_setObjs.setEditable(false);	    	    
-//	    jp_snmpv3_Set.add(jtf_snmpv3_setObjs,null);
 
-
-
-/*
- *
- *
-
-
-    	jb_snmpv2c_SetSet = new JButton("Set");
-	    jb_snmpv2c_SetSet.setBounds(new Rectangle(415,330,59,20));   
-        jb_snmpv2c_SetSet.setEnabled(false);
-        jtf_snmpv2c_SetSetValor.setEnabled(false); 	 
-        jtf_snmpv2c_SetSetValor.setText(""); 		 
-	    jb_snmpv2c_SetSet.setToolTipText("Presione para especificar el valor.");
-	    jp_snmpv2c_Set.add(jb_snmpv2c_SetSet,null);
-
- *
- *
- *
- **/
-
-
-	  		  	
-//	    jl_snmpv3_SetEtiSetValor = new JLabel("Valor");
-//	    jl_snmpv3_SetEtiSetValor.setBounds(new Rectangle(10,300,35,20));
-//	    jl_snmpv3_SetEtiSetValor.setEnabled(false);   
-//	    jp_snmpv3_Set.add(jl_snmpv3_SetEtiSetValor,null);
-
-//	    jtf_snmpv3_SetSetValor = new JTextField();
-//	    jtf_snmpv3_SetSetValor.setBounds(new Rectangle(50,300,214,20));    
 	    jtf_snmpv3_SetSetValor.setEditable(true);
-//	    jp_snmpv3_Set.add(jtf_snmpv3_SetSetValor,null);	 
 
-//    	jl_snmpv3_setModSeg = new JLabel("Seguridad");
-//	    jl_snmpv3_setModSeg.setBounds(new Rectangle(279,300,60,20));
-//	    jl_snmpv3_setModSeg.setEnabled(false); 
-//	    jp_snmpv3_Set.add(jl_snmpv3_setModSeg,null);
-
-//	    jcb_snmpv3_setModSeg = new JComboBox();//USO DEL JCOMBOBOX
-//	  	jcb_snmpv3_setModSeg.setBounds(new Rectangle(349,300,125,20));  
-//		jcb_snmpv3_setModSeg.addItem("AUTH_NOPRIV");
-//		jcb_snmpv3_setModSeg.addItem("AUTH_PRIV");
-//		jcb_snmpv3_setModSeg.addItem("NOAUTH_NOPRIV");
-//		//jcb_snmpv3_setModSeg.addItem("NOAUTH_PRIV");	  	
-//	  	//jcb_snmpv3_setModSeg.setSelectedIndex(1);
 	  	jcb_snmpv3_setModSeg.setEnabled(false);	  	 
-//	  	jp_snmpv3_Set.add(jcb_snmpv3_setModSeg,null);
-	  	
-//    	jb_snmpv3_SetSet = new JButton("Set");
-//	    jb_snmpv3_SetSet.setBounds(new Rectangle(415,330,59,20));   
+  
         jb_snmpv3_SetSet.setEnabled(false);
         jtf_snmpv3_SetSetValor.setEnabled(false); 	 
         jtf_snmpv3_SetSetValor.setText("");
-//	    jb_snmpv3_SetSet.setToolTipText("Presione para especificar el valor.");
-//	    jp_snmpv3_Set.add(jb_snmpv3_SetSet,null);
+
 
 		//AQUI DEBE DE IR EL EVENTO DE SETEAR UNA VARIABLE VIA SNMP
 		
-		//TIPOS DE DATOS DEL SET
-       	//tipoDatoReconocido = "INTEGER";
-        //tipoDatoReconocido = "OCTET STRING";	
-        //tipoDatoReconocido = "OBJECT IDENTIFIER";
-        //tipoDatoReconocido = "IPADDRESS";
-        //tipoDatoReconocido = "COUNTER";
-        //tipoDatoReconocido = "GAUGE";
-        //tipoDatoReconocido = "TIMETICKS";
-        //tipoDatoReconocido = "OPAQUE";
-        //tipoDatoReconocido = "COUNTER64";
-        //tipoDatoReconocido="NO RECONOCIDO";
-        //reconocido
+
 
 		compuestoSetSNMPv3TempOID = new Vector();
 		compuestoSetSNMPv3TempTipoDatos = new Vector();
@@ -1791,864 +1668,41 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
 	    //----------------------------------End de Pantalla de Set---------------------------------
 
 
-	    //----------------------------------Pantalla de Traps--------------------------------------  	
-//	    //boolean errorPtoTrap = false;
-//	    /*try{
-//	      traps = new recibirTrapInform();
-//	      traps.run();
-//	    }catch(Exception tp){errorPtoTrap = true;}*/
-//	    
-//	    jp_snmpv3_Traps = new JPanel();
-//	    //jp_snmpv3_Traps.setBackground(Color.yellow);
-//		//jp_snmpv3_Traps.setBorder(BorderFactory.createTitledBorder("Traps"));
-//		jp_snmpv3_Traps.setBounds(new Rectangle(0,30,483,223));      //0,30,483,283
-//		jp_snmpv3_Traps.setBorder(BorderFactory.createTitledBorder("Recepcin de TRAPs SNMP v1/2c/3 e INFORMs SNMP v2c/3"));   //  "Enviar/Ver Traps"   
-//		jp_snmpv3_Traps.setLayout(null);
-//		jp_snmpv3_Traps.setVisible(false);
-//		snmpv3.add(jp_snmpv3_Traps,null);
-//		
-//	    jsp_snmpv3_traps = new JScrollPane();//USO DEL JSCROLLPANE
-//	    jsp_snmpv3_traps.setBounds(new Rectangle(10,20,465,190)); //10,20,465,250      
-//	    jsp_snmpv3_traps.setWheelScrollingEnabled(true);
-//	    jp_snmpv3_Traps.add(jsp_snmpv3_traps,null);
-//	    
-//	    jta_snmpv3_traps = new JTextArea();//USO DEL JTEXTAREA
-//	    jta_snmpv3_traps.setEditable(false);
-//	    jsp_snmpv3_traps.getViewport().add(jta_snmpv3_traps,null);
-//         
-//	    jp_snmpv3_TrapsSend = new JPanel();
-//	    //jp_snmpv3_TrapsSend.setBackground(Color.white);
-//		//jp_snmpv3_TrapsSend.setBorder(BorderFactory.createTitledBorder("TrapsSend"));
-//		jp_snmpv3_TrapsSend.setBounds(new Rectangle(0,253,483,253));  //0,313,483,193
-//		jp_snmpv3_TrapsSend.setBorder(BorderFactory.createTitledBorder("Envo de TRAPs / INFORMs SNMP v3"));
-//		jp_snmpv3_TrapsSend.setLayout(null);
-//		jp_snmpv3_TrapsSend.setVisible(false);
-//		snmpv3.add(jp_snmpv3_TrapsSend,null);
-//
-//	    jl_snmpv3_TrapSndHost = new JLabel("Direccin IP del destino");     
-//	    jl_snmpv3_TrapSndHost.setBounds(new Rectangle(10,30,150,20));    
-//	    jp_snmpv3_TrapsSend.add(jl_snmpv3_TrapSndHost,null);
-//
-//	    jtf_snmpv3_TrapSndHostIP = new JTextField();
-//	    jtf_snmpv3_TrapSndHostIP.setBounds(new Rectangle(150,30,150,20));    
-//	    //jtf_snmpv3_TrapSndHostIP.setEditable(true);
-//	    jp_snmpv3_TrapsSend.add(jtf_snmpv3_TrapSndHostIP,null);	 
-//
-//	    jl_snmpv3_TrapSndTipo = new JLabel("Tipo de Trap");			
-//	    jl_snmpv3_TrapSndTipo.setBounds(new Rectangle(10,80,150,20));    
-//	    jp_snmpv3_TrapsSend.add(jl_snmpv3_TrapSndTipo,null);
-//
-//	    jcb_snmpv3_TrapSel = new JComboBox();//USO DEL JCOMBOBOX
-//	  	jcb_snmpv3_TrapSel.setBounds(new Rectangle(150,80,150,20));  
-//		jcb_snmpv3_TrapSel.addItem("coldStart");
-//	  	jcb_snmpv3_TrapSel.addItem("warmStart");
-//	  	jcb_snmpv3_TrapSel.addItem("linkDown");
-//	  	jcb_snmpv3_TrapSel.addItem("linkUp");
-//	  	jcb_snmpv3_TrapSel.addItem("authenticationFailure");	  	
-//	  	jcb_snmpv3_TrapSel.addItem("Otro");	  	
-//	  	//jcb_snmpv3_TrapSel.setMaximumRowCount(2);
-//	  	jp_snmpv3_TrapsSend.add(jcb_snmpv3_TrapSel,null);
-//
-//	  	jcb_snmpv3_TrapSel.addActionListener(new ActionListener(){
-//	      public void actionPerformed(ActionEvent e) {	        
-//	        //jtf_snmpv3_EntTxt.setText("");
-//	        if ((jcb_snmpv3_TrapSel.getSelectedItem())==errorGeneral46){
-//	          jl_snmpv3_Enter.setEnabled(true);
-//	          jtf_snmpv3_EntTxt.setEditable(true);
-//	          jl_snmpv3_OtroTrp.setEnabled(true);
-//	          jtf_snmpv3_OtroTrp.setEditable(true);
-//	          jl_snmpv3_Descr.setEnabled(true);
-//	          jtf_snmpv3_Descr.setEditable(true);
-//	          jtf_snmpv3_EntTxt.setText("1.3.6.1.4.1.2789.2005");
-//	          jtf_snmpv3_OtroTrp.setText("1.3.6.1.4.1.2789.2005.1");
-//	          jtf_snmpv3_Descr.setText("WWW Server Has Been Restarted");
-//			  jl_snmpv3_TpDto.setEnabled(true); 
-//			  jcb_snmpv3_TpoDtoTrp.setEnabled(true);	          
-//			  jcb_snmpv3_TpoDtoTrp.setSelectedIndex(1);	          
-//	        }else{
-//	          jl_snmpv3_Enter.setEnabled(false);
-//	          jtf_snmpv3_EntTxt.setEditable(false);
-//	          jl_snmpv3_OtroTrp.setEnabled(false);
-//	          jtf_snmpv3_OtroTrp.setEditable(false);
-//	          jl_snmpv3_Descr.setEnabled(false);
-//	          jtf_snmpv3_Descr.setEditable(false);
-//	          jtf_snmpv3_EntTxt.setText("");
-//	          jtf_snmpv3_OtroTrp.setText("");
-//	          jtf_snmpv3_Descr.setText("");
-//			  jl_snmpv3_TpDto.setEnabled(false); 
-//			  jcb_snmpv3_TpoDtoTrp.setEnabled(false);	          
-//			  jcb_snmpv3_TpoDtoTrp.setSelectedIndex(0);	
-//	          }
-//	        }
-//	    });
-//
-//		jl_snmpv3_PtoCom = new JLabel("Puerto");
-//	    jl_snmpv3_PtoCom.setBounds(new Rectangle(310,30,50,20));    
-//	    jp_snmpv3_TrapsSend.add(jl_snmpv3_PtoCom,null);
-//
-//	    jtf_snmpv3_PtoComTxt = new JTextField();
-//	    jtf_snmpv3_PtoComTxt.setBounds(new Rectangle(390,30,85,20));    
-//	    //jtf_snmpv3_PtoComTxt.setEditable(true);
-//	    jtf_snmpv3_PtoComTxt.setText("162");
-//	    jp_snmpv3_TrapsSend.add(jtf_snmpv3_PtoComTxt,null);	 
-//
-//		jl_snmpv3_TrpVer = new JLabel("Visualizar");//USO DEL JLABEL
-//    	jl_snmpv3_TrpVer.setBounds(new Rectangle(310,105,160,20));//establece el xy del componente
-//    	jp_snmpv3_TrapsSend.add(jl_snmpv3_TrpVer,null);
-//
-//	    jcb_snmpv3_TrpVer = new JComboBox();//USO DEL JCOMBOBOX
-//	  	jcb_snmpv3_TrpVer.setBounds(new Rectangle(390,105,85,20));  
-//		jcb_snmpv3_TrpVer.addItem("Si");
-//	  	jcb_snmpv3_TrpVer.addItem("No");
-//	  	jcb_snmpv3_TrpVer.setSelectedIndex(1);	  	 
-//	  	jp_snmpv3_TrapsSend.add(jcb_snmpv3_TrpVer,null);
-// 
-//	  	jcb_snmpv3_TrpVer.addActionListener(new ActionListener(){    
-//	      public void actionPerformed(ActionEvent e) {	          
-//	        if ((jcb_snmpv3_TrpVer.getSelectedItem())==optionYES){jpf_snmpv3_TrpUsr.setEchoChar((char)0);jpf_snmpv3_TrpAut.setEchoChar((char)0);jpf_snmpv3_TrpPriv.setEchoChar((char)0);}; 
-//	        if ((jcb_snmpv3_TrpVer.getSelectedItem())==optionNO){jpf_snmpv3_TrpUsr.setEchoChar('*');jpf_snmpv3_TrpAut.setEchoChar('*');jpf_snmpv3_TrpPriv.setEchoChar('*');}; 	
-//	      }
-//	    });
-//		
-//		jl_snmpv3_TrpUsr = new JLabel("Usuario");
-//	    jl_snmpv3_TrpUsr.setBounds(new Rectangle(310,130,150,20));    
-//	    jp_snmpv3_TrapsSend.add(jl_snmpv3_TrpUsr,null);    
-//
-//    	jpf_snmpv3_TrpUsr = new JPasswordField();//USO DEL JPASSWORDFIELD
-//    	jpf_snmpv3_TrpUsr.setBounds(new Rectangle(390,130,85,20));//establece el xy del componente
-//    	jpf_snmpv3_TrpUsr.setEchoChar('*');
-//    	jpf_snmpv3_TrpUsr.setText(String.valueOf(user));
-//    	//jpf_snmpv3_TrpUsr.setEchoChar((char)0);
-//    	jp_snmpv3_TrapsSend.add(jpf_snmpv3_TrpUsr,null);
-//	    	 
-//    	jl_snmpv3_TrpAut = new JLabel("Clave Auten.");//USO DEL JLABEL
-//    	jl_snmpv3_TrpAut.setBounds(new Rectangle(310,155,150,20));//establece el xy del componente
-//    	jp_snmpv3_TrapsSend.add(jl_snmpv3_TrpAut,null);
-//
-//    	jpf_snmpv3_TrpAut = new JPasswordField();//USO DEL JPASSWORDFIELD
-//    	jpf_snmpv3_TrpAut.setBounds(new Rectangle(390,155,85,20));//establece el xy del componente
-//    	jpf_snmpv3_TrpAut.setEchoChar('*');
-//    	jpf_snmpv3_TrpAut.setText(String.valueOf(claveAut));
-//    	//jpf_snmpv3_TrpAut.setEchoChar((char)0);
-//    	jp_snmpv3_TrapsSend.add(jpf_snmpv3_TrpAut,null);
-//
-//    	jl_snmpv3_TrpPriv = new JLabel("Clave Encrip.");//USO DEL JLABEL
-//    	jl_snmpv3_TrpPriv.setBounds(new Rectangle(310,180,150,20));//establece el xy del componente
-//    	jp_snmpv3_TrapsSend.add(jl_snmpv3_TrpPriv,null);
-//
-//    	jpf_snmpv3_TrpPriv = new JPasswordField();//USO DEL JPASSWORDFIELD
-//    	jpf_snmpv3_TrpPriv.setBounds(new Rectangle(390,180,85,20));//establece el xy del componente
-//    	jpf_snmpv3_TrpPriv.setEchoChar('*');
-//    	jpf_snmpv3_TrpPriv.setText(String.valueOf(clavePriv));
-//    	//jpf_snmpv3_TrpPriv.setEchoChar((char)0);
-//    	jp_snmpv3_TrapsSend.add(jpf_snmpv3_TrpPriv,null);
-//
-//		jl_snmpv3_Int = new JLabel("Intentos");
-//	    jl_snmpv3_Int.setBounds(new Rectangle(310,55,200,20));    
-//	    jp_snmpv3_TrapsSend.add(jl_snmpv3_Int,null);
-//
-//	    jtf_snmpv3_IntTxt = new JTextField();
-//	    jtf_snmpv3_IntTxt.setBounds(new Rectangle(390,55,85,20));    
-//	    //jtf_snmpv3_IntTxt.setEditable(true);
-//	    jtf_snmpv3_IntTxt.setText("3");
-//	    jp_snmpv3_TrapsSend.add(jtf_snmpv3_IntTxt,null);	 
-//	    
-//		jl_snmpv3_Timeout = new JLabel("TimeOut (ms)");
-//	    jl_snmpv3_Timeout.setBounds(new Rectangle(310,80,150,20));    
-//	    jp_snmpv3_TrapsSend.add(jl_snmpv3_Timeout,null);
-//
-//	    jtf_snmpv3_TmoutTxt = new JTextField();
-//	    jtf_snmpv3_TmoutTxt.setBounds(new Rectangle(390,80,85,20));
-//	    jtf_snmpv3_TmoutTxt.setText("1500");    
-//	    //jtf_snmpv3_TmoutTxt.setEditable(true);
-//	    jp_snmpv3_TrapsSend.add(jtf_snmpv3_TmoutTxt,null);	 
-// 	    	
-//		jl_snmpv3_Enter = new JLabel("Enterprise OID");
-//	    jl_snmpv3_Enter.setBounds(new Rectangle(10,105,150,20));  
-//	    jl_snmpv3_Enter.setEnabled(false);
-//	    jp_snmpv3_TrapsSend.add(jl_snmpv3_Enter,null);
-//
-//	    jtf_snmpv3_EntTxt = new JTextField();
-//	    jtf_snmpv3_EntTxt.setBounds(new Rectangle(150,105,150,20));	 
-//	    jtf_snmpv3_EntTxt.setEditable(false);
-//	    jp_snmpv3_TrapsSend.add(jtf_snmpv3_EntTxt,null);	 
-//
-//		jl_snmpv3_TrpInfSel = new JLabel("Seleccione una opcin");             
-//	    jl_snmpv3_TrpInfSel.setBounds(new Rectangle(10,55,150,20)); 
-//	    jp_snmpv3_TrapsSend.add(jl_snmpv3_TrpInfSel,null);
-//
-//	    jcb_snmpv3_TrpInfSel = new JComboBox();//USO DEL JCOMBOBOX		 
-//	  	jcb_snmpv3_TrpInfSel.setBounds(new Rectangle(150,55,150,20));  
-//		jcb_snmpv3_TrpInfSel.addItem("Trap");
-//	  	jcb_snmpv3_TrpInfSel.addItem("Inform");
-//	  	//jcb_snmpv3_TrpInfSel.setMaximumRowCount(2);
-//	  	jp_snmpv3_TrapsSend.add(jcb_snmpv3_TrpInfSel,null);
-//
-//	  	jcb_snmpv3_TrpInfSel.addActionListener(new ActionListener(){
-//	      public void actionPerformed(ActionEvent e) {	        
-//	        if ((jcb_snmpv3_TrpInfSel.getSelectedItem())==errorGeneral47){
-//	        	jb_SndTrapv3.setText(errorGeneral49);
-//	        	jb_SndTrapv3.setToolTipText(errorGeneral51);
-//	        	jl_snmpv3_OtroTrp.setText(errorGeneral50);
-//	        	
-//	  			jcb_snmpv3_TrapSel.setSelectedItem(errorGeneral46);
-//	  			jl_snmpv3_TrapSndTipo.setEnabled(false);
-//	  			jcb_snmpv3_TrapSel.setEnabled(false);
-//	        	
-//	        } 
-//	        if ((jcb_snmpv3_TrpInfSel.getSelectedItem())==errorGeneral45){
-//	        	jb_SndTrapv3.setText(errorGeneral52);
-//	        	jb_SndTrapv3.setToolTipText(errorGeneral54);
-//	        	jl_snmpv3_OtroTrp.setText(errorGeneral53);
-//	        	
-//	        	jcb_snmpv3_TrapSel.setSelectedItem("coldStart");
-//	        	jl_snmpv3_TrapSndTipo.setEnabled(true);
-//	        	jcb_snmpv3_TrapSel.setEnabled(true);
-//	        	
-//	        } 	
-//	      }
-//	    });
-//
-//		jl_snmpv3_OtroTrp = new JLabel("Trap OID");
-//	    jl_snmpv3_OtroTrp.setBounds(new Rectangle(10,130,150,20));
-//	    jl_snmpv3_OtroTrp.setEnabled(false);  	           
-//	    jp_snmpv3_TrapsSend.add(jl_snmpv3_OtroTrp,null);
-//
-//	    jtf_snmpv3_OtroTrp = new JTextField();
-//	    jtf_snmpv3_OtroTrp.setBounds(new Rectangle(150,130,150,20));	//  150
-//	    //jtf_snmpv3_OtroTrp.setText("1.3.6.1.4.1.2854");
-//	    jtf_snmpv3_OtroTrp.setEditable(false);		    
-//	    jp_snmpv3_TrapsSend.add(jtf_snmpv3_OtroTrp,null);	 
-//
-//		jl_snmpv3_Descr = new JLabel("Descripcin");
-//	    jl_snmpv3_Descr.setBounds(new Rectangle(10,155,150,20));
-//	    jl_snmpv3_Descr.setEnabled(false);  	           
-//	    jp_snmpv3_TrapsSend.add(jl_snmpv3_Descr,null);
-//
-//	    jtf_snmpv3_Descr = new JTextField();
-//	    jtf_snmpv3_Descr.setBounds(new Rectangle(150,155,150,20));	 
-//	    //jtf_snmpv3_Descr.setText("1.3.6.1.4.1.2854");
-//	    jtf_snmpv3_Descr.setEditable(false);		    
-//	    jp_snmpv3_TrapsSend.add(jtf_snmpv3_Descr,null);	 
-//
-//		jl_snmpv3_TpDto = new JLabel("Tipo de Dato");
-//	    jl_snmpv3_TpDto.setBounds(new Rectangle(10,180,150,20));
-//	    jl_snmpv3_TpDto.setEnabled(false);  	           
-//	    jp_snmpv3_TrapsSend.add(jl_snmpv3_TpDto,null);
-//
-//	    jcb_snmpv3_TpoDtoTrp = new JComboBox();//USO DEL JCOMBOBOX		 
-//	  	jcb_snmpv3_TpoDtoTrp.setBounds(new Rectangle(150,180,150,20));  
-//		jcb_snmpv3_TpoDtoTrp.addItem("-------------------------------");
-//	  	jcb_snmpv3_TpoDtoTrp.addItem("OCTET STRING");	  	
-//	  	jcb_snmpv3_TpoDtoTrp.addItem("INTEGER");
-//	  	jcb_snmpv3_TpoDtoTrp.addItem("OBJECT IDENTIFIER");	  	
-//	  	jcb_snmpv3_TpoDtoTrp.addItem("IpAddress");
-//	  	//jcb_snmpv3_TpoDtoTrp.addItem("Counter");
-//	  	//jcb_snmpv3_TpoDtoTrp.addItem("Gauge");
-//	  	jcb_snmpv3_TpoDtoTrp.addItem("TimeTicks");
-//	  	//jcb_snmpv3_TpoDtoTrp.addItem("Opaque");
-//	  	//jcb_snmpv3_TpoDtoTrp.addItem("Counter64");
-//	  	//jcb_snmpv3_TpoDtoTrp.setMaximumRowCount(2);
-//	  	jcb_snmpv3_TpoDtoTrp.setEnabled(false);
-//	  	jp_snmpv3_TrapsSend.add(jcb_snmpv3_TpoDtoTrp,null);
-//
-//    	jl_snmpv3_trpModSeg = new JLabel("Seguridad");
-//	    jl_snmpv3_trpModSeg.setBounds(new Rectangle(10,205,150,20));
-//	    //jl_snmpv3_trpModSeg.setEnabled(false); 
-//	    jp_snmpv3_TrapsSend.add(jl_snmpv3_trpModSeg,null);
-//
-//	    jcb_snmpv3_trpModSeg = new JComboBox();//USO DEL JCOMBOBOX
-//	  	jcb_snmpv3_trpModSeg.setBounds(new Rectangle(150,205,150,20));  
-//		jcb_snmpv3_trpModSeg.addItem("AUTH_NOPRIV");
-//		jcb_snmpv3_trpModSeg.addItem("AUTH_PRIV");
-//		jcb_snmpv3_trpModSeg.addItem("NOAUTH_NOPRIV");
-//		//jcb_snmpv3_trpModSeg.addItem("NOAUTH_PRIV");	  	
-//	  	//jcb_snmpv3_trpModSeg.setSelectedIndex(1);
-//	  	jcb_snmpv3_trpModSeg.setEnabled(true);	  	 
-//	  	jp_snmpv3_TrapsSend.add(jcb_snmpv3_trpModSeg,null);
-//
-////	    jb_SndTrapv3 = new JButton("Enviar TRAP");
-////	    jb_SndTrapv3.setBounds(new Rectangle(310,205,165,20));    
-////	    jb_SndTrapv3.setToolTipText("Presione para enviar el TRAP.");
-////	    jp_snmpv3_TrapsSend.add(jb_SndTrapv3,null);
-//	    
-//    	jb_SndTrapv3.addActionListener(new ActionListener(){ 
-//        	public void actionPerformed(ActionEvent e) {  
-//	          	String men_err = "";
-//	          	boolean men_err_l = false;
-// 
-//          		if (esVacio(jtf_snmpv3_TrapSndHostIP.getText())){          			
-//          		  men_err = men_err.concat(errorGeneral36);	 	
-//          	  	  men_err_l =true;
-//          	  	}
-//          	  	
-//          	  	if (!(ipValida(jtf_snmpv3_TrapSndHostIP.getText()))){
-//          	  	  men_err = men_err.concat(configParamError02);	 	
-//          	  	  men_err_l =true;
-//          	  	}
-//          	  	
-//          		if (!(esNumero(jtf_snmpv3_PtoComTxt.getText()))){          			
-//          		  men_err = men_err.concat(configParamError03);	 	
-//          	  	  men_err_l =true;
-//          	  	}
-//
-//          	  	if (esVacio(jpf_snmpv3_TrpUsr.getText())){          			
-//          		  men_err = men_err.concat(errorGeneral55);	 	
-//          	  	  men_err_l =true;
-//          	  	}
-//          	  	          	  	
-//          	  	//jpf_snmpv3_TrpAut
-//          	  	if ((esVacio(jpf_snmpv3_TrpAut.getText()))||((String.valueOf(jpf_snmpv3_TrpAut.getText())).length()<8)){          			
-//          		  men_err = men_err.concat(errorGeneral56);	 	
-//          	  	  men_err_l =true;
-//          	  	}
-//          	  	
-//          	  	//jpf_snmpv3_TrpPriv
-//          	  	if ((esVacio(jpf_snmpv3_TrpPriv.getText()))||((String.valueOf(jpf_snmpv3_TrpPriv.getText())).length()<8)){          			
-//          		  men_err = men_err.concat(errorGeneral57);	 	
-//          	  	  men_err_l =true;
-//          	  	}
-//          	  	
-//          		if (!(esNumero(jtf_snmpv3_IntTxt.getText()))){          			
-//          		  men_err = men_err.concat(configParamError06);	 	
-//          	  	  men_err_l =true;
-//          	  	}
-//
-//          		if (!(esNumero(jtf_snmpv3_TmoutTxt.getText()))){          			
-//          		  men_err = men_err.concat(configParamError08);	 	
-//          	  	  men_err_l =true;
-//          	  	}
-//          	  	
-//          	  	if ((jcb_snmpv3_TrapSel.getSelectedItem())==errorGeneral46){
-//          	  		//jtf_snmpv3_EntTxt
-//          	  		if (esVacio(jtf_snmpv3_EntTxt.getText())){          			
-//          		  	  men_err = men_err.concat(errorGeneral33);	 	
-//          	  	  	  men_err_l =true;
-//          	  		}
-//          	  		if (!(esOID(jtf_snmpv3_EntTxt.getText()))){          			
-//	          		  men_err = men_err.concat(errorGeneral34);	 	
-//	          	  	  men_err_l =true;
-//	          	  	}	
-//          	  		if ((jcb_snmpv3_TrpInfSel.getSelectedItem())==errorGeneral47){
-//          	  			//jtf_snmpv3_OtroTrp
-//	          	  		if (esVacio(jtf_snmpv3_OtroTrp.getText())){          			
-//	          		  	  men_err = men_err.concat(errorGeneral38);	 	
-//	          	  	  	  men_err_l =true;
-//	          	  		}
-//	          	  		if (!(esOID(jtf_snmpv3_OtroTrp.getText()))){          			
-//		          		  men_err = men_err.concat(errorGeneral39);	 	
-//		          	  	  men_err_l =true;
-//		          	  	}
-//          	  		}else{
-//	          	  		//jtf_snmpv3_OtroTrp
-//	          	  		if (esVacio(jtf_snmpv3_OtroTrp.getText())){          			
-//	          		  	  men_err = men_err.concat(errorGeneral40);	 	
-//	          	  	  	  men_err_l =true;
-//	          	  		}
-//	          	  		if (!(esOID(jtf_snmpv3_OtroTrp.getText()))){          			
-//		          		  men_err = men_err.concat(errorGeneral41);	 	
-//		          	  	  men_err_l =true;
-//		          	  	}
-//          	  		}
-//          	  		//jtf_snmpv3_Descr
-//          	  		if (esVacio(jtf_snmpv3_Descr.getText())){          			
-//          		  	  men_err = men_err.concat(errorGeneral42);	 	
-//          	  	  	  men_err_l =true;
-//          	  		}
-//          	  	}
-//          	  	          	  	
-//          		if ((esNumero(jtf_snmpv3_IntTxt.getText()))&&(Integer.parseInt(jtf_snmpv3_IntTxt.getText())<=0)){          			
-//          		  men_err = men_err.concat(configParamError07);	 	
-//          	  	  men_err_l =true;
-//          	  	}
-//
-//          		if ((esNumero(jtf_snmpv3_TmoutTxt.getText()))&&(Integer.parseInt(jtf_snmpv3_TmoutTxt.getText())<=0)){          			
-//          		  men_err = men_err.concat(configParamError09);	 	
-//          	  	  men_err_l =true;
-//          	  	}
-//
-//
-//          		if (men_err_l){          			
-//					JOptionPane.showMessageDialog(AppGo.this,men_err,nameOfTheProgram,JOptionPane.ERROR_MESSAGE,(new ImageIcon("images/no.gif")));  	          	  	          	  
-//			    	if (esVacio(jtf_snmpv3_TrapSndHostIP.getText())){jtf_snmpv3_TrapSndHostIP.setText("");}
-//			    	if (!(esNumero(jtf_snmpv3_PtoComTxt.getText()))){jtf_snmpv3_PtoComTxt.setText("162");  }
-//			    	//new
-//			    	if (esVacio(jpf_snmpv3_TrpUsr.getText())){jpf_snmpv3_TrpUsr.setText("snmpuser");}
-//			    	if ((esVacio(jpf_snmpv3_TrpAut.getText()))||((String.valueOf(jpf_snmpv3_TrpAut.getText())).length()<8)){jpf_snmpv3_TrpAut.setText("snmppassword");}
-//			    	if ((esVacio(jpf_snmpv3_TrpPriv.getText()))||((String.valueOf(jpf_snmpv3_TrpPriv.getText())).length()<8)){jpf_snmpv3_TrpPriv.setText("snmppassword");}
-//			    	//fin del new
-//			    	if (!(esNumero(jtf_snmpv3_IntTxt.getText()))){jtf_snmpv3_IntTxt.setText("3");}  
-//			    	if ((esNumero(jtf_snmpv3_IntTxt.getText()))&&(Integer.parseInt(jtf_snmpv3_IntTxt.getText())<=0)){jtf_snmpv3_IntTxt.setText("3");}
-//					if (!(esNumero(jtf_snmpv3_TmoutTxt.getText()))){jtf_snmpv3_TmoutTxt.setText("1500");}
-//			    	if ((esNumero(jtf_snmpv3_TmoutTxt.getText()))&&(Integer.parseInt(jtf_snmpv3_TmoutTxt.getText())<=0)){jtf_snmpv3_TmoutTxt.setText("1500");}			
-//			    	if ((jcb_snmpv3_TrapSel.getSelectedItem())==errorGeneral46){
-//			    		if (esVacio(jtf_snmpv3_EntTxt.getText())){jtf_snmpv3_EntTxt.setText("1.3.6.1.4.1.2789.2005");}
-//          	  			if (!(esOID(jtf_snmpv3_EntTxt.getText()))){jtf_snmpv3_EntTxt.setText("1.3.6.1.4.1.2789.2005");}	
-//	          	  		if (esVacio(jtf_snmpv3_OtroTrp.getText())){jtf_snmpv3_OtroTrp.setText("1.3.6.1.4.1.2789.2005.1");}
-//	          	    	if (!(esOID(jtf_snmpv3_OtroTrp.getText()))){jtf_snmpv3_OtroTrp.setText("1.3.6.1.4.1.2789.2005.1");}
-//          	  			if (esVacio(jtf_snmpv3_Descr.getText())){jtf_snmpv3_Descr.setText("WWW Server Has Been Restarted");}
-//			        }
-//				}else{
-//					//Para encontrar y validar el tipo de dato de la descripcion cuando sea "Otro" trap
-//					boolean snmpv3_tipoDatoTrapSeleccionado = true;
-//					String snmpv3_tipoDatoTrapValor = "";
-//					if ((jcb_snmpv3_TrapSel.getSelectedItem())==errorGeneral46){
-//						if(!((jcb_snmpv3_TpoDtoTrp.getSelectedItem().toString()).equals("-------------------------------"))){
-//						  Variable valorTemp;
-//					      String snmpv3_tipoDatoTrapValorTemp=jcb_snmpv3_TpoDtoTrp.getSelectedItem().toString();
-//					      try{
-//					        if(snmpv3_tipoDatoTrapValorTemp.equals("OCTET STRING")){valorTemp = new OctetString(String.valueOf(jtf_snmpv3_Descr.getText()));}
-//					        if(snmpv3_tipoDatoTrapValorTemp.equals("INTEGER")){valorTemp = new Integer32(Integer.parseInt(String.valueOf(jtf_snmpv3_Descr.getText())));}
-//							if(snmpv3_tipoDatoTrapValorTemp.equals("OBJECT IDENTIFIER")){valorTemp = new OID(String.valueOf(jtf_snmpv3_Descr.getText()));}				        
-//					        if(snmpv3_tipoDatoTrapValorTemp.equals("IpAddress")){valorTemp = new IpAddress(String.valueOf(jtf_snmpv3_Descr.getText()));}
-//					        if(snmpv3_tipoDatoTrapValorTemp.equals("TimeTicks")){valorTemp = new TimeTicks(Long.parseLong(String.valueOf(jtf_snmpv3_Descr.getText())));}
-//					      }catch(Exception e4){
-//					      	snmpv3_tipoDatoTrapSeleccionado=false;
-//					        JOptionPane.showMessageDialog(AppGo.this,errorGeneral43,nameOfTheProgram,JOptionPane.ERROR_MESSAGE,(new ImageIcon("images/no.gif")));				
-//					      }
-//			          	}else{
-//			          	   snmpv3_tipoDatoTrapSeleccionado = false;
-//			          	   JOptionPane.showMessageDialog(AppGo.this,errorGeneral44,nameOfTheProgram,JOptionPane.ERROR_MESSAGE,(new ImageIcon("images/no.gif")));			
-//			          	   jcb_snmpv3_TpoDtoTrp.setSelectedIndex(1);
-//			          	}
-//					}
-//					//Una vez validado el tipo de dato de "Otro" trap, ahora se arma el trap ha ser enviado
-//					if (snmpv3_tipoDatoTrapSeleccionado){
-//					  //System.out.println("se envio el trap.");
-//					  String tipoTrapsnd = "";
-//					  String tipoTrapsndSpc = "";
-//					  if ((jcb_snmpv3_TrapSel.getSelectedItem())=="coldStart"){tipoTrapsnd=String.valueOf(SnmpConstants.coldStart);}
-//					  if ((jcb_snmpv3_TrapSel.getSelectedItem())=="warmStart"){tipoTrapsnd=String.valueOf(SnmpConstants.warmStart);}
-//					  if ((jcb_snmpv3_TrapSel.getSelectedItem())=="linkDown"){tipoTrapsnd=String.valueOf(SnmpConstants.linkDown);}
-//					  if ((jcb_snmpv3_TrapSel.getSelectedItem())=="linkUp"){tipoTrapsnd=String.valueOf(SnmpConstants.linkUp);}
-//					  if ((jcb_snmpv3_TrapSel.getSelectedItem())=="authenticationFailure"){tipoTrapsnd=String.valueOf(SnmpConstants.authenticationFailure);}
-//					  if ((jcb_snmpv3_TrapSel.getSelectedItem())==errorGeneral46){
-//						tipoTrapsnd=jtf_snmpv3_EntTxt.getText();
-//						tipoTrapsndSpc=jtf_snmpv3_OtroTrp.getText();
-//						tipoTrapsndSpc=tipoTrapsndSpc.concat("=");
-//						String snmpv3_tipoDatoTrapValorTemp=jcb_snmpv3_TpoDtoTrp.getSelectedItem().toString();
-//						if(snmpv3_tipoDatoTrapValorTemp.equals("OCTET STRING")){tipoTrapsndSpc=tipoTrapsndSpc.concat("{s}");}
-//					    if(snmpv3_tipoDatoTrapValorTemp.equals("INTEGER")){tipoTrapsndSpc=tipoTrapsndSpc.concat("{i}");}
-//						if(snmpv3_tipoDatoTrapValorTemp.equals("OBJECT IDENTIFIER")){tipoTrapsndSpc=tipoTrapsndSpc.concat("{o}");}				        
-//					    if(snmpv3_tipoDatoTrapValorTemp.equals("IpAddress")){tipoTrapsndSpc=tipoTrapsndSpc.concat("{a}");}
-//					    if(snmpv3_tipoDatoTrapValorTemp.equals("TimeTicks")){tipoTrapsndSpc=tipoTrapsndSpc.concat("{t}");}
-//						tipoTrapsndSpc=tipoTrapsndSpc.concat(jtf_snmpv3_Descr.getText());
-//					  }
-//					  
-//					  //aqui va el nivel de seguridad
-//					  int nivelSeguridad=0;
-//	         	  	  if ((jcb_snmpv3_trpModSeg.getSelectedItem())=="AUTH_NOPRIV"){nivelSeguridad=SecurityLevel.AUTH_NOPRIV;}
-//	         	  	  if ((jcb_snmpv3_trpModSeg.getSelectedItem())=="AUTH_PRIV"){nivelSeguridad=SecurityLevel.AUTH_PRIV;}
-//	         	  	  if ((jcb_snmpv3_trpModSeg.getSelectedItem())=="NOAUTH_NOPRIV"){nivelSeguridad=SecurityLevel.NOAUTH_NOPRIV;}
-//					  
-//					  enviarTrapInform sndtrap = new enviarTrapInform();
-//					  traps.cambiarIdiomaAMensajes(mensajesDeTraps01,mensajesDeTraps02,mensajesDeTraps03,mensajesDeTraps04,mensajesDeTraps05,mensajesDeTraps06,mensajesDeTraps07,mensajesDeTraps08,mensajesDeTraps09,mensajesDeTraps10,mensajesDeTraps11,mensajesDeTraps12,mensajesDeTraps13,mensajesDeTraps14,mensajesDeTraps15,mensajesDeTraps16,mensajesDeTraps17,mensajesDeTraps18);
-//	          	  	  if ((jcb_snmpv3_TrpInfSel.getSelectedItem())==errorGeneral47){
-//	          	  	    /*
-//	          	  	    System.out.println(sndtrap.informv3(jtf_snmpv3_TrapSndHostIP.getText(), jtf_snmpv3_PtoComTxt.getText(), jpf_snmpv3_TrpUsr.getText(), jpf_snmpv3_TrpAut.getText(), jpf_snmpv3_TrpPriv.getText(), nivelSeguridad,Integer.parseInt(jtf_snmpv3_IntTxt.getText()), Integer.parseInt(jtf_snmpv3_TmoutTxt.getText()), tipoTrapsndSpc,tipoTrapsnd));
-//	          	  	    System.out.println(jtf_snmpv3_TrapSndHostIP.getText());
-//	          	  	    System.out.println(jtf_snmpv3_PtoComTxt.getText());
-//	          	  	    System.out.println(jpf_snmpv3_TrpUsr.getText());
-//	          	  	    System.out.println(jpf_snmpv3_TrpAut.getText());
-//	          	  	    System.out.println(jpf_snmpv3_TrpPriv.getText());
-//	          	  	    System.out.println(nivelSeguridad);
-//	          	  	    System.out.println(Integer.parseInt(jtf_snmpv3_IntTxt.getText()));
-//	          	  	    System.out.println(Integer.parseInt(jtf_snmpv3_TmoutTxt.getText()));
-//	          	  	    System.out.println(tipoTrapsndSpc);
-//	          	  	    System.out.println(tipoTrapsnd);
-//	          	  	    */
-//	          	  	    sndtrap.informv3(jtf_snmpv3_TrapSndHostIP.getText(), jtf_snmpv3_PtoComTxt.getText(), jpf_snmpv3_TrpUsr.getText(), jpf_snmpv3_TrpAut.getText(), jpf_snmpv3_TrpPriv.getText(), nivelSeguridad,Integer.parseInt(jtf_snmpv3_IntTxt.getText()), Integer.parseInt(jtf_snmpv3_TmoutTxt.getText()), tipoTrapsndSpc,tipoTrapsnd);
-//	          	  	    JOptionPane.showMessageDialog(AppGo.this, errorGeneral48 ,nameOfTheProgram,JOptionPane.INFORMATION_MESSAGE,(new ImageIcon("images/help.gif")));	 	          	  	          	  	
-//	          	  	  }else{
-//	          	  	    sndtrap.trapv3(jtf_snmpv3_TrapSndHostIP.getText(), jtf_snmpv3_PtoComTxt.getText(), jpf_snmpv3_TrpUsr.getText(),jpf_snmpv3_TrpAut.getText(), jpf_snmpv3_TrpPriv.getText(), nivelSeguridad,Integer.parseInt(jtf_snmpv3_IntTxt.getText()), Integer.parseInt(jtf_snmpv3_TmoutTxt.getText()), tipoTrapsndSpc,tipoTrapsnd);
-//	          	  	    JOptionPane.showMessageDialog(AppGo.this, errorGeneral35 ,nameOfTheProgram,JOptionPane.INFORMATION_MESSAGE,(new ImageIcon("images/help.gif")));	 	          	  	          	  	
-//	          	  	  }
-//	          	  	  
-//					  //System.out.println("Trap enviado.");
-//					}
-//				}
-//         	}
-//       	});      
-		//----------------------------------End de Pantalla de Traps-------------------------------
-
-
-
-
-
-
-
-
-
-
   	//----------------------------End del Manager SNMPv3--------------------------------------
   	
-        
-        
-          	  //System.out.println("Cambiando idioma a ingles");
-  	  //Para la interfaz general
-  	  //jm_archive.setText("File");//aade el menu
-  	  //jmi_outbound.setText("Exit");//crea un jmenuitem
-  	  //jm_help.setText("Help");
-  	  //jmi_helpHelp.setText("User's Guide");
-  	  //jmi_about.setText("About");
-  	  //jb_mibtree.setText("Import MIBs");
+ 
   	  jb_mibtree.setToolTipText("Press to import MIBs.");
-//  	  aboutDeTitulo = nameOfTheProgram+" - About";
-//  	  String encabezadoAcercaDe = "Super Neat Master Puppeteer\n"+
-//								  "de Venezuela) as the final project to obtain the Bachelor\n"+
-//								  "of Science (Licenciatura) in Computer Science, by:\n";
-//  	  							  /*
-//  	  							  "This Software is a Thesis presented to the illustrious\n"+
-//      	  						  "Universidad Central de Venezuela by:\n";
-//      	  						  */
-//	  String ac3 = 				  "\nPablo Poskal\npabloposkal@gmail.com\n";
-//      String ac2 = 				  "\nGustavo Ayala\ngustavoucv@yahoo.com.mx\n";
-//      String tutoriado = 	      /*"\nTo obtain the Licentiate degree on Computer Science.\n"+*/
-//	  							  "\nAdvisor: "+
-//	  							  "\n\nProf. Eric Gamess\negamess@kuaimare.ciens.ucv.ve\n\n";
-//      String ac4 = 				  "This software uses SNMP4J and Mibble libraries.\n"+
-//    			   				  "See http://www.snmp4j.org and http://www.mibble.org \n"+  	  	
-//    			   				  "for information.\n";
-//      String ac = (encabezadoAcercaDe+ac2+ac3+tutoriado+ac4);
-//      aboutDe = ac;
+
 
       String etiquetaIdioma="";
       for (int yy=0;yy<165; yy++){
 		  etiquetaIdioma=etiquetaIdioma.concat(" ");
 		}
 		etiquetaIdioma=etiquetaIdioma.concat(" Idioma / Language   ");
-//      jl_idioma.setText("           ".concat(etiquetaIdioma));
-      //FOR THE COMBO BOX DE ACCION A REALIZAR
-        //COMANDOS ADMITIDOS
+
+            //FOR THE COMBO BOX OF ACTION TO BE CARRIED OUT
+            // COMMANDS ADMITTED
   	    ConfigureParameters = "Connection Options";
-  	    ComandoGet = "Get Command";
-  	    ComandoGetNext = "GetNext Command";
-  	    ComandoGetBulk = "GetBulk Command";
-  	    ComandoGetTable = "GetTable";
-  	    ComandoWalk = "Walk";
-  	    ComandoSet = "Set Command";
-  	    EnviarVerTraps = "Send/Receive Traps";
-  	    //COMANDOS EN SNMPv1
-//  	    jl_snmpv1_sel.setText("Action Selected");
-//  	    jcb_snmpv1_sel.removeAllItems();
-//  	    jcb_snmpv1_sel.addItem(ConfigureParameters);
-//	  	jcb_snmpv1_sel.addItem(ComandoGet);
-//	  	jcb_snmpv1_sel.addItem(ComandoGetNext);
-//	  	jcb_snmpv1_sel.addItem(ComandoGetTable);
-//	  	jcb_snmpv1_sel.addItem(ComandoWalk);
-//	  	jcb_snmpv1_sel.addItem(ComandoSet);
-//	  	jcb_snmpv1_sel.addItem(EnviarVerTraps);
-//  	    //COMANDOS EN SNMPv2C
-//  	    jl_snmpv2c_sel.setText("Action Selected");
-//	  	jcb_snmpv2c_sel.removeAllItems();
-//		jcb_snmpv2c_sel.addItem(ConfigureParameters);
-//	  	jcb_snmpv2c_sel.addItem(ComandoGet);
-//	  	jcb_snmpv2c_sel.addItem(ComandoGetNext);
-//	  	jcb_snmpv2c_sel.addItem(ComandoGetBulk);
-//	  	jcb_snmpv2c_sel.addItem(ComandoGetTable);
-//	  	jcb_snmpv2c_sel.addItem(ComandoWalk);
-//	  	jcb_snmpv2c_sel.addItem(ComandoSet);
-//	  	jcb_snmpv2c_sel.addItem(EnviarVerTraps);
-  	    //COMANDOS EN SNMPv3
+  	    CommandGet = "Get Command";
+  	    CommandGetNext = "GetNext Command";
+  	    CommandGetBulk = "GetBulk Command";
+  	    CommandGetTable = "GetTable";
+  	    CommandWalk = "Walk";
+  	    CommandSet = "Set Command";
+
+  	    //COMMANDS IN SNMPv3
   	    jl_snmpv3_sel.setText("Action Selected");
   	    jcb_snmpv3_sel.removeAllItems();
   	    jcb_snmpv3_sel.addItem(ConfigureParameters);
-  		jcb_snmpv3_sel.addItem(ComandoGet);
-  		jcb_snmpv3_sel.addItem(ComandoGetNext);
-  		jcb_snmpv3_sel.addItem(ComandoGetBulk);
-  		jcb_snmpv3_sel.addItem(ComandoGetTable);
-  		jcb_snmpv3_sel.addItem(ComandoWalk);
-  		jcb_snmpv3_sel.addItem(ComandoSet);
-  		jcb_snmpv3_sel.addItem(EnviarVerTraps);
+  		jcb_snmpv3_sel.addItem(CommandGet);
+  		jcb_snmpv3_sel.addItem(CommandGetNext);
+  		jcb_snmpv3_sel.addItem(CommandGetBulk);
+  		jcb_snmpv3_sel.addItem(CommandGetTable);
+  		jcb_snmpv3_sel.addItem(CommandWalk);
+  		jcb_snmpv3_sel.addItem(CommandSet);
   		
-      //Para SNMPv1-------------------------------------------------------------------------------------------------------
-  		
-  		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  	    //--PARAMETER SCREEN
-//  	    jp_snmpv1_Con.setBorder(BorderFactory.createTitledBorder("Connection Options"));
-//  	    jl_snmpv1_IP.setText("Agent IP Address");
-//  	    jl_snmpv1_pto.setText("Port Number");
-//  	    jl_snmpv1_comLec.setText("Read Community");
-//  	    jtf_snmpv1_comEsc.setText("Write Community");
-//  	    jl_snmpv1_VerCom.setText("Show Communities");
-//  	    jl_snmpv1_inten.setText("Retries");
-//  	    jl_snmpv1_timeOut.setText("TimeOut (ms)");
-//  	    jb_snmpv1_aplicarPara.setText("Apply Changes");
-//  	    jb_snmpv1_aplicarPara.setToolTipText("Press to set the new values.");
 
-  	    optionYES = "Yes";
-  		optionNO = "No";  
-//  	    jcb_snmpv1_VerCom.removeAllItems();
-//  	    jcb_snmpv1_VerCom.addItem(optionYES);
-//  	    jcb_snmpv1_VerCom.addItem(optionNO);
-//  	    jcb_snmpv1_VerCom.setSelectedIndex(1);	  	 
-//  	    //--PANTALLA DE PARAMETROS--PANTALLA DE PARAMETROS--PANTALLA DE PARAMETROS--PANTALLA DE PARAMETROS----------------
-//  	    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  		
-//  		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  	    //--PANTALLA DEL GET--PANTALLA DEL GET--PANTALLA DEL GET--PANTALLA DEL GET--PANTALLA DEL GET--PANTALLA DEL GET----
-//  	    jp_snmpv1_Get.setBorder(BorderFactory.createTitledBorder("Get Command"));
-//  	    jl_snmpv1_getEtiGet.setText("OID");
-//  	    jb_snmpv1_add.setText("Add");
-//  	    jb_snmpv1_add.setToolTipText("Press to add the OID.");
-//  	    jl_snmpv1_getObjs.setText("Objects");
-//  	    jb_snmpv1_undo.setText("Undo");
-//  	    jb_snmpv1_undo.setToolTipText("Press to erase the last OID added.");
-//  	    jb_snmpv1_getGet.setText("Get");
-//  	    jb_snmpv1_getGet.setToolTipText("Press to get the value(s).");
-//  	    errorGeneral01 = "Must select or write an OID.";
-//  	    errorGeneral02 = "Must select or write a valid OID.";
-//  	    errorGeneral03 = "There is no more objects to erase.";
-//  	    errorGeneral04 = "\n Request timed out.\n";
-//  	    //--PANTALLA DEL GET--PANTALLA DEL GET--PANTALLA DEL GET--PANTALLA DEL GET--PANTALLA DEL GET--PANTALLA DEL GET----
-//  	    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  		
-//  		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  	    //--PANTALLA DEL GETNEXT--PANTALLA DEL GETNEXT--PANTALLA DEL GETNEXT--PANTALLA DEL GETNEXT--PANTALLA DEL GETNEXT--
-//  	    jp_snmpv1_GetNext.setBorder(BorderFactory.createTitledBorder("GetNext Command"));
-//  	    jl_snmpv1_GetNextEtiGetNext.setText("OID");
-//  	    jb_snmpv1_GetNext_add.setText("Add");
-//  	    jb_snmpv1_GetNext_add.setToolTipText("Press to add the OID.");
-//  	    jl_snmpv1_getNextObjs.setText("Objects");
-//  	    jb_snmpv1_GetNextUndo.setText("Undo");
-//  	    jb_snmpv1_GetNextUndo.setToolTipText("Press to erase the last OID added.");
-//  	    jb_snmpv1_GetNextGetNext.setText("GetNext");
-//  	    jb_snmpv1_GetNextGetNext.setToolTipText("Press to get the next value(s).");
-//  	    //--PANTALLA DEL GETNEXT--PANTALLA DEL GETNEXT--PANTALLA DEL GETNEXT--PANTALLA DEL GETNEXT--PANTALLA DEL GETNEXT--
-//  	    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  		
-//  		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  	    //--PANTALLA DEL GETTABLE--PANTALLA DEL GETTABLE--PANTALLA DEL GETTABLE--PANTALLA DEL GETTABLE--PANTALLA DEL GETTABLE
-//  	    jp_snmpv1_getTable.setBorder(BorderFactory.createTitledBorder("GetTable"));
-//  	    jl_snmpv1_getTableEtigetTable.setText("OID");
-//  	    jb_snmpv1_getTablegetTable.setText("GetTable");
-//  	    jb_snmpv1_getTablegetTable.setToolTipText("Press to get the table.");
 
-//  	    //--PANTALLA DEL GETTABLE--PANTALLA DEL GETTABLE--PANTALLA DEL GETTABLE--PANTALLA DEL GETTABLE--PANTALLA DEL GETTABLE
-//  	    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  	    //--PANTALLA DEL WALK--PANTALLA DEL WALK--PANTALLA DEL WALK--PANTALLA DEL WALK--PANTALLA DEL WALK--PANTALLA DEL WALK
-//  	    jp_snmpv1_walk.setBorder(BorderFactory.createTitledBorder("Walk"));
-//  	    jl_snmpv1_WalkEtiLimitePregunta.setText("Limit the quantity of variables retrieved");
-//  	    jcb_snmpv1_WalkEtiLimitePregunta.removeAllItems();
-//  	    jcb_snmpv1_WalkEtiLimitePregunta.addItem(optionYES);
-//  	    jcb_snmpv1_WalkEtiLimitePregunta.addItem(optionNO);
-//  	    jcb_snmpv1_WalkEtiLimitePregunta.setSelectedIndex(1);
-//	  	jl_snmpv1_WalkEtiLimite.setText("Quantity");
-//	  	errorGeneral21 = "No Limit";
-//	  	jtf_snmpv1_WalkEtiLimite.setText(errorGeneral21);
-//	  	jl_snmpv1_WalkEti.setText("OID");
-//	  	jb_snmpv1_Walk.setText("Walk");
-//	  	jb_snmpv1_Walk.setToolTipText("Press to start the MIB Walk.");
-//	  	errorGeneral14 = "Must enter the quantity of variables retrieved.";
-//	  	errorGeneral15 = "Must enter the quantity of variables retrieved. It has to be a numeric value.";
-//	  	errorGeneral16 = "\nRunning Walk, wait a moment...\n\n";
-//	  	errorGeneral17 = "Total requests sent:    ";
-//	  	errorGeneral18 = "Total objects received: ";
-//	  	errorGeneral19 = "Total walk time:        ";
-//	  	errorGeneral20 = " milliseconds";
-//  	    //--PANTALLA DEL WALK--PANTALLA DEL WALK--PANTALLA DEL WALK--PANTALLA DEL WALK--PANTALLA DEL WALK--PANTALLA DEL WALK
-//  	    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  	    
-//		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  	    //--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET
-//  	    jp_snmpv1_Set.setBorder(BorderFactory.createTitledBorder("Set Command"));
-//  	    jl_snmpv1_SetEtiSet.setText("OID");
-//  	    jl_snmpv1_SetEtiTipo.setText("Data Type");
-//  	    jl_snmpv1_SetEtiSetValor.setText("Value");
-//  	    jb_snmpv1_setAdd.setText("Add");
-//  	    jb_snmpv1_setAdd.setToolTipText("Press to add the OID.");
-//  	    jl_snmpv1_setObjs.setText("Objects");
-//  	    jb_snmpv1_setUndo.setText("Undo");
-//  	    jb_snmpv1_setUndo.setToolTipText("Press to erase the last OID added.");
-//  	    jb_snmpv1_SetSet.setText("Set");
-//  	    jb_snmpv1_SetSet.setToolTipText("Press to set the new value(s).");
-
-//  	    //--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET
-//  	    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 	      	    
-//  		  		
-//  	    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////	  		
-//  	    //--PANTALLA DE LOS TRAPS--PANTALLA DE LOS TRAPS--PANTALLA DE LOS TRAPS--PANTALLA DE LOS TRAPS--PANTALLA DE LOS TRAPS
-//  	    jp_snmpv1_Traps.setBorder(BorderFactory.createTitledBorder("Receive TRAPs (SNMP v1/2c/3) and INFORMs (SNMP v2c/3)"));  
-//  	    jp_snmpv1_TrapsSend.setBorder(BorderFactory.createTitledBorder("Send TRAPs SNMP v1"));
-//  	    jl_snmpv1_TrapSndHost.setText("Destination IP Address");
-//  	    jl_snmpv1_TrapSndTipo.setText("Trap Type");
-//  	    jl_snmpv1_PtoCom.setText("Port");
-//  	    jl_snmpv1_Com.setText("Community");
-//  	    jl_snmpv1_Int.setText("Retries");
-//  	    jl_snmpv1_Timeout.setText("TimeOut (ms)");
-//  	    jl_snmpv1_Enter.setText("Enterprise OID");
-//  	    jl_snmpv1_TrapSpc.setText("Specific Trap");
-//  	    jb_SndTrap.setText("Send TRAP");
-//  	    jb_SndTrap.setToolTipText("Press to send the TRAP.");
-
-//  		//--PANTALLA DE LOS TRAPS--PANTALLA DE LOS TRAPS--PANTALLA DE LOS TRAPS--PANTALLA DE LOS TRAPS--PANTALLA DE LOS TRAPS
-//  		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////	  		
-//  	      		
-//  	  //End de SNMPv1-----------------------------------------------------------------------------------------------------  	
-//  	  
-//  	  //Para SNMPv2c-------------------------------------------------------------------------------------------------------
-//  		
-//  		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  	    //--PANTALLA DE PARAMETROS--PANTALLA DE PARAMETROS--PANTALLA DE PARAMETROS--PANTALLA DE PARAMETROS----------------
-//  	    jp_snmpv2c_Con.setBorder(BorderFactory.createTitledBorder("Connection Options"));
-//  	    jl_snmpv2c_IP.setText("Agent IP Address");
-//  	    jl_snmpv2c_pto.setText("Port Number");
-//  	    jl_snmpv2c_comLec.setText("Read Community");
-//  	    jl_snmpv2c_comEsc.setText("Write Community");
-//  	    jl_snmpv2c_VerCom.setText("Show Communities");
-//  	    jl_snmpv2c_inten.setText("Retries");
-//  	    jl_snmpv2c_timeOut.setText("TimeOut (ms)");
-//  	    jb_snmpv2c_aplicarPara.setText("Apply Changes");
-//  	    jb_snmpv2c_aplicarPara.setToolTipText("Press to set the new values.");
-//  	    optionYES = "Yes";
-//  		optionNO = "No";  
-//  	    jcb_snmpv2c_VerCom.removeAllItems();
-//  	    jcb_snmpv2c_VerCom.addItem(optionYES);
-//  	    jcb_snmpv2c_VerCom.addItem(optionNO);
-//  	    jcb_snmpv2c_VerCom.setSelectedIndex(1);	  	 
-//  	    //--PANTALLA DE PARAMETROS--PANTALLA DE PARAMETROS--PANTALLA DE PARAMETROS--PANTALLA DE PARAMETROS----------------
-//  	    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//		
-//		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  	    //--PANTALLA DEL GET--PANTALLA DEL GET--PANTALLA DEL GET--PANTALLA DEL GET--PANTALLA DEL GET--PANTALLA DEL GET----
-//  	    jp_snmpv2c_Get.setBorder(BorderFactory.createTitledBorder("Get Command"));
-//  	    jl_snmpv2c_getEtiGet.setText("OID");
-//  	    jb_snmpv2c_getAdd.setText("Add");
-//  	    jb_snmpv2c_getAdd.setToolTipText("Press to add the OID.");
-//  	    jl_snmpv2c_getObjs.setText("Objects");
-//  	    jb_snmpv2c_getUndo.setText("Undo");
-//  	    jb_snmpv2c_getUndo.setToolTipText("Press to erase the last OID added.");
-//  	    jb_snmpv2c_getGet.setText("Get");
-//  	    jb_snmpv2c_getGet.setToolTipText("Press to get the value(s).");
-//  	    //--PANTALLA DEL GET--PANTALLA DEL GET--PANTALLA DEL GET--PANTALLA DEL GET--PANTALLA DEL GET--PANTALLA DEL GET----
-//  	    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  	    //--PANTALLA DEL GETNEXT--PANTALLA DEL GETNEXT--PANTALLA DEL GETNEXT--PANTALLA DEL GETNEXT--PANTALLA DEL GETNEXT--
-//  	    jp_snmpv2c_GetNext.setBorder(BorderFactory.createTitledBorder("GetNext Command"));
-//  	    jl_snmpv2c_GetNextEtiGetNext.setText("OID");
-//  	    jb_snmpv2c_GetNext_add.setText("Add");
-//  	    jb_snmpv2c_GetNext_add.setToolTipText("Press to add the OID.");
-//  	    jl_snmpv2c_getNextObjs.setText("Objects");
-//  	    jb_snmpv2c_GetNextUndo.setText("Undo");
-//  	    jb_snmpv2c_GetNextUndo.setToolTipText("Press to erase the last OID added.");
-//  	    jb_snmpv2c_GetNextGetNext.setText("GetNext");
-//  	    jb_snmpv2c_GetNextGetNext.setToolTipText("Press to get the next value(s).");
-//  	    //--PANTALLA DEL GETNEXT--PANTALLA DEL GETNEXT--PANTALLA DEL GETNEXT--PANTALLA DEL GETNEXT--PANTALLA DEL GETNEXT--
-//  	    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//		
-//		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  	    //--PANTALLA DEL GETBULK--PANTALLA DEL GETBULK--PANTALLA DEL GETBULK--PANTALLA DEL GETBULK--PANTALLA DEL GETBULK--
-//  	    jp_snmpv2c_GetBulk.setBorder(BorderFactory.createTitledBorder("GetBulk Command"));
-//  	    jl_snmpv2c_nonRepe.setText("NonRepeaters");
-//  	    jl_snmpv2c_maxRep.setText("MaxRepetitions");
-//  	    jb_snmpv2c_GetBulk_add.setText("Add");
-//  	    jb_snmpv2c_GetBulk_add.setToolTipText("Press to add the OID.");
-//  	    jb_snmpv2c_GetBulkUndo.setText("Undo");
-//  	    jb_snmpv2c_GetBulkUndo.setToolTipText("Press to erase the last OID added.");
-//  	    jl_snmpv2c_getBulkObjs.setText("Objects");
-//  	    jl_snmpv2c_GetBulkEtiSet.setText("OID");
-//  	    jb_snmpv2c_GetBulkGetBulk.setText("GetBulk");
-//  	    jb_snmpv2c_GetBulkGetBulk.setToolTipText("Press to get the value(s).");
-
-//  	    //--PANTALLA DEL GETBULK--PANTALLA DEL GETBULK--PANTALLA DEL GETBULK--PANTALLA DEL GETBULK--PANTALLA DEL GETBULK--
-//  	    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  	    //--PANTALLA DEL GETTABLE--PANTALLA DEL GETTABLE--PANTALLA DEL GETTABLE--PANTALLA DEL GETTABLE--PANTALLA DEL GETTABLE
-//  	    jp_snmpv2c_getTable.setBorder(BorderFactory.createTitledBorder("GetTable"));
-//  	    jl_snmpv2c_getTableEtigetTable.setText("OID");
-//  	    jb_snmpv2c_getTablegetTable.setText("GetTable");
-//  	    jb_snmpv2c_getTablegetTable.setToolTipText("Press to get the table.");
-//  	    //--PANTALLA DEL GETTABLE--PANTALLA DEL GETTABLE--PANTALLA DEL GETTABLE--PANTALLA DEL GETTABLE--PANTALLA DEL GETTABLE
-//  	    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  	    
-//		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  	    //--PANTALLA DEL WALK--PANTALLA DEL WALK--PANTALLA DEL WALK--PANTALLA DEL WALK--PANTALLA DEL WALK--PANTALLA DEL WALK
-//	  	jp_snmpv2c_walk.setBorder(BorderFactory.createTitledBorder("Walk"));
-//  	    jl_snmpv2c_WalkEtiLimitePregunta.setText("Limit the quantity of variables retrieved");
-//  	    jcb_snmpv2c_WalkEtiLimitePregunta.removeAllItems();
-//  	    jcb_snmpv2c_WalkEtiLimitePregunta.addItem(optionYES);
-//  	    jcb_snmpv2c_WalkEtiLimitePregunta.addItem(optionNO);
-//  	    jcb_snmpv2c_WalkEtiLimitePregunta.setSelectedIndex(1);
-//	  	jl_snmpv2c_WalkEtiLimite.setText("Quantity");
-//	  	jtf_snmpv2c_WalkEtiLimite.setText(errorGeneral21);
-//	  	jl_snmpv2c_WalkEti.setText("OID");
-//	  	jb_snmpv2c_Walk.setText("Walk");
-//	  	jb_snmpv2c_Walk.setToolTipText("Press to start the MIB Walk.");
-//  	    //--PANTALLA DEL WALK--PANTALLA DEL WALK--PANTALLA DEL WALK--PANTALLA DEL WALK--PANTALLA DEL WALK--PANTALLA DEL WALK
-//  	    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  	    
-//  	    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  	    //--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET
-//  	    jp_snmpv2c_Set.setBorder(BorderFactory.createTitledBorder("Set Command"));
-//  	    jl_snmpv2c_SetEtiSet.setText("OID");
-//  	    jl_snmpv2c_SetEtiTipo.setText("Data Type");
-//  	    jl_snmpv2c_SetEtiSetValor.setText("Value");
-//  	    jb_snmpv2c_setAdd.setText("Add");
-//  	    jb_snmpv2c_setAdd.setToolTipText("Press to add the OID.");
-//  	    jl_snmpv2c_setObjs.setText("Objects");
-//  	    jb_snmpv2c_setUndo.setText("Undo");
-//  	    jb_snmpv2c_setUndo.setToolTipText("Press to erase the last OID added.");
-//  	    jb_snmpv2c_SetSet.setText("Set");
-//  	    jb_snmpv2c_SetSet.setToolTipText("Press to set the new value(s).");
-//  	    //--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET
-//  	    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 	    
-//  	    
-//		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////	  		
-//  	    //--PANTALLA DE LOS TRAPS--PANTALLA DE LOS TRAPS--PANTALLA DE LOS TRAPS--PANTALLA DE LOS TRAPS--PANTALLA DE LOS TRAPS
-//  	    jp_snmpv2c_Traps.setBorder(BorderFactory.createTitledBorder("Receive TRAPs (SNMP v1/2c/3) and INFORMs (SNMP v2c/3)"));  
-//  	    jp_snmpv2c_TrapsSend.setBorder(BorderFactory.createTitledBorder("Send TRAPs and INFORMs SNMP v2c"));
-//  	    jl_snmpv2c_TrapSndHost.setText("Destination IP Address");
-//  	    jl_snmpv2c_TrapSndTipo.setText("Trap Type");
-//  	    jl_snmpv2c_PtoCom.setText("Port");
-//  	    jl_snmpv2c_Com.setText("Community");
-//  	    jl_snmpv2c_Int.setText("Retries");
-//  	    jl_snmpv2c_Timeout.setText("TimeOut (ms)");
-//  	    jl_snmpv2c_Enter.setText("Enterprise OID");
-//  	    
-//  	    jcb_snmpv2c_TrapSel.removeItemAt(5);
-//  	    //jcb_snmpv2c_TrapSel.addItem("coldStart");
-//	  	//jcb_snmpv2c_TrapSel.addItem("warmStart");
-//	  	//jcb_snmpv2c_TrapSel.addItem("linkDown");
-//	  	//jcb_snmpv2c_TrapSel.addItem("linkUp");
-//	  	//jcb_snmpv2c_TrapSel.addItem("authenticationFailure");	  	
-//	  	jcb_snmpv2c_TrapSel.addItem("Other");
-//	  	jcb_snmpv2c_TrapSel.setSelectedIndex(0);
-//  	    jcb_snmpv2c_TrpInfSel.setSelectedIndex(0);
-//	  	
-//	  	jl_snmpv2c_TrpInfSel.setText("Select an Option");
-//	  	jl_snmpv2c_OtroTrp.setText("Trap OID");
-//	  	jl_snmpv2c_Descr.setText("Description");
-//	  	jl_snmpv2c_TpoDtoTrp.setText("Data Type");
-//	  	jb_SndTrapv2c.setText("Send TRAP");
-//	  	jb_SndTrapv2c.setToolTipText("Press to send the TRAP.");
-
-//  	    //--PANTALLA DE LOS TRAPS--PANTALLA DE LOS TRAPS--PANTALLA DE LOS TRAPS--PANTALLA DE LOS TRAPS--PANTALLA DE LOS TRAPS
-//  	    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//		  		  		
-  	  //End de SNMPv2c-----------------------------------------------------------------------------------------------------
-  	  
-  	  //Para SNMPv3-------------------------------------------------------------------------------------------------------
-  	    
-  	    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  	    //--PANTALLA DE PARAMETROS--PANTALLA DE PARAMETROS--PANTALLA DE PARAMETROS--PANTALLA DE PARAMETROS----------------
-//  	    jp_snmpv3_Con.setBorder(BorderFactory.createTitledBorder("Connection Options"));
-//  	    jl_snmpv3_IP.setText("Agent IP Address");
-//  	    jl_snmpv3_pto.setText("Port Number");
-//  	    jl_snmpv3_User.setText("Username");
-//  	    jl_snmpv3_Aut.setText("Authentication Password");
-//  	    jl_snmpv3_Priv.setText("Privacy Password");
-//  	    jl_snmpv3_VerUsr.setText("Show Private Data");
-//  	    jl_snmpv3_metAut.setText("Authentication Protocol");
-//  	    jl_snmpv3_metPriv.setText("Privacy Protocol");
-//  	    jl_snmpv3_inten.setText("Retries");
-//  	    jl_snmpv3_timeOut.setText("TimeOut (ms)");
-//  	    jb_snmpv3_aplicarPara.setText("Apply Changes");
-//  	    jb_snmpv3_aplicarPara.setToolTipText("Press to set the new values.");
 
   	    optionYES = "Yes";
   		optionNO = "No";
@@ -2656,27 +1710,12 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
   	    jcb_snmpv3_VerUsr.addItem(optionYES);
   	    jcb_snmpv3_VerUsr.addItem(optionNO);
   	    jcb_snmpv3_VerUsr.setSelectedIndex(1);	  	 
-  	    //--PANTALLA DE PARAMETROS--PANTALLA DE PARAMETROS--PANTALLA DE PARAMETROS--PANTALLA DE PARAMETROS----------------
+  	    //--PARAMETER SCREEN--------------------------------------------------------------------------------------------
   	    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  	    //--PANTALLA DEL GET--PANTALLA DEL GET--PANTALLA DEL GET--PANTALLA DEL GET--PANTALLA DEL GET--PANTALLA DEL GET----
-//  	    jp_snmpv3_Get.setBorder(BorderFactory.createTitledBorder("Get Command"));
-//  	    jl_snmpv3_getEtiGet.setText("OID");
-//  	    jb_snmpv3_getAdd.setText("Add");
-//  	    jb_snmpv3_getAdd.setToolTipText("Press to add the OID.");
-//  	    jl_snmpv3_getObjs.setText("Objects");
-//  	    jb_snmpv3_getUndo.setText("Undo");
-//  	    jb_snmpv3_getUndo.setToolTipText("Press to erase the last OID added.");
-//  	    jb_snmpv3_getGet.setText("Get");
-//  	    jb_snmpv3_getGet.setToolTipText("Press to get the value(s).");
-//  	    jl_snmpv3_getModSeg.setText("Security");
 
-  	    //--PANTALLA DEL GET--PANTALLA DEL GET--PANTALLA DEL GET--PANTALLA DEL GET--PANTALLA DEL GET--PANTALLA DEL GET----
-  	    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  	    //--PANTALLA DEL GETNEXT--PANTALLA DEL GETNEXT--PANTALLA DEL GETNEXT--PANTALLA DEL GETNEXT--PANTALLA DEL GETNEXT--
+  	    //-- GETNEXT ----
   	    jp_snmpv3_GetNext.setBorder(BorderFactory.createTitledBorder("GetNext Command"));
   	    jl_snmpv3_GetNextEtiGetNext.setText("OID");
   	    jb_snmpv3_getNextAdd.setText("Add");
@@ -2687,11 +1726,11 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
   	    jb_snmpv3_GetNextGetNext.setText("GetNext");
   	    jb_snmpv3_GetNextGetNext.setToolTipText("Press to get the next value(s).");
   	    jl_snmpv3_getNextModSeg.setText("Security");
-  	    //--PANTALLA DEL GETNEXT--PANTALLA DEL GETNEXT--PANTALLA DEL GETNEXT--PANTALLA DEL GETNEXT--PANTALLA DEL GETNEXT--
+  	    //-- GETNEXT -----
   	    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   	    
   	    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  	    //--PANTALLA DEL GETBULK--PANTALLA DEL GETBULK--PANTALLA DEL GETBULK--PANTALLA DEL GETBULK--PANTALLA DEL GETBULK--
+  	    //-- GETBULK----
   	    jp_snmpv3_GetBulk.setBorder(BorderFactory.createTitledBorder("GetBulk Command"));
   	    jl_snmpv3_nonRepe.setText("NonRepeaters");
   	    jl_snmpv3_maxRep.setText("MaxRepetitions");
@@ -2704,21 +1743,21 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
   	    jb_snmpv3_GetBulkGetBulk.setText("GetBulk");
   	    jb_snmpv3_GetBulkGetBulk.setToolTipText("Press to get the value(s).");
   	    jl_snmpv3_getBulkModSeg.setText("Security");
-  	    //--PANTALLA DEL GETBULK--PANTALLA DEL GETBULK--PANTALLA DEL GETBULK--PANTALLA DEL GETBULK--PANTALLA DEL GETBULK--
+  	    //--GETBULK-----
   	    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   	    
   	    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  	    //--PANTALLA DEL GETTABLE--PANTALLA DEL GETTABLE--PANTALLA DEL GETTABLE--PANTALLA DEL GETTABLE--PANTALLA DEL GETTABLE
+  	    //--GETTABLE--
   	    jp_snmpv3_getTable.setBorder(BorderFactory.createTitledBorder("GetTable"));
   	    jl_snmpv3_getTableEtigetTable.setText("OID");
   	    jb_snmpv3_getTablegetTable.setText("GetTable");
   	    jb_snmpv3_getTablegetTable.setToolTipText("Press to get the table.");
   	    jl_snmpv3_getTableModSeg.setText("Security");
-  	    //--PANTALLA DEL GETTABLE--PANTALLA DEL GETTABLE--PANTALLA DEL GETTABLE--PANTALLA DEL GETTABLE--PANTALLA DEL GETTABLE
+  	    //--GETTABLE--
   	    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   	    
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  	    //--PANTALLA DEL WALK--PANTALLA DEL WALK--PANTALLA DEL WALK--PANTALLA DEL WALK--PANTALLA DEL WALK--PANTALLA DEL WALK
+  	    //--WALK--
   	    jp_snmpv3_walk.setBorder(BorderFactory.createTitledBorder("Walk"));
   	    jl_snmpv3_WalkEtiLimitePregunta.setText("Limit the quantity of variables retrieved");
   	    jcb_snmpv3_WalkEtiLimitePregunta.removeAllItems();
@@ -2731,71 +1770,21 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
 	  	jb_snmpv3_Walk.setText("Walk");
 	  	jb_snmpv3_Walk.setToolTipText("Press to start the MIB Walk.");
 	  	jl_snmpv3_getWalkModSeg.setText("Security");
-  	    //--PANTALLA DEL WALK--PANTALLA DEL WALK--PANTALLA DEL WALK--PANTALLA DEL WALK--PANTALLA DEL WALK--PANTALLA DEL WALK
+  	    //--WALK--
   	    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 	    
 		
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  	    //--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET
-//  	    jp_snmpv3_Set.setBorder(BorderFactory.createTitledBorder("Set Command"));
-//  	    jl_snmpv3_SetEtiSet.setText("OID");
-//  	    jl_snmpv3_SetEtiTipo.setText("Data Type");
-//  	    jl_snmpv3_SetEtiSetValor.setText("Value");
+  	    //--SET--
   	    jb_snmpv3_setAdd.setText("Add");
   	    jb_snmpv3_setAdd.setToolTipText("Press to add the OID.");
-//  	    jl_snmpv3_setObjs.setText("Objects");
   	    jb_snmpv3_setUndo.setText("Undo");
   	    jb_snmpv3_setUndo.setToolTipText("Press to erase the last OID added.");
   	    jb_snmpv3_SetSet.setText("Set");
   	    jb_snmpv3_SetSet.setToolTipText("Press to set the new value(s).");
-//  	    jl_snmpv3_setModSeg.setText("Security");
-  	    //--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET--PANTALLA DEL SET
+  	    //--SET--
   	    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////	  		
-  	    //--PANTALLA DE LOS TRAPS--PANTALLA DE LOS TRAPS--PANTALLA DE LOS TRAPS--PANTALLA DE LOS TRAPS--PANTALLA DE LOS TRAPS
-//  	    jp_snmpv3_Traps.setBorder(BorderFactory.createTitledBorder("Receive TRAPs (SNMP v1/2c/3) and INFORMs (SNMP v2c/3)"));  
-//  	    jp_snmpv3_TrapsSend.setBorder(BorderFactory.createTitledBorder("Send TRAPs and INFORMs SNMP v3"));
-//  	    jl_snmpv3_TrapSndHost.setText("Destination IP Address");
-//  	    jl_snmpv3_TrapSndTipo.setText("Trap Type");
-//  	    jl_snmpv3_PtoCom.setText("Port");
-//  	    jl_snmpv3_Int.setText("Retries");
-//  	    jl_snmpv3_Timeout.setText("TimeOut (ms)");
-//  	    jl_snmpv3_Enter.setText("Enterprise OID");
-//  	    
-//  	    jcb_snmpv3_TrapSel.removeItemAt(5);
-//  	    //jcb_snmpv2c_TrapSel.addItem("coldStart");
-//	  	//jcb_snmpv2c_TrapSel.addItem("warmStart");
-//	  	//jcb_snmpv2c_TrapSel.addItem("linkDown");
-//	  	//jcb_snmpv2c_TrapSel.addItem("linkUp");
-//	  	//jcb_snmpv2c_TrapSel.addItem("authenticationFailure");	  	
-//	  	jcb_snmpv3_TrapSel.addItem("Other");
-//	  	jcb_snmpv3_TrapSel.setSelectedIndex(0);
-//  	    
-//  	    jcb_snmpv3_TrpInfSel.setSelectedIndex(0);
-//	  	
-//	  	jl_snmpv3_TrpInfSel.setText("Select an Option");
-//	  	jl_snmpv3_OtroTrp.setText("Trap OID");
-//	  	jl_snmpv3_Descr.setText("Description");
-//	  	jl_snmpv3_TpDto.setText("Data Type");
-//	  	jb_SndTrapv3.setText("Send TRAP");
-//	  	jb_SndTrapv3.setToolTipText("Press to send the TRAP.");
-//	  	                          
-//  	    jl_snmpv3_TrpVer.setText("Show Data");
-//  	    
-//  	    jcb_snmpv3_TrpVer.removeAllItems();
-//  	    jcb_snmpv3_TrpVer.addItem(optionYES);
-//  	    jcb_snmpv3_TrpVer.addItem(optionNO);
-//  	    jcb_snmpv3_TrpVer.setSelectedIndex(1);
-//  	    
-//  	    jl_snmpv3_TrpUsr.setText("Username");
-//  	    jl_snmpv3_TrpAut.setText("Auth. Pass.");
-//  	    jl_snmpv3_TrpPriv.setText("Priv. Pass.");
-//  	    jl_snmpv3_trpModSeg.setText("Security");
-  	    
 
-  	    //--PANTALLA DE LOS TRAPS--PANTALLA DE LOS TRAPS--PANTALLA DE LOS TRAPS--PANTALLA DE LOS TRAPS--PANTALLA DE LOS TRAPS
-  	    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-          	     	    
   	  //End de SNMPv3-----------------------------------------------------------------------------------------------------
   	  
         
@@ -2808,21 +1797,10 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
 		private JLabel jl_snmpv3_sel;
 		private JComboBox jcb_snmpv3_sel;
 		private JPanel jp_snmpv3_GetNext, jp_snmpv3_GetBulk, jp_snmpv3_walk,jp_snmpv3_getTable;
-//		private JPanel jp_snmpv3_Con, jp_snmpv3_Get, jp_snmpv3_GetNext, jp_snmpv3_GetBulk, jp_snmpv3_Set, jp_snmpv3_Traps, jp_snmpv3_TrapsSend, jp_snmpv3_walk,jp_snmpv3_getTable;
 		///////////////////Pantalla parametros v3\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-		// GUI private JComboBox jcb_snmpv3_VerUsr,jcb_snmpv3_metAut,jcb_snmpv3_metPriv;
-		// REMOVED private JLabel jl_snmpv3_IP,jl_snmpv3_pto,jl_snmpv3_User,jl_snmpv3_VerUsr,jl_snmpv3_inten,jl_snmpv3_timeOut,jl_snmpv3_Aut,jl_snmpv3_Priv,jl_snmpv3_metAut,jl_snmpv3_metPriv;    
-		// GUI private JTextField jtf_snmpv3_IP,jtf_snmpv3_pto,jtf_snmv3_inten,jtt_snmpv3_timeOut;
-		// GUI private JPasswordField jpf_snmpv3_User,jpf_snmpv3_Aut,jpf_snmpv3_Priv;  
-		// REMOVED private JButton jb_snmpv3_aplicarPara;    
+  
 		////////////////////////GET
-		//GUI private JScrollPane jsp_snmpv3_getDescrip;
-		// GUI private JTextArea jta_snmpv3_getDescrip,jta_snmpv3_getResp;
-//		private JLabel jl_snmpv3_getEtiGet,jl_snmpv3_getModSeg,jl_snmpv3_getObjs;
-		// GUI private JScrollPane jsp_snmpv3_getResp;
-		// GUI private JTextField jtf_snmpv3_getGet,jtf_snmpv3_getObjs; 
-		// GUI private JButton jb_snmpv3_getGet,jb_snmpv3_getAdd,jb_snmpv3_getUndo;
-		// GUI private JComboBox jcb_snmpv3_getModSeg;		
+	
 		private Vector compuestoGetSNMPv3; //Para pasar los multiples parametros
     	private Vector compuestoGetSNMPv3Temp; 
 		////////////////////////GETNEXT
@@ -2851,26 +1829,14 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
 		private JScrollPane jsp_snmpv3_WalkResp;
 		private JTextArea jta_snmpv3_WalkResp;
 		////////////////////////////SET
-		// GUI private JScrollPane jsp_snmpv3_SetDescrip, jsp_snmpv3_SetResp;
-		// GUI private JTextArea jta_snmpv3_SetDescrip, jta_snmpv3_SetResp;
-		// REMOVED private JLabel jl_snmpv3_SetEtiSet, jl_snmpv3_SetEtiTipo, jl_snmpv3_SetEtiSetValor, jl_snmpv3_setModSeg,jl_snmpv3_setObjs;
-		// GUI private JTextField jtf_snmpv3_SetSet, jtf_snmpv3_SetSetValor,jtf_snmpv3_setObjs;
-		// GUI private JComboBox jcb_snmpv3_SetTipo, jcb_snmpv3_setModSeg;
-		// GUI private JButton jb_snmpv3_SetSet,jb_snmpv3_setAdd,jb_snmpv3_setUndo;
+
 		private int jtf_snmpv3_SetSetDigitos;		
 		private Vector compuestoSetSNMPv3; //Para pasar los multiples parametros
 		private Vector compuestoSetSNMPv3TempOID;
     	private Vector compuestoSetSNMPv3TempDatos;
     	private Vector compuestoSetSNMPv3TempTipoDatos;
     	private Variable[] compuestoSetSNMPv3Valores; //Para pasar los multiples parametros
-		////////////////////////////TRAPS
-//		private JScrollPane	jsp_snmpv3_traps;
-//		private JTextArea jta_snmpv3_traps;		
-//		private JLabel jl_snmpv3_TrapSndHost, jl_snmpv3_TrapSndTipo, jl_snmpv3_PtoCom, jl_snmpv3_TrpUsr, jl_snmpv3_Int, jl_snmpv3_Enter, jl_snmpv3_TrpInfSel, jl_snmpv3_OtroTrp, jl_snmpv3_Descr, jl_snmpv3_Timeout,jl_snmpv3_TpDto,jl_snmpv3_TrpPriv, jl_snmpv3_TrpAut,jl_snmpv3_TrpVer,jl_snmpv3_trpModSeg;
-//		private JTextField jtf_snmpv3_TrapSndHostIP, jtf_snmpv3_PtoComTxt, jtf_snmpv3_ComTxt, jtf_snmpv3_IntTxt, jtf_snmpv3_TmoutTxt, jtf_snmpv3_EntTxt, jtf_snmpv3_OtroTrp, jtf_snmpv3_Descr;
-//		private JComboBox jcb_snmpv3_TrapSel, jcb_snmpv3_TrpInfSel,jcb_snmpv3_TpoDtoTrp,jcb_snmpv3_TrpVer, jcb_snmpv3_trpModSeg;	
-//		private JButton	jb_SndTrapv3;
-//		private JPasswordField jpf_snmpv3_TrpPriv, jpf_snmpv3_TrpAut, jpf_snmpv3_TrpUsr;
+
 		//////////////PANTALLA DEL GETTABLE
 	    private JLabel jl_snmpv3_getTableEtigetTable;
 		private JTextField jtf_snmpv3_getTablegetTable;
@@ -3677,7 +2643,6 @@ loadMib("mibs/ALL/UDP-MIB.txt");
         jta_snmpv3_SetDescrip = new javax.swing.JTextArea();
         jsp_snmpv3_SetResp = new javax.swing.JScrollPane();
         jta_snmpv3_SetResp = new javax.swing.JTextArea();
-        jPanel7 = new javax.swing.JPanel();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jp_mibtree = new javax.swing.JPanel();
         jsp_mibtree = new javax.swing.JScrollPane();
@@ -4139,19 +3104,6 @@ loadMib("mibs/ALL/UDP-MIB.txt");
 
         jTabbedPane1.addTab("Set", jPanel6);
 
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 648, Short.MAX_VALUE)
-        );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 395, Short.MAX_VALUE)
-        );
-
-        jTabbedPane1.addTab("Traps", jPanel7);
-
         javax.swing.GroupLayout jPanelRightLayout = new javax.swing.GroupLayout(jPanelRight);
         jPanelRight.setLayout(jPanelRightLayout);
         jPanelRightLayout.setHorizontalGroup(
@@ -4466,7 +3418,6 @@ loadMib("mibs/ALL/UDP-MIB.txt");
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JPanel jPanelRight;

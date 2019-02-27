@@ -138,7 +138,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanelTopBar" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jSplitPane1" max="32767" attributes="0"/>
+              <Component id="jSplitPane1" pref="426" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -499,7 +499,7 @@
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="jsp_mibtree" pref="618" max="32767" attributes="0"/>
+                          <Component id="jsp_mibtree" pref="356" max="32767" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="jb_mibtree" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
@@ -550,7 +550,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jTextField4" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jScrollPane4" pref="610" max="32767" attributes="0"/>
+                          <Component id="jScrollPane4" pref="348" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -643,7 +643,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jsp_snmpv3_getDescrip" pref="287" max="32767" attributes="0"/>
+                          <Component id="jsp_snmpv3_getDescrip" pref="155" max="32767" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Group type="103" groupAlignment="3" attributes="0">
@@ -664,7 +664,7 @@
                               <Component id="jtf_snmpv3_getObjs" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jsp_snmpv3_getResp" pref="280" max="32767" attributes="0"/>
+                          <Component id="jsp_snmpv3_getResp" pref="150" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -779,7 +779,7 @@
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="658" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="396" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
               </Layout>
@@ -801,7 +801,7 @@
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="658" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="396" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
               </Layout>
@@ -823,7 +823,7 @@
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="658" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="396" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
               </Layout>
@@ -845,7 +845,7 @@
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="658" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="396" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
               </Layout>
@@ -905,7 +905,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jsp_snmpv3_SetDescrip" pref="269" max="32767" attributes="0"/>
+                          <Component id="jsp_snmpv3_SetDescrip" pref="139" max="32767" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel14" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -929,7 +929,7 @@
                               <Component id="jb_snmpv3_SetSet" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="jsp_snmpv3_SetResp" pref="270" max="32767" attributes="0"/>
+                          <Component id="jsp_snmpv3_SetResp" pref="138" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>

@@ -30,20 +30,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -62,6 +58,8 @@ import net.percederberg.mibble.MibLoader;
 import net.percederberg.mibble.MibLoaderException;
 import net.percederberg.mibble.MibType;
 import net.percederberg.mibble.MibTypeTag;
+import net.percederberg.mibble.MibbleBrowser;
+import net.percederberg.mibble.browser.MibTree;
 import org.snmp4j.security.AuthMD5;
 import org.snmp4j.security.AuthSHA;
 import org.snmp4j.security.PrivAES128;
@@ -252,12 +250,12 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
 
 	     
 	//Listen for Import button     
-    	jb_mibtree.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {loadNewMib();} catch (Exception e1){}
-            }
-       	});
+//    	jb_mibtree.addActionListener(new ActionListener(){
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                try {loadNewMib();} catch (Exception e1){}
+//            }
+//       	});
   	//-------------------------------FIN DEL PANEL DEL MIBTREE--------------------------------
   	  	
         //--------------------------------Manager SNMPv3------------------------------------------
@@ -1669,7 +1667,7 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
   	//----------------------------End del Manager SNMPv3--------------------------------------
   	
  
-  	  jb_mibtree.setToolTipText("Press to import MIBs.");
+//  	  jb_mibtree.setToolTipText("Press to import MIBs.");
 
 
       String etiquetaIdioma="";
@@ -1959,6 +1957,20 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
     loaderMibs.load(file);
     
         }
+    
+            public void unloadAllMib() throws IOException, MibLoaderException {
+
+        mb = MibTreeBuilder.getInstance();
+
+		
+        // Check for already loaded MIB
+        for (int i = 0; i < loadedMibs.size(); i++) {
+            //System.out.println(mib.getName());
+            mb.unloadMib((String) loadedMibs.get(i));
+        }
+ 
+        
+    }
 
         
     /**
@@ -2567,7 +2579,6 @@ loadMib("mibs/ALL/SNMPv2-MIB.txt");
 
     }
   
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -2607,7 +2618,6 @@ loadMib("mibs/ALL/SNMPv2-MIB.txt");
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jp_mibtree = new javax.swing.JPanel();
         jsp_mibtree = new javax.swing.JScrollPane();
-        jb_mibtree = new javax.swing.JButton();
         jPanel10 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
@@ -2695,17 +2705,23 @@ loadMib("mibs/ALL/SNMPv2-MIB.txt");
         jta_snmpv3_SetDescrip = new javax.swing.JTextArea();
         jsp_snmpv3_SetResp = new javax.swing.JScrollPane();
         jta_snmpv3_SetResp = new javax.swing.JTextArea();
+        jPanel7 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextAreaLog = new javax.swing.JTextArea();
         jmenubar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
-        openMenuItem = new javax.swing.JMenuItem();
-        saveMenuItem = new javax.swing.JMenuItem();
-        saveAsMenuItem = new javax.swing.JMenuItem();
         jmi_outbound = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
-        cutMenuItem = new javax.swing.JMenuItem();
+        MenuItemImportMIB = new javax.swing.JMenuItem();
         copyMenuItem = new javax.swing.JMenuItem();
-        pasteMenuItem = new javax.swing.JMenuItem();
-        deleteMenuItem = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         jmi_helpHelp = new javax.swing.JMenuItem();
         jmi_about = new javax.swing.JMenuItem();
@@ -2901,30 +2917,15 @@ loadMib("mibs/ALL/SNMPv2-MIB.txt");
 
         jSplitPane1.setDividerLocation(300);
 
-        jb_mibtree.setText("Import MIB");
-        jb_mibtree.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jb_mibtreeActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jp_mibtreeLayout = new javax.swing.GroupLayout(jp_mibtree);
         jp_mibtree.setLayout(jp_mibtreeLayout);
         jp_mibtreeLayout.setHorizontalGroup(
             jp_mibtreeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jp_mibtreeLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jb_mibtree, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
-                .addContainerGap())
-            .addComponent(jsp_mibtree)
+            .addComponent(jsp_mibtree, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
         );
         jp_mibtreeLayout.setVerticalGroup(
             jp_mibtreeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jp_mibtreeLayout.createSequentialGroup()
-                .addComponent(jsp_mibtree, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jb_mibtree)
-                .addGap(6, 6, 6))
+            .addComponent(jsp_mibtree, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE)
         );
 
         jTabbedPane2.addTab("MIB Tree", jp_mibtree);
@@ -3490,26 +3491,33 @@ loadMib("mibs/ALL/SNMPv2-MIB.txt");
 
         jTabbedPane1.addTab("Set", jPanel6);
 
+        jTextAreaLog.setColumns(20);
+        jTextAreaLog.setRows(5);
+        jScrollPane2.setViewportView(jTextAreaLog);
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 615, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Log", jPanel7);
+
         jSplitPane1.setRightComponent(jTabbedPane1);
 
         fileMenu.setMnemonic('f');
         fileMenu.setText("File");
-
-        openMenuItem.setMnemonic('o');
-        openMenuItem.setText("Open");
-        openMenuItem.setEnabled(false);
-        fileMenu.add(openMenuItem);
-
-        saveMenuItem.setMnemonic('s');
-        saveMenuItem.setText("Save");
-        saveMenuItem.setEnabled(false);
-        fileMenu.add(saveMenuItem);
-
-        saveAsMenuItem.setMnemonic('a');
-        saveAsMenuItem.setText("Save As ...");
-        saveAsMenuItem.setDisplayedMnemonicIndex(5);
-        saveAsMenuItem.setEnabled(false);
-        fileMenu.add(saveAsMenuItem);
 
         jmi_outbound.setMnemonic('x');
         jmi_outbound.setText("Exit");
@@ -3523,27 +3531,45 @@ loadMib("mibs/ALL/SNMPv2-MIB.txt");
         jmenubar.add(fileMenu);
 
         editMenu.setMnemonic('e');
-        editMenu.setText("Edit");
+        editMenu.setText("MIBs");
 
-        cutMenuItem.setMnemonic('t');
-        cutMenuItem.setText("Cut");
-        cutMenuItem.setEnabled(false);
-        editMenu.add(cutMenuItem);
+        MenuItemImportMIB.setMnemonic('t');
+        MenuItemImportMIB.setText("Import MIB");
+        editMenu.add(MenuItemImportMIB);
 
         copyMenuItem.setMnemonic('y');
-        copyMenuItem.setText("Copy");
-        copyMenuItem.setEnabled(false);
+        copyMenuItem.setText("Unload All MIBs");
+        copyMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                copyMenuItemActionPerformed(evt);
+            }
+        });
         editMenu.add(copyMenuItem);
 
-        pasteMenuItem.setMnemonic('p');
-        pasteMenuItem.setText("Paste");
-        pasteMenuItem.setEnabled(false);
-        editMenu.add(pasteMenuItem);
+        jMenu1.setText("Presets");
 
-        deleteMenuItem.setMnemonic('d');
-        deleteMenuItem.setText("Delete");
-        deleteMenuItem.setEnabled(false);
-        editMenu.add(deleteMenuItem);
+        jMenuItem1.setText("3.5");
+        jMenu1.add(jMenuItem1);
+
+        jMenuItem2.setText("4.1");
+        jMenu1.add(jMenuItem2);
+
+        jMenuItem3.setText("4.1v2");
+        jMenu1.add(jMenuItem3);
+
+        jMenuItem4.setText("4.1v5");
+        jMenu1.add(jMenuItem4);
+
+        jMenuItem5.setText("4.1v6");
+        jMenu1.add(jMenuItem5);
+
+        jMenuItem6.setText("4.1v7");
+        jMenu1.add(jMenuItem6);
+
+        jMenuItem7.setText("4.2v1");
+        jMenu1.add(jMenuItem7);
+
+        editMenu.add(jMenu1);
 
         jmenubar.add(editMenu);
 
@@ -3586,10 +3612,6 @@ loadMib("mibs/ALL/SNMPv2-MIB.txt");
     private void jmi_outboundActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmi_outboundActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jmi_outboundActionPerformed
-
-    private void jb_mibtreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_mibtreeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jb_mibtreeActionPerformed
 
     private void jb_snmpv3_getAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_snmpv3_getAddActionPerformed
         // TODO add your handling code here:
@@ -3662,6 +3684,14 @@ loadMib("mibs/ALL/SNMPv2-MIB.txt");
         // TODO add your handling code here:
     }//GEN-LAST:event_jb_snmpv3_getTablegetTableActionPerformed
 
+    private void copyMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyMenuItemActionPerformed
+    try {
+        unloadAllMib();
+    } catch (IOException | MibLoaderException ex) {
+        Logger.getLogger(AppGo.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    }//GEN-LAST:event_copyMenuItemActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -3716,9 +3746,8 @@ loadMib("mibs/ALL/SNMPv2-MIB.txt");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem MenuItemImportMIB;
     private javax.swing.JMenuItem copyMenuItem;
-    private javax.swing.JMenuItem cutMenuItem;
-    private javax.swing.JMenuItem deleteMenuItem;
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
@@ -3754,6 +3783,14 @@ loadMib("mibs/ALL/SNMPv2-MIB.txt");
     private javax.swing.JLabel jLabel9;
     private javax.swing.JList<String> jList1;
     private javax.swing.JList<String> jListSessions;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
@@ -3761,17 +3798,19 @@ loadMib("mibs/ALL/SNMPv2-MIB.txt");
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JPanel jPanelTopBar;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
+    private javax.swing.JTextArea jTextAreaLog;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextFieldFilter;
-    private javax.swing.JButton jb_mibtree;
     private javax.swing.JButton jb_snmpv3_GetBulkGetBulk;
     private javax.swing.JButton jb_snmpv3_GetBulkUndo;
     private javax.swing.JButton jb_snmpv3_GetBulk_add;
@@ -3844,10 +3883,6 @@ loadMib("mibs/ALL/SNMPv2-MIB.txt");
     private javax.swing.JTextField jtf_snmpv3_setObjs;
     private javax.swing.JTextField jtf_snmv3_inten;
     private javax.swing.JTextField jtt_snmpv3_timeOut;
-    private javax.swing.JMenuItem openMenuItem;
-    private javax.swing.JMenuItem pasteMenuItem;
-    private javax.swing.JMenuItem saveAsMenuItem;
-    private javax.swing.JMenuItem saveMenuItem;
     // End of variables declaration//GEN-END:variables
 
 }

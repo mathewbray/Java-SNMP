@@ -765,6 +765,7 @@ public class MibLoader {
                 }
             } catch (MibLoaderException e) {
                 // Do nothing, errors are already in the log
+                                //System.out.println(e);
             }
             queue.remove(0);
         }
@@ -775,6 +776,7 @@ public class MibLoader {
                 processed.get(i).initialize();
             } catch (MibLoaderException e) {
                 // Do nothing, errors are already in the log
+                //System.out.println(e);
             }
         }
 
@@ -784,6 +786,7 @@ public class MibLoader {
                 processed.get(i).validate();
             } catch (MibLoaderException e) {
                 // Do nothing, errors are already in the log
+                //System.out.println(e);
             }
         }
 

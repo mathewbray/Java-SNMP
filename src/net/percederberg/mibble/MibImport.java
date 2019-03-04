@@ -9,6 +9,7 @@
 package net.percederberg.mibble;
 
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  * A MIB import list. This class contains a reference to another MIB

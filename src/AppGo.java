@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -12,6 +13,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
@@ -24,10 +26,12 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.prefs.Preferences;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import javax.swing.DefaultListModel;
@@ -38,6 +42,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTree;
@@ -51,6 +56,7 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 import mibblebrowser.MibNode;
 import mibblebrowser.MibTreeBuilder;
 import net.percederberg.mibble.Mib;
@@ -58,8 +64,16 @@ import net.percederberg.mibble.MibLoader;
 import net.percederberg.mibble.MibLoaderException;
 import net.percederberg.mibble.MibType;
 import net.percederberg.mibble.MibTypeTag;
+import net.percederberg.mibble.MibValueSymbol;
 import net.percederberg.mibble.MibbleBrowser;
+import net.percederberg.mibble.browser.AboutDialog;
+import net.percederberg.mibble.browser.BrowserFrame;
+import net.percederberg.mibble.browser.LicenseDialog;
 import net.percederberg.mibble.browser.MibTree;
+import net.percederberg.mibble.browser.MibTreeNode;
+import net.percederberg.mibble.browser.OpenDialog;
+import net.percederberg.mibble.browser.SnmpPanel;
+import net.percederberg.mibble.value.ObjectIdentifierValue;
 import org.snmp4j.security.AuthMD5;
 import org.snmp4j.security.AuthSHA;
 import org.snmp4j.security.PrivAES128;
@@ -174,8 +188,50 @@ private String errorGeneral22 = "Must enter the new value.";
 private String errorGeneral23 = "Must select the OID data type.";
 private String errorGeneral24 = "Wrong data type. The operation has been cancelled.";
 private String errorGeneral25 = "Unknown data type. The operation has been cancelled.";
-               
-            
+
+    /**
+     * The application build information properties.
+     */
+    private Properties buildInfo;
+
+    /**
+     * The preferences for this application.
+     */
+    private Preferences prefs;
+
+    /**
+     * The MIB loader to use.
+     */
+    public MibLoader loader = new MibLoader();
+    
+    
+        /**
+     * The description text area.
+     */
+    private JTextArea descriptionArea = new JTextArea();
+
+    /**
+     * The status label.
+     */
+    private JLabel statusLabel = new JLabel("Ready");
+
+    /**
+     * The MIB tree component.
+     */
+    private MibTree mibTree = null;
+
+    /**
+     * The SNMP operations panel.
+     */
+    private SnmpPanel snmpPanel = null;
+
+    
+    /**
+     * The browser application.
+     */
+    private MibbleBrowser browser;
+
+
     /**
      * Creates new form AppGo
      * @throws java.lang.ClassNotFoundException
@@ -190,6 +246,7 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
         initComponents();
         unzipfiles();
         getSessionList();
+        prefs = Preferences.userNodeForPackage(getClass());
         try {
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
             // turn off bold fonts
@@ -220,32 +277,52 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
                 }
             }
         });
+        
+        //-------------------------------MIB TREE BROWSER LOAD ----------------------------------------
+            /**
+     * Creates a new Mibble browser frame.
+     *
+     * @param browser        the browser application
+     */
+//    public BrowserFrame(MibbleBrowser browser) {
+//
+//    }
+            /**
+     * Creates a new browser application.
+     */
+
+                jScrollPaneMIBTreeBrowser.setViewportView(new JScrollPane(mibTree));
+
+        
+        //-------------------------------END MIB TREE BROWSER LOAD ----------------------------------------
+
+        
 
   	
-  	//-------------------------------MIB TREE----------------------------------------
+  	//-------------------------------MIB TREE OLD ----------------------------------------
 
 		
         //To initialize the fix of mibs
         loadedMibs = new ArrayList();
         loadedMibsToSearchForNames = new ArrayList();
         //To paint the mib browser
-        mibTree = MibTreeBuilder.getInstance().getTree();
+        mibTreeOLD = MibTreeBuilder.getInstance().getTree();
         DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
         //renderer.setClosedIcon(createImageIcon("images/gray-small.png"));
         //renderer.setOpenIcon(createImageIcon("images/green-small.png"));
-        mibTree.setCellRenderer(renderer);
+        mibTreeOLD.setCellRenderer(renderer);
 
-        mibTree.addTreeSelectionListener(new TreeSelectionListener() {
+        mibTreeOLD.addTreeSelectionListener(new TreeSelectionListener() {
           @Override
           public void valueChanged(TreeSelectionEvent e) {
-            updateTreeSelection();
+            updateTreeSelectionOLD();
           }
         });
-        jsp_mibtree.setViewportView(mibTree);
+        jsp_mibtree.setViewportView(mibTreeOLD);
 
 	    
         //To load the mib
-            try {loadMib();} catch (Exception e){}
+            try {loadMibOLD();} catch (Exception e){}
         //End of loading mib
 
 	     
@@ -256,7 +333,7 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
 //                try {loadNewMib();} catch (Exception e1){}
 //            }
 //       	});
-  	//-------------------------------FIN DEL PANEL DEL MIBTREE--------------------------------
+  	//-------------------------------END OLD MIBTREE--------------------------------
   	  	
         //--------------------------------Manager SNMPv3------------------------------------------
 	snmpv3 = new JPanel();
@@ -303,8 +380,8 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
         //----------------------------------End Connection Properties----------------------------
 
 
-	    //----------------------------------Pantalla de Get----------------------------------------  	
- 	    compuestoGetSNMPv3Temp = new Vector();
+	    //----------------------------------Get----------------------------------------  	
+ 	    compoundGetSNMPv3Temp = new Vector();
  	    
  	    //Para el aadir
  	    jb_snmpv3_getAdd.addActionListener(new ActionListener(){
@@ -317,7 +394,7 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
           	  	//Tratamiento
           	  	OID = jtf_snmpv3_getGet.getText();
           	  	
-          	  	if (esVacio(IP)){
+          	  	if (isEmpty(IP)){
           	  	  JOptionPane.showMessageDialog(AppGo.this,configParamError01,nameOfTheProgram,JOptionPane.ERROR_MESSAGE,(new ImageIcon("images/no.gif")));  	
           	  	}else{        	  	
           	  	          	  	
@@ -342,11 +419,11 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
 						}
 
 	           	  		
-	           	  		compuestoGetSNMPv3Temp.add(new OID(request));
+	           	  		compoundGetSNMPv3Temp.add(new OID(request));
 	          	  	    
 	          	  	    String contenido = "";
-					    for (int pp=0;pp<compuestoGetSNMPv3Temp.size();pp++){
-					      contenido=contenido.concat(compuestoGetSNMPv3Temp.get(pp)+"; ");	
+					    for (int pp=0;pp<compoundGetSNMPv3Temp.size();pp++){
+					      contenido=contenido.concat(compoundGetSNMPv3Temp.get(pp)+"; ");	
 					    }
 					    jtf_snmpv3_getObjs.setText(contenido);
 		          	  	
@@ -362,19 +439,20 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
         
         //Para eliminar
         jb_snmpv3_getUndo.addActionListener(new ActionListener(){
+                @Override
         	public void actionPerformed(ActionEvent e) {
         
-        	  int ultimo = compuestoGetSNMPv3Temp.size();
+        	  int ultimo = compoundGetSNMPv3Temp.size();
         	  ultimo=ultimo-1;
         	  if (ultimo>=0){
-        	    compuestoGetSNMPv3Temp.removeElementAt(ultimo);
+        	    compoundGetSNMPv3Temp.removeElementAt(ultimo);
         	  }else{
         	  	JOptionPane.showMessageDialog(AppGo.this,errorGeneral03,nameOfTheProgram,JOptionPane.ERROR_MESSAGE,(new ImageIcon("images/no.gif")));
         	  }
     	  	
 		      String contenido = "";
-		      for (int pp=0;pp<compuestoGetSNMPv3Temp.size();pp++){
-		        contenido=contenido.concat(compuestoGetSNMPv3Temp.get(pp)+"; ");	
+		      for (int pp=0;pp<compoundGetSNMPv3Temp.size();pp++){
+		        contenido=contenido.concat(compoundGetSNMPv3Temp.get(pp)+"; ");	
 		      }
 		      jtf_snmpv3_getObjs.setText(contenido);
         	
@@ -394,7 +472,7 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
           	  	//Tratamiento
           	  	OID = jtf_snmpv3_getGet.getText();
           	  	
-          	  	if (esVacio(IP)){
+          	  	if (isEmpty(IP)){
           	  	  JOptionPane.showMessageDialog(AppGo.this,configParamError01,nameOfTheProgram,JOptionPane.ERROR_MESSAGE,(new ImageIcon("images/no.gif")));  	
           	  	}else{        	  	
           	  	          	  	
@@ -431,12 +509,12 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
 
                                         // HERE COMES THE CODE TO REALLY SEND THE REQUIREMENT	           	  		
 	           	  		boolean esCompuesto=false;
-		          	  	compuestoGetSNMPv3 = new Vector();
-		          	  	if((compuestoGetSNMPv3Temp.size())>=1){
-		          	  	   compuestoGetSNMPv3=compuestoGetSNMPv3Temp;
+		          	  	compoundGetSNMPv3 = new Vector();
+		          	  	if((compoundGetSNMPv3Temp.size())>=1){
+		          	  	   compoundGetSNMPv3=compoundGetSNMPv3Temp;
 		          	  	   esCompuesto=true;	
 		          	  	}else{
-		          	  	   compuestoGetSNMPv3.add(new OID(request));
+		          	  	   compoundGetSNMPv3.add(new OID(request));
 		          	  	   esCompuesto=false;
 		          	  	}
 	           	  		
@@ -447,9 +525,9 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
 	         	  		if ((jcb_snmpv3_getModSeg.getSelectedItem())=="AUTH_PRIV"){nivelSeguridad=SecurityLevel.AUTH_PRIV;}
 	         	  		if ((jcb_snmpv3_getModSeg.getSelectedItem())=="NOAUTH_NOPRIV"){nivelSeguridad=SecurityLevel.NOAUTH_NOPRIV;}
 	         	  		manager.cambiarIdiomaAMensajes(errorGeneral04,errorGeneral29,errorGeneral30,errorGeneral31);
-		          	  	String answer = manager.getv3(IP, String.valueOf(pto), user, claveAut, clavePriv, nivelSeguridad,inten, timeOut, compuestoGetSNMPv3,metAut,metPriv);
-		          	  	compuestoGetSNMPv3.removeAllElements();
-		          	  	compuestoGetSNMPv3Temp.removeAllElements();
+		          	  	String answer = manager.getv3(IP, String.valueOf(pto), user, claveAut, clavePriv, nivelSeguridad,inten, timeOut, compoundGetSNMPv3,metAut,metPriv);
+		          	  	compoundGetSNMPv3.removeAllElements();
+		          	  	compoundGetSNMPv3Temp.removeAllElements();
 				        jtf_snmpv3_getObjs.setText("");
 		          	  	
 		          	  	//System.out.println("Getv2c: "+answer);
@@ -472,9 +550,9 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
    	
    		
 				
-		//----------------------------------End de Pantalla de Get---------------------------------	
+		//----------------------------------End de Get---------------------------------	
 	 
- 		//----------------------------------Pantalla de GetNext------------------------------------	      	
+ 		//----------------------------------GetNext------------------------------------	      	
 //		jp_snmpv3_GetNext = new JPanel();
 //	    //jp_snmpv3_GetNext.setBackground(Color.blue);
 //		//jp_snmpv3_GetNext.setBorder(BorderFactory.createTitledBorder("Command GetNext de SNMPv1"));
@@ -550,7 +628,7 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
     	jta_snmpv3_GetNextResp.setEditable(false);
 //    	jsp_snmpv3_GetNextResp.getViewport().add(jta_snmpv3_GetNextResp,null);
 	    
-	    compuestoGetNextSNMPv3Temp = new Vector();
+	    compoundGetNextSNMPv3Temp = new Vector();
 	    
 	    //Para aadir
 	    jb_snmpv3_getNextAdd.addActionListener(new ActionListener(){
@@ -563,7 +641,7 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
           	  	//Tratamiento
           	  	OID = jtf_snmpv3_GetNextGetNext.getText();
           	  	
-          	  	if (esVacio(IP)){
+          	  	if (isEmpty(IP)){
           	  	  JOptionPane.showMessageDialog(AppGo.this,configParamError01,nameOfTheProgram,JOptionPane.ERROR_MESSAGE,(new ImageIcon("images/no.gif")));  	
           	  	}else{        	  	
           	  	          	  	
@@ -597,10 +675,10 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
 		          	  	}
 		          	  	*/
 		          	  	
-		          	  	compuestoGetNextSNMPv3Temp.add(new OID(request));
+		          	  	compoundGetNextSNMPv3Temp.add(new OID(request));
 		          	  	String contenido = "";
-		          	  	for (int pp=0;pp<compuestoGetNextSNMPv3Temp.size();pp++){
-		          	  	  contenido=contenido.concat(compuestoGetNextSNMPv3Temp.get(pp)+"; ");	
+		          	  	for (int pp=0;pp<compoundGetNextSNMPv3Temp.size();pp++){
+		          	  	  contenido=contenido.concat(compoundGetNextSNMPv3Temp.get(pp)+"; ");	
 		          	  	}
 		          	  	jtf_snmpv3_getNextObjs.setText(contenido);   
 		          	  	
@@ -618,17 +696,17 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
         jb_snmpv3_getNextUndo.addActionListener(new ActionListener(){
         	public void actionPerformed(ActionEvent e) {
         		
-        	  int ultimo = compuestoGetNextSNMPv3Temp.size();
+        	  int ultimo = compoundGetNextSNMPv3Temp.size();
         	  ultimo=ultimo-1;
         	  if (ultimo>=0){
-        	    compuestoGetNextSNMPv3Temp.removeElementAt(ultimo);
+        	    compoundGetNextSNMPv3Temp.removeElementAt(ultimo);
         	  }else{
         	  	JOptionPane.showMessageDialog(AppGo.this,errorGeneral03,nameOfTheProgram,JOptionPane.ERROR_MESSAGE,(new ImageIcon("images/no.gif")));
         	  }
     	  	
 		      String contenido = "";
-		      for (int pp=0;pp<compuestoGetNextSNMPv3Temp.size();pp++){
-		        contenido=contenido.concat(compuestoGetNextSNMPv3Temp.get(pp)+"; ");	
+		      for (int pp=0;pp<compoundGetNextSNMPv3Temp.size();pp++){
+		        contenido=contenido.concat(compoundGetNextSNMPv3Temp.get(pp)+"; ");	
 		      }
 		      jtf_snmpv3_getNextObjs.setText(contenido);
         		
@@ -644,7 +722,7 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
           	  	//Tratamiento
           	  	OID = jtf_snmpv3_GetNextGetNext.getText();
           	  	
-          	  	if (esVacio(IP)){
+          	  	if (isEmpty(IP)){
           	  	  JOptionPane.showMessageDialog(AppGo.this,configParamError01,nameOfTheProgram,JOptionPane.ERROR_MESSAGE,(new ImageIcon("images/no.gif")));  	
           	  	}else{        	  	
           	  	          	  	
@@ -679,12 +757,12 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
 		          	  	*/
 		          	  	
 		          	  	boolean esCompuesto=false;
-		          	  	compuestoGetNextSNMPv3 = new Vector();
-		          	  	if((compuestoGetNextSNMPv3Temp.size())>=1){
-		          	  	   compuestoGetNextSNMPv3=compuestoGetNextSNMPv3Temp;
+		          	  	compoundGetNextSNMPv3 = new Vector();
+		          	  	if((compoundGetNextSNMPv3Temp.size())>=1){
+		          	  	   compoundGetNextSNMPv3=compoundGetNextSNMPv3Temp;
 		          	  	   esCompuesto=true;	
 		          	  	}else{
-		          	  	   compuestoGetNextSNMPv3.add(new OID(request));
+		          	  	   compoundGetNextSNMPv3.add(new OID(request));
 		          	  	   esCompuesto=false;
 		          	  	}
 		          	  	
@@ -695,9 +773,9 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
 	         	  		if ((jcb_snmpv3_getNextModSeg.getSelectedItem())=="AUTH_PRIV"){nivelSeguridad=SecurityLevel.AUTH_PRIV;}
 	         	  		if ((jcb_snmpv3_getNextModSeg.getSelectedItem())=="NOAUTH_NOPRIV"){nivelSeguridad=SecurityLevel.NOAUTH_NOPRIV;}
 	         	  		manager.cambiarIdiomaAMensajes(errorGeneral04,errorGeneral29,errorGeneral30,errorGeneral31);
-		          	  	String answer = manager.getNextv3(IP, String.valueOf(pto), user, claveAut, clavePriv, nivelSeguridad,inten, timeOut, compuestoGetNextSNMPv3,metAut,metPriv);
-		          	  	compuestoGetNextSNMPv3.removeAllElements();
-		          	  	compuestoGetNextSNMPv3Temp.removeAllElements();
+		          	  	String answer = manager.getNextv3(IP, String.valueOf(pto), user, claveAut, clavePriv, nivelSeguridad,inten, timeOut, compoundGetNextSNMPv3,metAut,metPriv);
+		          	  	compoundGetNextSNMPv3.removeAllElements();
+		          	  	compoundGetNextSNMPv3Temp.removeAllElements();
 					    jtf_snmpv3_getNextObjs.setText("");
 		          	  	
 		          	  	//System.out.println("GetNextv3: "+answer);
@@ -726,9 +804,9 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
         	});
        	
 		
-		//----------------------------------End de Pantalla de GetNext-----------------------------
+		//----------------------------------End de GetNext-----------------------------
 
-		//---------------------------------------Pantalla de GetBulk----------------------------------
+		//---------------------------------------GetBulk----------------------------------
 		
 //		jp_snmpv3_GetBulk = new JPanel();
 //	    //jp_snmpv3_GetBulk.setBackground(Color.white);
@@ -815,7 +893,7 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
 //        jb_snmpv3_GetBulkGetBulk.setToolTipText("Presione para obtener los valores.");
 //	    jp_snmpv3_GetBulk.add(jb_snmpv3_GetBulkGetBulk,null);
 		
-		compuestoGetBulkSNMPv3Temp = new Vector();
+		compoundGetBulkSNMPv3Temp = new Vector();
 		
 		//Para aadir
 		jb_snmpv3_GetBulk_add.addActionListener(new ActionListener(){
@@ -829,7 +907,7 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
           	  	//Tratamiento
           	  	OID = jtf_snmpv3_GetBulkGetBulk.getText();
           	  	
-          	  	if (esVacio(IP)){
+          	  	if (isEmpty(IP)){
           	  	  JOptionPane.showMessageDialog(AppGo.this,configParamError01,nameOfTheProgram,JOptionPane.ERROR_MESSAGE,(new ImageIcon("images/no.gif")));  	
           	  	  jta_snmpv3_GetBulkResp.setText("");
           	  	}else{ 
@@ -863,10 +941,10 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
 								}
 				          	  	//request[i]=0;
 				          	  	
-				          	  	compuestoGetBulkSNMPv3Temp.add(new OID(request));
+				          	  	compoundGetBulkSNMPv3Temp.add(new OID(request));
 				          	  	String contenido = "";
-				          	  	for (int pp=0;pp<compuestoGetBulkSNMPv3Temp.size();pp++){
-				          	  	  contenido=contenido.concat(compuestoGetBulkSNMPv3Temp.get(pp)+"; ");	
+				          	  	for (int pp=0;pp<compoundGetBulkSNMPv3Temp.size();pp++){
+				          	  	  contenido=contenido.concat(compoundGetBulkSNMPv3Temp.get(pp)+"; ");	
 				          	  	}
 				          	  	jtf_snmpv3_getBulkObjs.setText(contenido);
 				          	  	
@@ -888,17 +966,17 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
         jb_snmpv3_GetBulkUndo.addActionListener(new ActionListener(){
         	public void actionPerformed(ActionEvent e) {
         		
-        	  int ultimo = compuestoGetBulkSNMPv3Temp.size();
+        	  int ultimo = compoundGetBulkSNMPv3Temp.size();
         	  ultimo=ultimo-1;
         	  if (ultimo>=0){
-        	    compuestoGetBulkSNMPv3Temp.removeElementAt(ultimo);
+        	    compoundGetBulkSNMPv3Temp.removeElementAt(ultimo);
         	  }else{
         	  	JOptionPane.showMessageDialog(AppGo.this,errorGeneral03,nameOfTheProgram,JOptionPane.ERROR_MESSAGE,(new ImageIcon("images/no.gif")));
         	  }
     	  	
 		      String contenido = "";
-		      for (int pp=0;pp<compuestoGetBulkSNMPv3Temp.size();pp++){
-		        contenido=contenido.concat(compuestoGetBulkSNMPv3Temp.get(pp)+"; ");	
+		      for (int pp=0;pp<compoundGetBulkSNMPv3Temp.size();pp++){
+		        contenido=contenido.concat(compoundGetBulkSNMPv3Temp.get(pp)+"; ");	
 		      }
 		      jtf_snmpv3_getBulkObjs.setText(contenido);
         		
@@ -915,7 +993,7 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
           	  	//Tratamiento
           	  	OID = jtf_snmpv3_GetBulkGetBulk.getText();
           	  	
-          	  	if (esVacio(IP)){
+          	  	if (isEmpty(IP)){
           	  	  JOptionPane.showMessageDialog(AppGo.this,configParamError01,nameOfTheProgram,JOptionPane.ERROR_MESSAGE,(new ImageIcon("images/no.gif")));  	
           	  	  jta_snmpv3_GetBulkResp.setText("");
           	  	}else{ 
@@ -952,12 +1030,12 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
 				          	  	jta_snmpv3_GetBulkResp.setText(errorGeneral28);
 				          	  	
 				          	  	boolean esCompuesto=false;
-				          	  	compuestoGetBulkSNMPv3 = new Vector();
-				          	  	if((compuestoGetBulkSNMPv3Temp.size())>=1){
-				          	  	   compuestoGetBulkSNMPv3=compuestoGetBulkSNMPv3Temp;
+				          	  	compoundGetBulkSNMPv3 = new Vector();
+				          	  	if((compoundGetBulkSNMPv3Temp.size())>=1){
+				          	  	   compoundGetBulkSNMPv3=compoundGetBulkSNMPv3Temp;
 				          	  	   esCompuesto=true;	
 				          	  	}else{
-				          	  	   compuestoGetBulkSNMPv3.add(new OID(request));
+				          	  	   compoundGetBulkSNMPv3.add(new OID(request));
 				          	  	   esCompuesto=false;
 				          	  	}
 				          	  	
@@ -967,9 +1045,9 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
 			         	  		if ((jcb_snmpv3_getBulkModSeg.getSelectedItem())=="AUTH_PRIV"){nivelSeguridad=SecurityLevel.AUTH_PRIV;}
 			         	  		if ((jcb_snmpv3_getBulkModSeg.getSelectedItem())=="NOAUTH_NOPRIV"){nivelSeguridad=SecurityLevel.NOAUTH_NOPRIV;}
 			         	  		manager.cambiarIdiomaAMensajes(errorGeneral04,errorGeneral29,errorGeneral30,errorGeneral31);
-		          	  			String answer = manager.getBulkv3(IP, String.valueOf(pto), user, claveAut, clavePriv, nivelSeguridad,inten, timeOut, compuestoGetBulkSNMPv3,Integer.parseInt(jtf_snmpv3_nonRepe.getText()), Integer.parseInt(jtf_snmpv3_maxRep.getText()), metAut, metPriv);
-		          	  			compuestoGetBulkSNMPv3.removeAllElements();
-				          	  	compuestoGetBulkSNMPv3Temp.removeAllElements();
+		          	  			String answer = manager.getBulkv3(IP, String.valueOf(pto), user, claveAut, clavePriv, nivelSeguridad,inten, timeOut, compoundGetBulkSNMPv3,Integer.parseInt(jtf_snmpv3_nonRepe.getText()), Integer.parseInt(jtf_snmpv3_maxRep.getText()), metAut, metPriv);
+		          	  			compoundGetBulkSNMPv3.removeAllElements();
+				          	  	compoundGetBulkSNMPv3Temp.removeAllElements();
 							    jtf_snmpv3_getBulkObjs.setText("");
 		          	  			
 		          	  			if (answer.equals(errorGeneral04)){
@@ -997,7 +1075,7 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
          	}   
        	});    
 
-		//----------------------------------End de Pantalla de GetBulk--------------------------------
+		//----------------------------------End de GetBulk--------------------------------
 		
 		
 		//****************************************************************************************************************************
@@ -1067,7 +1145,7 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
           	  	//Tratamiento
           	  	OID = jtf_snmpv3_getTablegetTable.getText();
           	  	
-          	  	if (esVacio(IP)){
+          	  	if (isEmpty(IP)){
           	  	  JOptionPane.showMessageDialog(AppGo.this,configParamError01,nameOfTheProgram,JOptionPane.ERROR_MESSAGE,(new ImageIcon("images/no.gif")));  	
           	  	}else{        	  	
           	  	        	  	
@@ -1278,7 +1356,7 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
           	  	//Tratamiento
           	  	OID = jtf_snmpv3_WalkOID.getText();
           	  	
-          	  	if (esVacio(IP)){
+          	  	if (isEmpty(IP)){
           	  	  JOptionPane.showMessageDialog(AppGo.this,configParamError01,nameOfTheProgram,JOptionPane.ERROR_MESSAGE,(new ImageIcon("images/no.gif")));  	
           	  	  jta_snmpv3_WalkResp.setText("");
           	  	}else{ 
@@ -1382,9 +1460,9 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
 		
 
 
-		compuestoSetSNMPv3TempOID = new Vector();
-		compuestoSetSNMPv3TempTipoDatos = new Vector();
-		compuestoSetSNMPv3TempDatos = new Vector();		
+		compoundSetSNMPv3TempOID = new Vector();
+		compoundSetSNMPv3TempTipoDatos = new Vector();
+		compoundSetSNMPv3TempDatos = new Vector();		
 
 		//Para aadir
 		jb_snmpv3_setAdd.addActionListener(new ActionListener(){
@@ -1397,7 +1475,7 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
           	  	//Tratamiento
           	  	OID = jtf_snmpv3_SetSet.getText();
           	  	
-          	  	if (esVacio(IP)){
+          	  	if (isEmpty(IP)){
           	  	  JOptionPane.showMessageDialog(AppGo.this,configParamError01,nameOfTheProgram,JOptionPane.ERROR_MESSAGE,(new ImageIcon("images/no.gif")));  	
           	  	}else{ 
           	  		
@@ -1449,13 +1527,13 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
 				          	  		
 				          	  		if(!(datoInvalido)){
 				          	  			
-				          	  			compuestoSetSNMPv3TempOID.add(new OID(request));
-				          	  			compuestoSetSNMPv3TempTipoDatos.add(tipoDatoReconocido);
-				          	  			compuestoSetSNMPv3TempDatos.add(String.valueOf(valor));
+				          	  			compoundSetSNMPv3TempOID.add(new OID(request));
+				          	  			compoundSetSNMPv3TempTipoDatos.add(tipoDatoReconocido);
+				          	  			compoundSetSNMPv3TempDatos.add(String.valueOf(valor));
 				          	  			
 				          	  			String contenido = "";
-								        for (int pp=0;pp<compuestoSetSNMPv3TempOID.size();pp++){
-								          contenido=contenido.concat(compuestoSetSNMPv3TempOID.get(pp)+"; ");	
+								        for (int pp=0;pp<compoundSetSNMPv3TempOID.size();pp++){
+								          contenido=contenido.concat(compoundSetSNMPv3TempOID.get(pp)+"; ");	
 								        }
 								        jtf_snmpv3_setObjs.setText(contenido);
 								        
@@ -1480,19 +1558,19 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
         jb_snmpv3_setUndo.addActionListener(new ActionListener(){
         	public void actionPerformed(ActionEvent e) {
         	
-        	  int ultimo = compuestoSetSNMPv3TempOID.size();
+        	  int ultimo = compoundSetSNMPv3TempOID.size();
         	  ultimo=ultimo-1;
         	  if (ultimo>=0){
-        	    compuestoSetSNMPv3TempOID.removeElementAt(ultimo);
-        	    compuestoSetSNMPv3TempTipoDatos.removeElementAt(ultimo);
-        	    compuestoSetSNMPv3TempDatos.removeElementAt(ultimo);
+        	    compoundSetSNMPv3TempOID.removeElementAt(ultimo);
+        	    compoundSetSNMPv3TempTipoDatos.removeElementAt(ultimo);
+        	    compoundSetSNMPv3TempDatos.removeElementAt(ultimo);
         	  }else{
         	  	JOptionPane.showMessageDialog(AppGo.this,errorGeneral03,nameOfTheProgram,JOptionPane.ERROR_MESSAGE,(new ImageIcon("images/no.gif")));
         	  }
     	  	
 		      String contenido = "";
-		      for (int pp=0;pp<compuestoSetSNMPv3TempOID.size();pp++){
-		        contenido=contenido.concat(compuestoSetSNMPv3TempOID.get(pp)+"; ");	
+		      for (int pp=0;pp<compoundSetSNMPv3TempOID.size();pp++){
+		        contenido=contenido.concat(compoundSetSNMPv3TempOID.get(pp)+"; ");	
 		      }
 		      jtf_snmpv3_setObjs.setText(contenido);
         			
@@ -1538,7 +1616,7 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
           	  	//Tratamiento
           	  	OID = jtf_snmpv3_SetSet.getText();
           	  	
-          	  	if (esVacio(IP)){
+          	  	if (isEmpty(IP)){
           	  	  JOptionPane.showMessageDialog(AppGo.this,configParamError01,nameOfTheProgram,JOptionPane.ERROR_MESSAGE,(new ImageIcon("images/no.gif")));  	
           	  	}else{ 
           	  		
@@ -1571,13 +1649,13 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
 				          	  	//request[i]=0;
 				          	  	
 				          	  	boolean esCompuesto=false;
-				          	  	compuestoSetSNMPv3 = new Vector();
-				          	  	if((compuestoSetSNMPv3TempOID.size())>=1){
-				          	  	   compuestoSetSNMPv3=compuestoSetSNMPv3TempOID;
+				          	  	compoundSetSNMPv3 = new Vector();
+				          	  	if((compoundSetSNMPv3TempOID.size())>=1){
+				          	  	   compoundSetSNMPv3=compoundSetSNMPv3TempOID;
 				          	  	   esCompuesto=true;	
 				          	  	   reconocido=true;
 				          	  	}else{
-				          	  	   compuestoSetSNMPv3.add(new OID(request));
+				          	  	   compoundSetSNMPv3.add(new OID(request));
 				          	  	   esCompuesto=false;
 				          	  	}
 				          	  	
@@ -1602,22 +1680,22 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
 				          	  		if(!(datoInvalido)){
 				          	  			
 				          	  			if (!esCompuesto){				          	  			
-				          	  			  compuestoSetSNMPv3TempTipoDatos.add(tipoDatoReconocido);
-				          	  			  compuestoSetSNMPv3TempDatos.add(String.valueOf(valor));
+				          	  			  compoundSetSNMPv3TempTipoDatos.add(tipoDatoReconocido);
+				          	  			  compoundSetSNMPv3TempDatos.add(String.valueOf(valor));
 				          	  			}
 				          	  			
-				          	  			compuestoSetSNMPv3Valores = new Variable[compuestoSetSNMPv3.size()];
+				          	  			compoundSetSNMPv3Valores = new Variable[compoundSetSNMPv3.size()];
 				          	  			
-				          	  			for (int pp=0;pp<compuestoSetSNMPv3.size();pp++){
-					          	  			if(((compuestoSetSNMPv3TempTipoDatos.get(pp)).toString()).equals("INTEGER")){compuestoSetSNMPv3Valores[pp] = new Integer32(Integer.parseInt(String.valueOf(compuestoSetSNMPv3TempDatos.get(pp))));}
-					    					if(((compuestoSetSNMPv3TempTipoDatos.get(pp)).toString()).equals("Gauge")){compuestoSetSNMPv3Valores[pp] = new Gauge32(Long.parseLong(String.valueOf(compuestoSetSNMPv3TempDatos.get(pp))));}
-										    if(((compuestoSetSNMPv3TempTipoDatos.get(pp)).toString()).equals("IpAddress")){compuestoSetSNMPv3Valores[pp] = new IpAddress(String.valueOf(compuestoSetSNMPv3TempDatos.get(pp)));}
-										    if(((compuestoSetSNMPv3TempTipoDatos.get(pp)).toString()).equals("OBJECT IDENTIFIER")){compuestoSetSNMPv3Valores[pp] = new OID(String.valueOf(compuestoSetSNMPv3TempDatos.get(pp)));}
-										    if(((compuestoSetSNMPv3TempTipoDatos.get(pp)).toString()).equals("TimeTicks")){compuestoSetSNMPv3Valores[pp] = new TimeTicks(Long.parseLong(String.valueOf(compuestoSetSNMPv3TempDatos.get(pp))));}
-										    if(((compuestoSetSNMPv3TempTipoDatos.get(pp)).toString()).equals("Counter64")){compuestoSetSNMPv3Valores[pp] = new Counter64(Long.parseLong(String.valueOf(compuestoSetSNMPv3TempDatos.get(pp))));}
-										    if(((compuestoSetSNMPv3TempTipoDatos.get(pp)).toString()).equals("Counter")){compuestoSetSNMPv3Valores[pp] = new Counter32(Long.parseLong(String.valueOf(compuestoSetSNMPv3TempDatos.get(pp))));}
-										    if(((compuestoSetSNMPv3TempTipoDatos.get(pp)).toString()).equals("Opaque")){compuestoSetSNMPv3Valores[pp] = new Opaque(String.valueOf(compuestoSetSNMPv3TempDatos.get(pp)).getBytes());}
-										    if(((compuestoSetSNMPv3TempTipoDatos.get(pp)).toString()).equals("OCTET STRING")){compuestoSetSNMPv3Valores[pp] = new OctetString(String.valueOf(compuestoSetSNMPv3TempDatos.get(pp)));}
+				          	  			for (int pp=0;pp<compoundSetSNMPv3.size();pp++){
+					          	  			if(((compoundSetSNMPv3TempTipoDatos.get(pp)).toString()).equals("INTEGER")){compoundSetSNMPv3Valores[pp] = new Integer32(Integer.parseInt(String.valueOf(compoundSetSNMPv3TempDatos.get(pp))));}
+					    					if(((compoundSetSNMPv3TempTipoDatos.get(pp)).toString()).equals("Gauge")){compoundSetSNMPv3Valores[pp] = new Gauge32(Long.parseLong(String.valueOf(compoundSetSNMPv3TempDatos.get(pp))));}
+										    if(((compoundSetSNMPv3TempTipoDatos.get(pp)).toString()).equals("IpAddress")){compoundSetSNMPv3Valores[pp] = new IpAddress(String.valueOf(compoundSetSNMPv3TempDatos.get(pp)));}
+										    if(((compoundSetSNMPv3TempTipoDatos.get(pp)).toString()).equals("OBJECT IDENTIFIER")){compoundSetSNMPv3Valores[pp] = new OID(String.valueOf(compoundSetSNMPv3TempDatos.get(pp)));}
+										    if(((compoundSetSNMPv3TempTipoDatos.get(pp)).toString()).equals("TimeTicks")){compoundSetSNMPv3Valores[pp] = new TimeTicks(Long.parseLong(String.valueOf(compoundSetSNMPv3TempDatos.get(pp))));}
+										    if(((compoundSetSNMPv3TempTipoDatos.get(pp)).toString()).equals("Counter64")){compoundSetSNMPv3Valores[pp] = new Counter64(Long.parseLong(String.valueOf(compoundSetSNMPv3TempDatos.get(pp))));}
+										    if(((compoundSetSNMPv3TempTipoDatos.get(pp)).toString()).equals("Counter")){compoundSetSNMPv3Valores[pp] = new Counter32(Long.parseLong(String.valueOf(compoundSetSNMPv3TempDatos.get(pp))));}
+										    if(((compoundSetSNMPv3TempTipoDatos.get(pp)).toString()).equals("Opaque")){compoundSetSNMPv3Valores[pp] = new Opaque(String.valueOf(compoundSetSNMPv3TempDatos.get(pp)).getBytes());}
+										    if(((compoundSetSNMPv3TempTipoDatos.get(pp)).toString()).equals("OCTET STRING")){compoundSetSNMPv3Valores[pp] = new OctetString(String.valueOf(compoundSetSNMPv3TempDatos.get(pp)));}
 				          	  			}
 				          	  			
 				          	  			SNMPv3 manager = new SNMPv3();
@@ -1627,13 +1705,13 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
 					         	  		if ((jcb_snmpv3_setModSeg.getSelectedItem())=="NOAUTH_NOPRIV"){nivelSeguridad=SecurityLevel.NOAUTH_NOPRIV;}
 					         	  		
 					         	  		manager.cambiarIdiomaAMensajes(errorGeneral04,errorGeneral29,errorGeneral30,errorGeneral31);
-									    String answer = manager.setv3(IP, String.valueOf(pto), user, claveAut, clavePriv, nivelSeguridad,inten, timeOut, compuestoSetSNMPv3, compuestoSetSNMPv3Valores, metAut, metPriv);
+									    String answer = manager.setv3(IP, String.valueOf(pto), user, claveAut, clavePriv, nivelSeguridad,inten, timeOut, compoundSetSNMPv3, compoundSetSNMPv3Valores, metAut, metPriv);
 									    
-									    compuestoSetSNMPv3.removeAllElements();
-		    							compuestoSetSNMPv3TempOID.removeAllElements();
-		        	    				compuestoSetSNMPv3TempTipoDatos.removeAllElements();
-		        	    				compuestoSetSNMPv3TempDatos.removeAllElements();
-								        compuestoSetSNMPv3Valores=null;
+									    compoundSetSNMPv3.removeAllElements();
+		    							compoundSetSNMPv3TempOID.removeAllElements();
+		        	    				compoundSetSNMPv3TempTipoDatos.removeAllElements();
+		        	    				compoundSetSNMPv3TempDatos.removeAllElements();
+								        compoundSetSNMPv3Valores=null;
 								        jtf_snmpv3_setObjs.setText("");
 									    
 						          	  	//System.out.println("Setv3: "+answer);
@@ -1661,7 +1739,7 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
          	}
        	});
 		
-	    //----------------------------------End de Pantalla de Set---------------------------------
+	    //----------------------------------End de Set---------------------------------
 
 
   	//----------------------------End del Manager SNMPv3--------------------------------------
@@ -1797,8 +1875,8 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
   
 		////////////////////////GET
 	
-		private Vector compuestoGetSNMPv3; //To pass the multiple parameters
-    	private Vector compuestoGetSNMPv3Temp; 
+		private Vector compoundGetSNMPv3; //To pass the multiple parameters
+    	private Vector compoundGetSNMPv3Temp; 
 		////////////////////////GETNEXT
 //		private JScrollPane jsp_snmpv3_GetNextDescrip,jsp_snmpv3_GetNextResp;
 //		private JTextArea jta_snmpv3_GetNextDescrip,jta_snmpv3_GetNextResp;
@@ -1806,8 +1884,8 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
 //		private JTextField jtf_snmpv3_GetNextGetNext,jtf_snmpv3_getNextObjs;
 //		private JButton jb_snmpv3_GetNextGetNext,jb_snmpv3_getNextAdd,jb_snmpv3_getNextUndo;
 //	  	private JComboBox jcb_snmpv3_getNextModSeg;	
-	  	private Vector compuestoGetNextSNMPv3; //To pass the multiple parameters
-        private Vector compuestoGetNextSNMPv3Temp;		
+	  	private Vector compoundGetNextSNMPv3; //To pass the multiple parameters
+        private Vector compoundGetNextSNMPv3Temp;		
 		////////////////////////GETBULK
 //		private JScrollPane jsp_snmpv3_GetBulkResp;
 //		private JTextArea jta_snmpv3_GetBulkResp;
@@ -1815,8 +1893,8 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
 //		private JTextField jtf_snmpv3_nonRepe, jtf_snmpv3_maxRep, jtf_snmpv3_GetBulkGetBulk,jtf_snmpv3_getBulkObjs;
 //		private JButton jb_snmpv3_GetBulkGetBulk,jb_snmpv3_GetBulk_add,jb_snmpv3_GetBulkUndo;
 //		private JComboBox jcb_snmpv3_getBulkModSeg;
-		private Vector compuestoGetBulkSNMPv3; //To pass the multiple parameters
-    	private Vector compuestoGetBulkSNMPv3Temp;
+		private Vector compoundGetBulkSNMPv3; //To pass the multiple parameters
+    	private Vector compoundGetBulkSNMPv3Temp;
 		//////////////////////////WALK
 //		private JLabel jl_snmpv3_WalkEtiLimitePregunta, jl_snmpv3_WalkEtiLimite, jl_snmpv3_WalkEti,jl_snmpv3_getWalkModSeg;
 //		private JComboBox jcb_snmpv3_WalkEtiLimitePregunta,jcb_snmpv3_WalkModSeg;
@@ -1827,11 +1905,11 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
 		////////////////////////////SET
 
 		private int jtf_snmpv3_SetSetDigitos;		
-		private Vector compuestoSetSNMPv3; //To pass the multiple parameters
-		private Vector compuestoSetSNMPv3TempOID;
-    	private Vector compuestoSetSNMPv3TempDatos;
-    	private Vector compuestoSetSNMPv3TempTipoDatos;
-    	private Variable[] compuestoSetSNMPv3Valores; //To pass the multiple parameters
+		private Vector compoundSetSNMPv3; //To pass the multiple parameters
+		private Vector compoundSetSNMPv3TempOID;
+    	private Vector compoundSetSNMPv3TempDatos;
+    	private Vector compoundSetSNMPv3TempTipoDatos;
+    	private Variable[] compoundSetSNMPv3Valores; //To pass the multiple parameters
 
 		//////////////PANTALLA DEL GETTABLE
 //	    private JLabel jl_snmpv3_getTableEtigetTable;
@@ -1847,12 +1925,298 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
         
         
   //----------------End SNMPv3--------------------------------------------------------------------------------------------- 
+        
+        
+//---------------- MIB LOADER (TRANSITIONING) ----------------------------------
+        
+
+
+        /**
+     * Blocks or unblocks GUI operations in this frame. This method
+     * is used when performing long-running operations to inactivate
+     * the user interface.
+     *
+     * @param blocked        the blocked flag
+     */
+    public void setBlocked(boolean blocked) {
+        for (int i = 0; i < jmenubar.getMenuCount(); i++) {
+            jmenubar.getMenu(i).setEnabled(!blocked);
+        }
+        snmpPanel.setBlocked(blocked);
+    }
+
+    /**
+     * Opens the load MIB dialog.
+     */
+    protected void loadMib() {
+        OpenDialog dialog = new OpenDialog(this, browser);
+        dialog.setVisible(true);
+        loadMibsAsync(dialog.mibs);
+    }
+
+    /**
+     * Loads a MIB file from a specified source.
+     *
+     * @param src            the MIB file or URL
+     *
+     * @return true if the MIB loaded successfully, or
+     *         false otherwise
+     */
+    protected boolean loadMib(String src) {
+        String message = null;
+        setStatus("Loading " + src + "...");
+        try {
+            for (Mib mib : browser.loadMib(src)) {
+                if (mibTree.getRootNode().findChildByValue(mib) == null) {
+                    mibTree.addTreeNodes(mib);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            message = "Failed to load " + e.getMessage();
+                                JOptionPane.showMessageDialog(null, message, "Oh no!" , JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (IOException e) {
+            message = "Failed to load " + src + ": " + e.getMessage();
+                                JOptionPane.showMessageDialog(null, message, "Oh no!" , JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (MibLoaderException e) {
+            message = "Failed to load " + src;
+                                JOptionPane.showMessageDialog(null, message, "Oh no!" , JOptionPane.INFORMATION_MESSAGE);
+
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            e.getLog().printTo(new PrintStream(output));
+            descriptionArea.append(output.toString());
+        }
+        if (message != null) {
+            JOptionPane.showMessageDialog(this,
+                                          message,
+                                          "MIB Loading Error",
+                                          JOptionPane.ERROR_MESSAGE);
+        }
+        setStatus(null);
+        return message == null;
+    }
+
+    /**
+     * Loads one or more MIB modules or files in the background.
+     *
+     * @param srcs           the MIB modules, files or URLs
+     */
+    public void loadMibsAsync(String[] srcs) {
+        if (srcs != null && srcs.length > 0) {
+            descriptionArea.setText("");
+            new Loader(srcs).start();
+        }
+    }
+
+    /**
+     * Unloads the MIB file from the currently selected symbol.
+     */
+    protected void unloadMib() {
+        MibTreeNode node = getSelectedNode();
+        Mib mib = (node != null) ? node.getMib() : null;
+        if (mib != null) {
+            browser.unloadMib(mib);
+            mibTree.removeTreeNodes(mib);
+            refreshTree(false);
+        }
+    }
+
+    /**
+     * Unloads all MIB files currently loaded.
+     */
+    protected void unloadAllMibs() {
+        browser.unloadAllMibs();
+        mibTree.removeAllTreeNodes();
+        refreshTree(false);
+    }
+
+    /**
+     * Refreshes the MIB tree.
+     *
+     * @param selectAdded    the select added rows flag
+     */
+    protected void refreshTree(boolean selectAdded) {
+        for (int i = mibTree.getRowCount() - 1; i >= 0; i--) {
+            mibTree.collapseRow(i);
+        }
+        int rows = mibTree.getRowCount();
+        ((DefaultTreeModel) mibTree.getModel()).reload();
+        mibTree.repaint();
+        if (selectAdded && mibTree.getRowCount() > rows) {
+            mibTree.setSelectionRow(rows);
+        }
+    }
+
+    /**
+     * Sets the SNMP version to use.
+     *
+     * @param version        the new version number
+     */
+//    public void setSnmpVersion(int version) {
+//        snmpV1Item.setState(false);
+//        snmpV2Item.setState(false);
+//        snmpV3Item.setState(false);
+//        if (version == 1) {
+//            snmpV1Item.setState(true);
+//        } else if (version == 2) {
+//            snmpV2Item.setState(true);
+//        } else if (version == 3) {
+//            snmpV3Item.setState(true);
+//        }
+//        snmpPanel.setVersion(version);
+//    }
+
+    /**
+     * Sets the SNMP feedback flag.
+     *
+     * @param feedback       the feedback flag
+     */
+    public void setSnmpFeedback(boolean feedback) {
+        snmpPanel.setFeedback(feedback);
+    }
+
+    /**
+     * Returns the currently selected MIB node.
+     *
+     * @return the currently selected MIB node, or
+     *         null for none
+     */
+    public MibTreeNode getSelectedNode() {
+        return (MibTreeNode) mibTree.getLastSelectedPathComponent();
+    }
+
+    /**
+     * Sets the selected node based on the specified OID. The MIB
+     * that will be searched is based on the currently selected MIB
+     * node.
+     *
+     * @param oid            the OID to select
+     */
+    public void setSelectedNode(String oid) {
+
+        // Find tree node
+        MibValueSymbol symbol = browser.findMibSymbol(oid);
+        MibTreeNode node = mibTree.getTreeNode(symbol);
+        if (node == null) {
+            mibTree.clearSelection();
+            return;
+        }
+
+        // Select tree node
+        TreePath path = new TreePath(node.getPath());
+        mibTree.expandPath(path);
+        mibTree.scrollPathToVisible(path);
+        mibTree.setSelectionPath(path);
+        mibTree.repaint();
+    }
+
+    /**
+     * Sets the status label text.
+     *
+     * @param text           the status label text (or null)
+     */
+    public void setStatus(String text) {
+        if (text != null) {
+            statusLabel.setText(text);
+        } else {
+            statusLabel.setText("Ready");
+        }
+    }
+
+    /**
+     * Shows the about dialog.
+     */
+    protected void showAbout() {
+        AboutDialog dialog = new AboutDialog(this, browser.getBuildInfo());
+        dialog.setVisible(true);
+    }
+
+    /**
+     * Shows the license dialog.
+     */
+    protected void showLicense() {
+        LicenseDialog dialog = new LicenseDialog(this);
+        dialog.setVisible(true);
+    }
+
+    /**
+     * Quits this application.
+     */
+    protected void quit() {
+        System.exit(0);
+    }
+
+    /**
+     * Updates the tree selection.
+     */
+    protected void updateTreeSelection() {
+        MibTreeNode node = getSelectedNode();
+        if (node == null) {
+            descriptionArea.setText("");
+        } else {
+            descriptionArea.setText(node.getDescription());
+            descriptionArea.setCaretPosition(0);
+        }
+        snmpPanel.updateOid();
+    }
+
+
+    /**
+     * A background MIB loader. This class is needed in order to
+     * implement the runnable interface to be able to load MIB
+     * modules in a background thread.
+     */
+    private class Loader implements Runnable {
+
+        /**
+         * The MIB modules or files to load.
+         */
+        private String[] mibs;
+
+        /**
+         * Creates a new background MIB loader.
+         *
+         * @param mibs           the MIB modules or files to load
+         */
+        public Loader(String[] mibs) {
+            this.mibs = mibs;
+        }
+
+        /**
+         * Starts the background loading thread.
+         */
+        public void start() {
+            if (mibs.length > 0) {
+                new Thread(this).start();
+            }
+        }
+
+        /**
+         * Runs the MIB loading. This method should only be called by
+         * the thread created through a call to start().
+         */
+        public void run() {
+            boolean success = true;
+            setBlocked(true);
+            for (int i = 0; i < mibs.length; i++) {
+                success = success && loadMib(mibs[i]);
+            }
+            refreshTree(success);
+            setBlocked(false);
+        }
+    }
+    
+    
+//------------------------ END MIB LOADER ---------------------------
+        
+        
       ///////////----FOR THE MIBBLEBROWSER---------------------------------------------------
   
 	/**
      * The MIB tree component.
      */
-    private JTree mibTree = null;
+    private JTree mibTreeOLD = null;
             
     /**
      * The list of loaded MIB names.
@@ -1862,7 +2226,6 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
     private ArrayList loadedMibs;
     private ArrayList loadedMibsToSearchForNames;
     
-    MibLoader loaderMibs = new MibLoader();
 
 	/**
      * Loads MIB file or URL.
@@ -1876,7 +2239,7 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
      */
     private MibTreeBuilder  mb;
     private Mib             mib; 
-    public void loadMib(String src) throws IOException, MibLoaderException {
+    public void loadMibOLD(String src) throws IOException, MibLoaderException {
 
         mb = MibTreeBuilder.getInstance();
         mib = null;
@@ -1945,18 +2308,7 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
         
     }    
     
-    
-    public void loadMibFolder (String src) throws IOException, MibLoaderException {
-            
-        File file = new File("mibs/");
 
-        // The MIB file may import other MIBs (often in same dir)
-    loaderMibs.addDir(file.getParentFile());
-
-    // Once initialized, MIB loading is straight-forward
-    loaderMibs.load(file);
-    
-        }
     
             public void unloadAllMib() throws IOException, MibLoaderException {
 
@@ -1996,48 +2348,48 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
                 currentDir = files[0].getParentFile();
                 //descriptionArea.setText("");
                 for (int i = 0; i < files.length; i++) {
-                	loadMib(files[i].toString());
+                	loadMibOLD(files[i].toString());
             	}
-                //loadMib(files);
+                //loadMibOLD(files);
                 refreshTree();
             }
         }
     }
     
-    protected void loadMib() throws Exception{
+    protected void loadMibOLD() throws Exception{
     	
 
-loadMib("mibs/RFC1213-MIB");
-loadMib("mibs/ALL/GDC4S-ASSIGNMENTS-MIB.txt");
-loadMib("mibs/ALL/GDC4S-COMMON-NOTIFICATIONS-MIB.txt");
-loadMib("mibs/ALL/GDC4S-ENCRYPTION-PRODUCTS-COMMON-MIB.txt");
-loadMib("mibs/ALL/GDC4S-ENCRYPTION-PRODUCTS-MIB.txt");
-loadMib("mibs/ALL/GDC4S-EXTENSION-MIB.txt");
-loadMib("mibs/ALL/GDC4S-FEATURE-MIB.txt");
-loadMib("mibs/ALL/GDC4S-VLAN-MIB.txt");
-loadMib("mibs/ALL/HAIPE-ASSIGNMENTS-MIB.txt");
-loadMib("mibs/ALL/HAIPE-COMPLIANCE-MIB.txt");
-loadMib("mibs/ALL/HAIPE-FEATURE-HIERARCHY-MIB.txt");
-loadMib("mibs/ALL/HAIPE-KEY-TRANSFER-MIB.txt");
-loadMib("mibs/ALL/HAIPE-MANAGEMENT-MIB.txt");
-loadMib("mibs/ALL/HAIPE-NETWORKING-DISCOVERY-MIB.txt");
-loadMib("mibs/ALL/HAIPE-NETWORKING-MIB.txt");
-loadMib("mibs/ALL/HAIPE-TC-MIB.txt");
-loadMib("mibs/ALL/HAIPE-TRAFFIC-PROTECTION-MIB.txt");
-loadMib("mibs/ALL/HAIPE-V040100-MIB.txt");
-loadMib("mibs/ALL/HAIPE-V4-BANDWIDTH-MANAGEMENT-MIB.txt");
-loadMib("mibs/ALL/HAIPE-V4-COMPLIANCE-MIB.txt");
-loadMib("mibs/ALL/HAIPE-V4-DISCOVERY-MIB.txt");
-loadMib("mibs/ALL/HAIPE-V4-DMDK-MIB.txt");
-loadMib("mibs/ALL/HAIPE-V4-FEATURE-HIERARCHY-MIB.txt");
-loadMib("mibs/ALL/HAIPE-V4-KEY-INFORMATION-MIB.txt");
-loadMib("mibs/ALL/HAIPE-V4-KEY-TRANSFER-MIB.txt");
-loadMib("mibs/ALL/HAIPE-V4-KMI-MIB.txt");
-loadMib("mibs/ALL/HAIPE-V4-MANAGEMENT-MIB.txt");
-loadMib("mibs/ALL/HAIPE-V4-NETWORKING-MIB.txt");
-loadMib("mibs/ALL/HAIPE-V4-ROHC-MIB.txt");
-loadMib("mibs/ALL/HAIPE-V4-TEXTUAL-CONVENTIONS-MIB.txt");
-loadMib("mibs/ALL/HAIPE-V4-TRAFFIC-PROTECTION-MIB.txt");
+loadMibOLD("mibs/RFC1213-MIB");
+loadMibOLD("mibs/ALL/GDC4S-ASSIGNMENTS-MIB.txt");
+loadMibOLD("mibs/ALL/GDC4S-COMMON-NOTIFICATIONS-MIB.txt");
+loadMibOLD("mibs/ALL/GDC4S-ENCRYPTION-PRODUCTS-COMMON-MIB.txt");
+loadMibOLD("mibs/ALL/GDC4S-ENCRYPTION-PRODUCTS-MIB.txt");
+loadMibOLD("mibs/ALL/GDC4S-EXTENSION-MIB.txt");
+loadMibOLD("mibs/ALL/GDC4S-FEATURE-MIB.txt");
+loadMibOLD("mibs/ALL/GDC4S-VLAN-MIB.txt");
+loadMibOLD("mibs/ALL/HAIPE-ASSIGNMENTS-MIB.txt");
+loadMibOLD("mibs/ALL/HAIPE-COMPLIANCE-MIB.txt");
+loadMibOLD("mibs/ALL/HAIPE-FEATURE-HIERARCHY-MIB.txt");
+loadMibOLD("mibs/ALL/HAIPE-KEY-TRANSFER-MIB.txt");
+loadMibOLD("mibs/ALL/HAIPE-MANAGEMENT-MIB.txt");
+loadMibOLD("mibs/ALL/HAIPE-NETWORKING-DISCOVERY-MIB.txt");
+loadMibOLD("mibs/ALL/HAIPE-NETWORKING-MIB.txt");
+loadMibOLD("mibs/ALL/HAIPE-TC-MIB.txt");
+loadMibOLD("mibs/ALL/HAIPE-TRAFFIC-PROTECTION-MIB.txt");
+loadMibOLD("mibs/ALL/HAIPE-V040100-MIB.txt");
+loadMibOLD("mibs/ALL/HAIPE-V4-BANDWIDTH-MANAGEMENT-MIB.txt");
+loadMibOLD("mibs/ALL/HAIPE-V4-COMPLIANCE-MIB.txt");
+loadMibOLD("mibs/ALL/HAIPE-V4-DISCOVERY-MIB.txt");
+loadMibOLD("mibs/ALL/HAIPE-V4-DMDK-MIB.txt");
+loadMibOLD("mibs/ALL/HAIPE-V4-FEATURE-HIERARCHY-MIB.txt");
+loadMibOLD("mibs/ALL/HAIPE-V4-KEY-INFORMATION-MIB.txt");
+loadMibOLD("mibs/ALL/HAIPE-V4-KEY-TRANSFER-MIB.txt");
+loadMibOLD("mibs/ALL/HAIPE-V4-KMI-MIB.txt");
+loadMibOLD("mibs/ALL/HAIPE-V4-MANAGEMENT-MIB.txt");
+loadMibOLD("mibs/ALL/HAIPE-V4-NETWORKING-MIB.txt");
+loadMibOLD("mibs/ALL/HAIPE-V4-ROHC-MIB.txt");
+loadMibOLD("mibs/ALL/HAIPE-V4-TEXTUAL-CONVENTIONS-MIB.txt");
+loadMibOLD("mibs/ALL/HAIPE-V4-TRAFFIC-PROTECTION-MIB.txt");
 //loadMib("mibs/ALL/HOST-RESOURCES-MIB.txt");
 //loadMib("mibs/ALL/IANA-RTPROTO-MIB.txt");
 //loadMib("mibs/ALL/IANA-TUNNELTYPE-MIB.txt");
@@ -2059,7 +2411,7 @@ loadMib("mibs/ALL/HAIPE-V4-TRAFFIC-PROTECTION-MIB.txt");
 //loadMib("mibs/ALL/SNMP-USM-AES-MIB.txt");
 //loadMib("mibs/ALL/SNMP-VIEW-BASED-ACM-MIB.txt");
 //loadMib("mibs/ALL/SNMPv2-CONF.txt");
-loadMib("mibs/ALL/SNMPv2-MIB.txt");
+loadMibOLD("mibs/ALL/SNMPv2-MIB.txt");
 //loadMib("mibs/ALL/SNMPv2-SMI.txt");
 //loadMib("mibs/ALL/SNMPv2-TC.txt");
 //loadMib("mibs/ALL/TACLANE-MICRO-COMMON-MIB.txt");
@@ -2076,8 +2428,8 @@ loadMib("mibs/ALL/SNMPv2-MIB.txt");
      * Refreshes the MIB tree.
      */
     public void refreshTree() {
-        ((DefaultTreeModel) mibTree.getModel()).reload();
-        mibTree.repaint();
+        ((DefaultTreeModel) mibTreeOLD.getModel()).reload();
+        mibTreeOLD.repaint();
     }
 
 	/**
@@ -2086,15 +2438,15 @@ loadMib("mibs/ALL/SNMPv2-MIB.txt");
      * @return the currently selected MIB node, or
      *         null for none
      */
-    public MibNode getSelectedNode() {
-        return (MibNode) mibTree.getLastSelectedPathComponent();
+    public MibNode getSelectedNodeOLD() {
+        return (MibNode) mibTreeOLD.getLastSelectedPathComponent();
     }
     
     /**
      * Updates the tree selection.
      */
-    protected void updateTreeSelection() {// Aqui es necesario colocar todos los 
-        MibNode  node = getSelectedNode();
+    protected void updateTreeSelectionOLD() {// Aqui es necesario colocar todos los 
+        MibNode  node = getSelectedNodeOLD();
 
         if (node == null) {
 
@@ -2318,7 +2670,7 @@ loadMib("mibs/ALL/SNMPv2-MIB.txt");
 	}
 	
 	//para validar que el parametro no sea vacio, si lo es retorna verdad sino falso
-	public boolean esVacio(String parametro){
+	public boolean isEmpty(String parametro){
 	  boolean answer = false;	
 	  if(parametro.equals("")){
 	  	answer=true;	
@@ -2353,7 +2705,7 @@ loadMib("mibs/ALL/SNMPv2-MIB.txt");
       String men_err = "";
           	boolean men_err_l = false;
 
-          		if (esVacio(jtf_snmpv3_IP.getText())){          			
+          		if (isEmpty(jtf_snmpv3_IP.getText())){          			
           		  men_err = men_err.concat(configParamError01);	 	
           	  	  men_err_l =true;
           	  	}
@@ -2369,13 +2721,13 @@ loadMib("mibs/ALL/SNMPv2-MIB.txt");
           	  	  men_err_l =true;
           	  	}
 
-          	  	if (esVacio(jpf_snmpv3_User.getText())){          			
+          	  	if (isEmpty(jpf_snmpv3_User.getText())){          			
           		  men_err = men_err.concat(configParamError10);	 	
           	  	  men_err_l =true;
           	  	}
           	  	
           	  	//jpf_snmpv3_Aut
-          	  	if (esVacio(jpf_snmpv3_Aut.getText())){          			
+          	  	if (isEmpty(jpf_snmpv3_Aut.getText())){          			
           		  men_err = men_err.concat(configParamError11);	 	
           	  	  men_err_l =true;
           	  	}
@@ -2386,7 +2738,7 @@ loadMib("mibs/ALL/SNMPv2-MIB.txt");
           	  	}
           	  	
           	  	//jpf_snmpv3_Priv
-          	  	if (esVacio(jpf_snmpv3_Priv.getText())){          			
+          	  	if (isEmpty(jpf_snmpv3_Priv.getText())){          			
           		  men_err = men_err.concat(configParamError13);	 	
           	  	  men_err_l =true;
           	  	}
@@ -2418,17 +2770,17 @@ loadMib("mibs/ALL/SNMPv2-MIB.txt");
 
           		if (men_err_l){          			
 				JOptionPane.showMessageDialog(AppGo.this,men_err,nameOfTheProgram,JOptionPane.ERROR_MESSAGE,(new ImageIcon("images/no.gif")));  	          	  	          	  
-		    	if (esVacio(jtf_snmpv3_IP.getText())){jtf_snmpv3_IP.setText(String.valueOf(IP));}
+		    	if (isEmpty(jtf_snmpv3_IP.getText())){jtf_snmpv3_IP.setText(String.valueOf(IP));}
 		    	if (!(ipValida(jtf_snmpv3_IP.getText()))){jtf_snmpv3_IP.setText(String.valueOf(IP));}
 		    	if (!(esNumero(jtt_snmpv3_timeOut.getText()))){jtt_snmpv3_timeOut.setText(String.valueOf(timeOut));}
 		    	if ((esNumero(jtt_snmpv3_timeOut.getText()))&&(Integer.parseInt(jtt_snmpv3_timeOut.getText())<=0)){jtt_snmpv3_timeOut.setText(String.valueOf(timeOut));}
 		    	if (!(esNumero(jtf_snmv3_inten.getText()))){jtf_snmv3_inten.setText(String.valueOf(inten));}
 		    	if ((esNumero(jtf_snmv3_inten.getText()))&&(Integer.parseInt(jtf_snmv3_inten.getText())<=0)){jtf_snmv3_inten.setText(String.valueOf(inten));}
 				if (!(esNumero(jtf_snmpv3_pto.getText()))){jtf_snmpv3_pto.setText(String.valueOf(pto));}    
-				if (esVacio(jpf_snmpv3_User.getText())){jpf_snmpv3_User.setText(String.valueOf(user));}   
-				if (esVacio(jpf_snmpv3_Aut.getText())){jpf_snmpv3_Aut.setText(String.valueOf(claveAut));}
+				if (isEmpty(jpf_snmpv3_User.getText())){jpf_snmpv3_User.setText(String.valueOf(user));}   
+				if (isEmpty(jpf_snmpv3_Aut.getText())){jpf_snmpv3_Aut.setText(String.valueOf(claveAut));}
 				if ((jpf_snmpv3_Aut.getText()).length()<8){jpf_snmpv3_Aut.setText(String.valueOf(claveAut));}
-				if (esVacio(jpf_snmpv3_Priv.getText())){jpf_snmpv3_Priv.setText(String.valueOf(clavePriv));}
+				if (isEmpty(jpf_snmpv3_Priv.getText())){jpf_snmpv3_Priv.setText(String.valueOf(clavePriv));}
 				if ((jpf_snmpv3_Priv.getText()).length()<8){jpf_snmpv3_Priv.setText(String.valueOf(clavePriv));}
 
 				} else {       
@@ -2619,9 +2971,7 @@ loadMib("mibs/ALL/SNMPv2-MIB.txt");
         jp_mibtree = new javax.swing.JPanel();
         jsp_mibtree = new javax.swing.JScrollPane();
         jPanel10 = new javax.swing.JPanel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
-        jTextField4 = new javax.swing.JTextField();
+        jScrollPaneMIBTreeBrowser = new javax.swing.JScrollPane();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jsp_snmpv3_getDescrip = new javax.swing.JScrollPane();
@@ -2722,6 +3072,8 @@ loadMib("mibs/ALL/SNMPv2-MIB.txt");
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
+        jMenuMIBTreeMIBLoader = new javax.swing.JMenu();
+        jMenuItemLoadMIB = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         jmi_helpHelp = new javax.swing.JMenuItem();
         jmi_about = new javax.swing.JMenuItem();
@@ -2930,37 +3282,24 @@ loadMib("mibs/ALL/SNMPv2-MIB.txt");
 
         jTabbedPane2.addTab("MIB Tree", jp_mibtree);
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane4.setViewportView(jList1);
-
-        jTextField4.setText("not setup yet");
-
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
         jPanel10Layout.setHorizontalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE))
+                .addComponent(jScrollPaneMIBTreeBrowser, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel10Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
+                .addComponent(jScrollPaneMIBTreeBrowser, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        jTabbedPane2.addTab("MIB List", jPanel10);
+        jTabbedPane2.addTab("Test MIB Tree", jPanel10);
 
         jSplitPane1.setLeftComponent(jTabbedPane2);
 
@@ -3535,6 +3874,11 @@ loadMib("mibs/ALL/SNMPv2-MIB.txt");
 
         MenuItemImportMIB.setMnemonic('t');
         MenuItemImportMIB.setText("Import MIB");
+        MenuItemImportMIB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuItemImportMIBActionPerformed(evt);
+            }
+        });
         editMenu.add(MenuItemImportMIB);
 
         copyMenuItem.setMnemonic('y');
@@ -3572,6 +3916,18 @@ loadMib("mibs/ALL/SNMPv2-MIB.txt");
         editMenu.add(jMenu1);
 
         jmenubar.add(editMenu);
+
+        jMenuMIBTreeMIBLoader.setText("Test");
+
+        jMenuItemLoadMIB.setText("Load MIB");
+        jMenuItemLoadMIB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemLoadMIBActionPerformed(evt);
+            }
+        });
+        jMenuMIBTreeMIBLoader.add(jMenuItemLoadMIB);
+
+        jmenubar.add(jMenuMIBTreeMIBLoader);
 
         helpMenu.setMnemonic('h');
         helpMenu.setText("Help");
@@ -3692,6 +4048,17 @@ loadMib("mibs/ALL/SNMPv2-MIB.txt");
     }
     }//GEN-LAST:event_copyMenuItemActionPerformed
 
+    private void MenuItemImportMIBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItemImportMIBActionPerformed
+        // TODO add your handling code here:
+        try {loadNewMib();} catch (Exception e1){}
+    }//GEN-LAST:event_MenuItemImportMIBActionPerformed
+
+    private void jMenuItemLoadMIBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemLoadMIBActionPerformed
+        // TODO add your handling code here:
+        loadMib();
+        updateTreeSelection();
+    }//GEN-LAST:event_jMenuItemLoadMIBActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -3781,7 +4148,6 @@ loadMib("mibs/ALL/SNMPv2-MIB.txt");
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JList<String> jListSessions;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuItem jMenuItem1;
@@ -3791,6 +4157,8 @@ loadMib("mibs/ALL/SNMPv2-MIB.txt");
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItemLoadMIB;
+    private javax.swing.JMenu jMenuMIBTreeMIBLoader;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
@@ -3804,12 +4172,11 @@ loadMib("mibs/ALL/SNMPv2-MIB.txt");
     private javax.swing.JPanel jPanelTopBar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPaneMIBTreeBrowser;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTextArea jTextAreaLog;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextFieldFilter;
     private javax.swing.JButton jb_snmpv3_GetBulkGetBulk;
     private javax.swing.JButton jb_snmpv3_GetBulkUndo;

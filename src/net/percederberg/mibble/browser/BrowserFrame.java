@@ -346,10 +346,16 @@ public class BrowserFrame extends JFrame {
             }
         } catch (FileNotFoundException e) {
             message = "Failed to load " + e.getMessage();
+                                JOptionPane.showMessageDialog(null, message, "Oh no!" , JOptionPane.INFORMATION_MESSAGE);
+
         } catch (IOException e) {
             message = "Failed to load " + src + ": " + e.getMessage();
+                                JOptionPane.showMessageDialog(null, message, "Oh no!" , JOptionPane.INFORMATION_MESSAGE);
+
         } catch (MibLoaderException e) {
             message = "Failed to load " + src;
+                                JOptionPane.showMessageDialog(null, message, "Oh no!" , JOptionPane.INFORMATION_MESSAGE);
+
             ByteArrayOutputStream output = new ByteArrayOutputStream();
             e.getLog().printTo(new PrintStream(output));
             descriptionArea.append(output.toString());

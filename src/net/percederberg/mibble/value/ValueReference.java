@@ -8,6 +8,7 @@
 
 package net.percederberg.mibble.value;
 
+import javax.swing.JOptionPane;
 import net.percederberg.mibble.MibContext;
 import net.percederberg.mibble.MibException;
 import net.percederberg.mibble.MibFileRef;
@@ -150,6 +151,8 @@ public class ValueReference extends MibValue {
                 message = "missing import for '" + name + "', using " +
                           sym.getMib().getName();
                 log.addWarning(fileRef, message);
+                                    JOptionPane.showMessageDialog(null, message, "Oh no!" , JOptionPane.INFORMATION_MESSAGE);
+
             }
         }
         return sym;

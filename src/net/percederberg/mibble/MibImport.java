@@ -78,12 +78,15 @@ public class MibImport implements MibContext {
             String msg = "couldn't find referenced MIB '" + name + "', " +
                          "skipping import of " + symbols.size() + " symbols";
             log.addWarning(fileRef, msg);
+                    JOptionPane.showMessageDialog(null, msg, "Oh no!" , JOptionPane.INFORMATION_MESSAGE);
         } else if (symbols != null) {
             for (String sym : symbols) {
                 if (mib.getSymbol(sym) == null) {
                     String msg = "couldn't find imported symbol '" + sym +
                                  "' in MIB '" + name + "'";
                     log.addWarning(fileRef, msg);
+                    JOptionPane.showMessageDialog(null, msg, "Oh no!" , JOptionPane.INFORMATION_MESSAGE);
+                    
                 }
             }
         }
@@ -104,6 +107,8 @@ public class MibImport implements MibContext {
             String msg = "imported " + name + " module is SMIv" + importedVer +
                          ", instead of SMIv" + expectedVer;
             log.addWarning(fileRef, msg);
+            //JOptionPane.showMessageDialog(null, msg, "Oh no!" , JOptionPane.INFORMATION_MESSAGE);
+            
         }
     }
 

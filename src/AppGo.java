@@ -1,4 +1,5 @@
 
+import java.awt.Desktop;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,6 +21,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -67,13 +69,11 @@ import net.percederberg.mibble.MibTypeTag;
 import net.percederberg.mibble.MibValueSymbol;
 import net.percederberg.mibble.MibbleBrowser;
 import net.percederberg.mibble.browser.AboutDialog;
-import net.percederberg.mibble.browser.BrowserFrame;
 import net.percederberg.mibble.browser.LicenseDialog;
 import net.percederberg.mibble.browser.MibTree;
 import net.percederberg.mibble.browser.MibTreeNode;
 import net.percederberg.mibble.browser.OpenDialog;
 import net.percederberg.mibble.browser.SnmpPanel;
-import net.percederberg.mibble.value.ObjectIdentifierValue;
 import org.snmp4j.security.AuthMD5;
 import org.snmp4j.security.AuthSHA;
 import org.snmp4j.security.PrivAES128;
@@ -246,7 +246,8 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
         initComponents();
         unzipfiles();
         getSessionList();
-        prefs = Preferences.userNodeForPackage(getClass());
+
+        //prefs = Preferences.userNodeForPackage(getClass());
         try {
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
             // turn off bold fonts
@@ -275,6 +276,12 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
                 {
                     System.exit(0);
                 }
+            }
+            @Override
+            public void windowOpened(WindowEvent e) {
+//                jMenuItemPresetGD.doClick();
+//                jMenuItemPresetViaSat.doClick();
+//                jMenuItemPresetL3.doClick();
             }
         });
         
@@ -1861,7 +1868,9 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
 
   	  //End de SNMPv3-----------------------------------------------------------------------------------------------------
   	  
-        
+        jMenuItemPresetGD.doClick();
+                jMenuItemPresetViaSat.doClick();
+                jMenuItemPresetL3.doClick();
 
     }
     
@@ -2026,9 +2035,11 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
      * Unloads all MIB files currently loaded.
      */
     protected void unloadAllMibs() {
+
         browser.unloadAllMibs();
         mibTree.removeAllTreeNodes();
         refreshTree(false);
+        
     }
 
     /**
@@ -2310,7 +2321,7 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
     
 
     
-            public void unloadAllMib() throws IOException, MibLoaderException {
+    public void unloadAllMib() throws IOException, MibLoaderException {
 
         mb = MibTreeBuilder.getInstance();
 
@@ -2320,8 +2331,10 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
             //System.out.println(mib.getName());
             mb.unloadMib((String) loadedMibs.get(i));
         }
- 
-        
+        loadedMibs.removeAll(loadedMibs);
+
+        loadedMibsToSearchForNames.removeAll(loadedMibsToSearchForNames);
+
     }
 
         
@@ -2359,37 +2372,37 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
     protected void loadMibOLD() throws Exception{
     	
 
-loadMibOLD("mibs/RFC1213-MIB");
-loadMibOLD("mibs/ALL/GDC4S-ASSIGNMENTS-MIB.txt");
-loadMibOLD("mibs/ALL/GDC4S-COMMON-NOTIFICATIONS-MIB.txt");
-loadMibOLD("mibs/ALL/GDC4S-ENCRYPTION-PRODUCTS-COMMON-MIB.txt");
-loadMibOLD("mibs/ALL/GDC4S-ENCRYPTION-PRODUCTS-MIB.txt");
-loadMibOLD("mibs/ALL/GDC4S-EXTENSION-MIB.txt");
-loadMibOLD("mibs/ALL/GDC4S-FEATURE-MIB.txt");
-loadMibOLD("mibs/ALL/GDC4S-VLAN-MIB.txt");
-loadMibOLD("mibs/ALL/HAIPE-ASSIGNMENTS-MIB.txt");
-loadMibOLD("mibs/ALL/HAIPE-COMPLIANCE-MIB.txt");
-loadMibOLD("mibs/ALL/HAIPE-FEATURE-HIERARCHY-MIB.txt");
-loadMibOLD("mibs/ALL/HAIPE-KEY-TRANSFER-MIB.txt");
-loadMibOLD("mibs/ALL/HAIPE-MANAGEMENT-MIB.txt");
-loadMibOLD("mibs/ALL/HAIPE-NETWORKING-DISCOVERY-MIB.txt");
-loadMibOLD("mibs/ALL/HAIPE-NETWORKING-MIB.txt");
-loadMibOLD("mibs/ALL/HAIPE-TC-MIB.txt");
-loadMibOLD("mibs/ALL/HAIPE-TRAFFIC-PROTECTION-MIB.txt");
-loadMibOLD("mibs/ALL/HAIPE-V040100-MIB.txt");
-loadMibOLD("mibs/ALL/HAIPE-V4-BANDWIDTH-MANAGEMENT-MIB.txt");
-loadMibOLD("mibs/ALL/HAIPE-V4-COMPLIANCE-MIB.txt");
-loadMibOLD("mibs/ALL/HAIPE-V4-DISCOVERY-MIB.txt");
-loadMibOLD("mibs/ALL/HAIPE-V4-DMDK-MIB.txt");
-loadMibOLD("mibs/ALL/HAIPE-V4-FEATURE-HIERARCHY-MIB.txt");
-loadMibOLD("mibs/ALL/HAIPE-V4-KEY-INFORMATION-MIB.txt");
-loadMibOLD("mibs/ALL/HAIPE-V4-KEY-TRANSFER-MIB.txt");
-loadMibOLD("mibs/ALL/HAIPE-V4-KMI-MIB.txt");
-loadMibOLD("mibs/ALL/HAIPE-V4-MANAGEMENT-MIB.txt");
-loadMibOLD("mibs/ALL/HAIPE-V4-NETWORKING-MIB.txt");
-loadMibOLD("mibs/ALL/HAIPE-V4-ROHC-MIB.txt");
-loadMibOLD("mibs/ALL/HAIPE-V4-TEXTUAL-CONVENTIONS-MIB.txt");
-loadMibOLD("mibs/ALL/HAIPE-V4-TRAFFIC-PROTECTION-MIB.txt");
+//loadMibOLD("mibs/RFC1213-MIB");
+//loadMibOLD("mibs/ALL/GDC4S-ASSIGNMENTS-MIB.txt");
+//loadMibOLD("mibs/ALL/GDC4S-COMMON-NOTIFICATIONS-MIB.txt");
+//loadMibOLD("mibs/ALL/GDC4S-ENCRYPTION-PRODUCTS-COMMON-MIB.txt");
+//loadMibOLD("mibs/ALL/GDC4S-ENCRYPTION-PRODUCTS-MIB.txt");
+//loadMibOLD("mibs/ALL/GDC4S-EXTENSION-MIB.txt");
+//loadMibOLD("mibs/ALL/GDC4S-FEATURE-MIB.txt");
+//loadMibOLD("mibs/ALL/GDC4S-VLAN-MIB.txt");
+//loadMibOLD("mibs/ALL/HAIPE-ASSIGNMENTS-MIB.txt");
+//loadMibOLD("mibs/ALL/HAIPE-COMPLIANCE-MIB.txt");
+//loadMibOLD("mibs/ALL/HAIPE-FEATURE-HIERARCHY-MIB.txt");
+//loadMibOLD("mibs/ALL/HAIPE-KEY-TRANSFER-MIB.txt");
+//loadMibOLD("mibs/ALL/HAIPE-MANAGEMENT-MIB.txt");
+//loadMibOLD("mibs/ALL/HAIPE-NETWORKING-DISCOVERY-MIB.txt");
+//loadMibOLD("mibs/ALL/HAIPE-NETWORKING-MIB.txt");
+//loadMibOLD("mibs/ALL/HAIPE-TC-MIB.txt");
+//loadMibOLD("mibs/ALL/HAIPE-TRAFFIC-PROTECTION-MIB.txt");
+//loadMibOLD("mibs/ALL/HAIPE-V040100-MIB.txt");
+//loadMibOLD("mibs/ALL/HAIPE-V4-BANDWIDTH-MANAGEMENT-MIB.txt");
+//loadMibOLD("mibs/ALL/HAIPE-V4-COMPLIANCE-MIB.txt");
+//loadMibOLD("mibs/ALL/HAIPE-V4-DISCOVERY-MIB.txt");
+//loadMibOLD("mibs/ALL/HAIPE-V4-DMDK-MIB.txt");
+//loadMibOLD("mibs/ALL/HAIPE-V4-FEATURE-HIERARCHY-MIB.txt");
+//loadMibOLD("mibs/ALL/HAIPE-V4-KEY-INFORMATION-MIB.txt");
+//loadMibOLD("mibs/ALL/HAIPE-V4-KEY-TRANSFER-MIB.txt");
+//loadMibOLD("mibs/ALL/HAIPE-V4-KMI-MIB.txt");
+//loadMibOLD("mibs/ALL/HAIPE-V4-MANAGEMENT-MIB.txt");
+//loadMibOLD("mibs/ALL/HAIPE-V4-NETWORKING-MIB.txt");
+//loadMibOLD("mibs/ALL/HAIPE-V4-ROHC-MIB.txt");
+//loadMibOLD("mibs/ALL/HAIPE-V4-TEXTUAL-CONVENTIONS-MIB.txt");
+//loadMibOLD("mibs/ALL/HAIPE-V4-TRAFFIC-PROTECTION-MIB.txt");
 //loadMib("mibs/ALL/HOST-RESOURCES-MIB.txt");
 //loadMib("mibs/ALL/IANA-RTPROTO-MIB.txt");
 //loadMib("mibs/ALL/IANA-TUNNELTYPE-MIB.txt");
@@ -2411,7 +2424,7 @@ loadMibOLD("mibs/ALL/HAIPE-V4-TRAFFIC-PROTECTION-MIB.txt");
 //loadMib("mibs/ALL/SNMP-USM-AES-MIB.txt");
 //loadMib("mibs/ALL/SNMP-VIEW-BASED-ACM-MIB.txt");
 //loadMib("mibs/ALL/SNMPv2-CONF.txt");
-loadMibOLD("mibs/ALL/SNMPv2-MIB.txt");
+//loadMibOLD("mibs/ALL/SNMPv2-MIB.txt");
 //loadMib("mibs/ALL/SNMPv2-SMI.txt");
 //loadMib("mibs/ALL/SNMPv2-TC.txt");
 //loadMib("mibs/ALL/TACLANE-MICRO-COMMON-MIB.txt");
@@ -3065,14 +3078,11 @@ loadMibOLD("mibs/ALL/SNMPv2-MIB.txt");
         MenuItemImportMIB = new javax.swing.JMenuItem();
         copyMenuItem = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
-        jMenuItem7 = new javax.swing.JMenuItem();
+        jMenuItemPresetGD = new javax.swing.JMenuItem();
+        jMenuItemPresetViaSat = new javax.swing.JMenuItem();
+        jMenuItemPresetL3 = new javax.swing.JMenuItem();
         jMenuMIBTreeMIBLoader = new javax.swing.JMenu();
+        jMenuItemMIBTest = new javax.swing.JMenuItem();
         jMenuItemLoadMIB = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         jmi_helpHelp = new javax.swing.JMenuItem();
@@ -3268,6 +3278,8 @@ loadMibOLD("mibs/ALL/SNMPv2-MIB.txt");
         );
 
         jSplitPane1.setDividerLocation(300);
+
+        jTabbedPane2.setToolTipText("This is where Mr. Bray tests things.");
 
         javax.swing.GroupLayout jp_mibtreeLayout = new javax.swing.GroupLayout(jp_mibtree);
         jp_mibtree.setLayout(jp_mibtreeLayout);
@@ -3871,6 +3883,7 @@ loadMibOLD("mibs/ALL/SNMPv2-MIB.txt");
 
         editMenu.setMnemonic('e');
         editMenu.setText("MIBs");
+        editMenu.setEnabled(false);
 
         MenuItemImportMIB.setMnemonic('t');
         MenuItemImportMIB.setText("Import MIB");
@@ -3892,26 +3905,29 @@ loadMibOLD("mibs/ALL/SNMPv2-MIB.txt");
 
         jMenu1.setText("Presets");
 
-        jMenuItem1.setText("3.5");
-        jMenu1.add(jMenuItem1);
+        jMenuItemPresetGD.setText("General Dynamics");
+        jMenuItemPresetGD.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemPresetGDActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItemPresetGD);
 
-        jMenuItem2.setText("4.1");
-        jMenu1.add(jMenuItem2);
+        jMenuItemPresetViaSat.setText("ViaSat");
+        jMenuItemPresetViaSat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemPresetViaSatActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItemPresetViaSat);
 
-        jMenuItem3.setText("4.1v2");
-        jMenu1.add(jMenuItem3);
-
-        jMenuItem4.setText("4.1v5");
-        jMenu1.add(jMenuItem4);
-
-        jMenuItem5.setText("4.1v6");
-        jMenu1.add(jMenuItem5);
-
-        jMenuItem6.setText("4.1v7");
-        jMenu1.add(jMenuItem6);
-
-        jMenuItem7.setText("4.2v1");
-        jMenu1.add(jMenuItem7);
+        jMenuItemPresetL3.setText("L3");
+        jMenuItemPresetL3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemPresetL3ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItemPresetL3);
 
         editMenu.add(jMenu1);
 
@@ -3919,7 +3935,16 @@ loadMibOLD("mibs/ALL/SNMPv2-MIB.txt");
 
         jMenuMIBTreeMIBLoader.setText("Test");
 
+        jMenuItemMIBTest.setText("MIB Checker");
+        jMenuItemMIBTest.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemMIBTestActionPerformed(evt);
+            }
+        });
+        jMenuMIBTreeMIBLoader.add(jMenuItemMIBTest);
+
         jMenuItemLoadMIB.setText("Load MIB");
+        jMenuItemLoadMIB.setEnabled(false);
         jMenuItemLoadMIB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemLoadMIBActionPerformed(evt);
@@ -4059,6 +4084,310 @@ loadMibOLD("mibs/ALL/SNMPv2-MIB.txt");
         updateTreeSelection();
     }//GEN-LAST:event_jMenuItemLoadMIBActionPerformed
 
+    private void jMenuItemMIBTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemMIBTestActionPerformed
+        // TODO add your handling code here:
+                        String inputPdf = "apps/MIBChecker.jar";
+        InputStream manualAsStream = getClass().getClassLoader().getResourceAsStream(inputPdf);
+
+        Path tempOutput = null;
+        try {
+            tempOutput = Files.createTempFile("TempFile", ".jar");
+        } catch (IOException ex) {
+            Logger.getLogger(AppGo.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("AppGo.jMenuItemMIBTestActionPerformed()");
+        }
+        tempOutput.toFile().deleteOnExit();
+
+        try {
+            Files.copy(manualAsStream, tempOutput, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException ex) {
+            Logger.getLogger(AppGo.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("AppGo.jMenuItemMIBTestActionPerformed()");
+        }
+
+            File userManual = new File (tempOutput.toFile().getPath());
+            if (userManual.exists())
+        {
+            try {
+                Desktop.getDesktop().open(userManual);
+            } catch (IOException ex) {
+                Logger.getLogger(AppGo.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("AppGo.jMenuItemMIBTestActionPerformed()");
+            }
+
+        }
+    }//GEN-LAST:event_jMenuItemMIBTestActionPerformed
+
+    private void jMenuItemPresetGDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemPresetGDActionPerformed
+    try {
+        // TODO add your handling code here:
+        //unloadAllMib();
+loadMibOLD("mibs/gd/GDC4S-ASSIGNMENTS-MIB");
+loadMibOLD("mibs/gd/GDC4S-COMMON-NOTIFICATIONS-MIB");
+loadMibOLD("mibs/gd/GDC4S-DPI-MIB");
+loadMibOLD("mibs/gd/GDC4S-ENCRYPTION-PRODUCTS-COMMON-MIB");
+loadMibOLD("mibs/gd/GDC4S-ENCRYPTION-PRODUCTS-MIB");
+loadMibOLD("mibs/gd/GDC4S-EXTENSION-MIB");
+loadMibOLD("mibs/gd/GDC4S-FEATURE-MIB");
+loadMibOLD("mibs/gd/GDC4S-PACKET-STATISTICS-MIB");
+loadMibOLD("mibs/gd/GDC4S-VLAN-MIB");
+loadMibOLD("mibs/gd/HAIPE-ASSIGNMENTS-MIB");
+loadMibOLD("mibs/gd/HAIPE-COMPLIANCE-MIB");
+loadMibOLD("mibs/gd/HAIPE-FEATURE-HIERARCHY-MIB");
+loadMibOLD("mibs/gd/HAIPE-KEY-TRANSFER-MIB");
+loadMibOLD("mibs/gd/HAIPE-MANAGEMENT-MIB");
+loadMibOLD("mibs/gd/HAIPE-NETWORKING-DISCOVERY-MIB");
+loadMibOLD("mibs/gd/HAIPE-NETWORKING-MIB");
+loadMibOLD("mibs/gd/HAIPE-TC-MIB");
+loadMibOLD("mibs/gd/HAIPE-TRAFFIC-PROTECTION-MIB");
+loadMibOLD("mibs/gd/HAIPE-V030002-MIB");
+loadMibOLD("mibs/gd/HAIPE-V030102-MIB");
+loadMibOLD("mibs/gd/HAIPE-V040100-MIB");
+loadMibOLD("mibs/gd/HAIPE-V040101-MIB");
+loadMibOLD("mibs/gd/HAIPE-V040102-MIB");
+loadMibOLD("mibs/gd/HAIPE-V040203-MIB");
+loadMibOLD("mibs/gd/HAIPE-V3-MIB");
+loadMibOLD("mibs/gd/HAIPE-V4-BANDWIDTH-MANAGEMENT-MIB");
+loadMibOLD("mibs/gd/HAIPE-V4-COMPLIANCE-MIB");
+loadMibOLD("mibs/gd/HAIPE-V4-CRL-TRANSFER-MIB");
+loadMibOLD("mibs/gd/HAIPE-V4-DISCOVERY-MIB");
+loadMibOLD("mibs/gd/HAIPE-V4-DMDK-MIB");
+loadMibOLD("mibs/gd/HAIPE-V4-FEATURE-HIERARCHY-MIB");
+loadMibOLD("mibs/gd/HAIPE-V4-KEY-INFORMATION-MIB");
+loadMibOLD("mibs/gd/HAIPE-V4-KEY-TRANSFER-MIB");
+loadMibOLD("mibs/gd/HAIPE-V4-KMI-MIB");
+loadMibOLD("mibs/gd/HAIPE-V4-MANAGEMENT-MIB");
+loadMibOLD("mibs/gd/HAIPE-V4-NETWORKING-MIB");
+loadMibOLD("mibs/gd/HAIPE-V4-RCIK-MIB");
+loadMibOLD("mibs/gd/HAIPE-V4-ROHC-MIB");
+loadMibOLD("mibs/gd/HAIPE-V4-RUZ-MIB");
+loadMibOLD("mibs/gd/HAIPE-V4-TEXTUAL-CONVENTIONS-MIB");
+loadMibOLD("mibs/gd/HAIPE-V4-TRAFFIC-PROTECTION-MIB");
+loadMibOLD("mibs/gd/HOST-RESOURCES-MIB");
+loadMibOLD("mibs/gd/IANA-MAU-MIB");
+loadMibOLD("mibs/gd/IANA-RTPROTO-MIB");
+loadMibOLD("mibs/gd/IANAifType-MIB");
+loadMibOLD("mibs/gd/IF-MIB");
+loadMibOLD("mibs/gd/INET-ADDRESS-MIB");
+loadMibOLD("mibs/gd/IP-FORWARD-MIB");
+loadMibOLD("mibs/gd/IP-MIB");
+loadMibOLD("mibs/gd/IPV6-ICMP-MIB");
+loadMibOLD("mibs/gd/IPV6-MIB");
+loadMibOLD("mibs/gd/IPV6-TC");
+loadMibOLD("mibs/gd/IPV6-TCP-MIB");
+loadMibOLD("mibs/gd/IPV6-UDP-MIB");
+loadMibOLD("mibs/gd/MAU-MIB");
+loadMibOLD("mibs/gd/MGMD-STD-MIB");
+loadMibOLD("mibs/gd/NET-SNMP-AGENT-MIB");
+loadMibOLD("mibs/gd/NET-SNMP-MIB");
+loadMibOLD("mibs/gd/NET-SNMP-TC");
+loadMibOLD("mibs/gd/NETWORKENCRYPTOR-ENTERPRISE-MIB");
+loadMibOLD("mibs/gd/NOTIFICATION-LOG-MIB");
+loadMibOLD("mibs/gd/OSPF-MIB");
+loadMibOLD("mibs/gd/RFC1155-SMI");
+loadMibOLD("mibs/gd/SNMP-COMMUNITY-MIB");
+loadMibOLD("mibs/gd/SNMP-FRAMEWORK-MIB");
+loadMibOLD("mibs/gd/SNMP-MPD-MIB");
+loadMibOLD("mibs/gd/SNMP-NOTIFICATION-MIB");
+loadMibOLD("mibs/gd/SNMP-TARGET-MIB");
+loadMibOLD("mibs/gd/SNMP-USER-BASED-SM-MIB");
+loadMibOLD("mibs/gd/SNMP-USM-AES-MIB");
+loadMibOLD("mibs/gd/SNMP-VIEW-BASED-ACM-MIB");
+loadMibOLD("mibs/gd/SNMPv2-CONF");
+loadMibOLD("mibs/gd/SNMPv2-MIB");
+loadMibOLD("mibs/gd/SNMPv2-SMI");
+loadMibOLD("mibs/gd/SNMPv2-TC");
+loadMibOLD("mibs/gd/SNMPv2-TM");
+loadMibOLD("mibs/gd/TACLANE-MICRO-COMMON-MIB");
+loadMibOLD("mibs/gd/TACLANE-PRODUCTS-REGISTRATION-MIB");
+loadMibOLD("mibs/gd/TCP-MIB");
+loadMibOLD("mibs/gd/TRANSPORT-ADDRESS-MIB");
+loadMibOLD("mibs/gd/UDP-MIB");
+
+        refreshTree();
+
+    } catch (IOException | MibLoaderException ex) {
+        Logger.getLogger(AppGo.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    }//GEN-LAST:event_jMenuItemPresetGDActionPerformed
+
+    private void jMenuItemPresetViaSatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemPresetViaSatActionPerformed
+    try {
+        // TODO add your handling code here:
+                //unloadAllMib();
+
+        loadMibOLD("mibs/viasat/ALTASEC-HAIPE-V4-MIB");
+        loadMibOLD("mibs/viasat/ALTASEC-MIB");
+        loadMibOLD("mibs/viasat/HAIPE-ASSIGNMENTS-MIB");
+        loadMibOLD("mibs/viasat/HAIPE-COMPLIANCE-MIB");
+        loadMibOLD("mibs/viasat/HAIPE-FEATURE-HIERARCHY-MIB");
+        loadMibOLD("mibs/viasat/HAIPE-KEY-TRANSFER-MIB");
+        loadMibOLD("mibs/viasat/HAIPE-MANAGEMENT-MIB");
+        loadMibOLD("mibs/viasat/HAIPE-NETWORKING-DISCOVERY-MIB");
+        loadMibOLD("mibs/viasat/HAIPE-NETWORKING-MIB");
+        loadMibOLD("mibs/viasat/HAIPE-TC-MIB");
+        loadMibOLD("mibs/viasat/HAIPE-TRAFFIC-PROTECTION-MIB");
+        loadMibOLD("mibs/viasat/HAIPE-V030002-MIB");
+        loadMibOLD("mibs/viasat/HAIPE-V030102-MIB");
+        loadMibOLD("mibs/viasat/HAIPE-V040100-MIB");
+        loadMibOLD("mibs/viasat/HAIPE-V040101-MIB");
+        loadMibOLD("mibs/viasat/HAIPE-V040102-MIB");
+        loadMibOLD("mibs/viasat/HAIPE-V040203-MIB");
+        loadMibOLD("mibs/viasat/HAIPE-V3-MIB");
+        loadMibOLD("mibs/viasat/HAIPE-V4-BANDWIDTH-MANAGEMENT-MIB");
+        loadMibOLD("mibs/viasat/HAIPE-V4-COMPLIANCE-MIB");
+        loadMibOLD("mibs/viasat/HAIPE-V4-CRL-TRANSFER-MIB");
+        loadMibOLD("mibs/viasat/HAIPE-V4-DISCOVERY-MIB");
+        loadMibOLD("mibs/viasat/HAIPE-V4-DMDK-MIB");
+        loadMibOLD("mibs/viasat/HAIPE-V4-FEATURE-HIERARCHY-MIB");
+        loadMibOLD("mibs/viasat/HAIPE-V4-KEY-INFORMATION-MIB");
+        loadMibOLD("mibs/viasat/HAIPE-V4-KEY-TRANSFER-MIB");
+        loadMibOLD("mibs/viasat/HAIPE-V4-KMI-MIB");
+        loadMibOLD("mibs/viasat/HAIPE-V4-MANAGEMENT-MIB");
+        loadMibOLD("mibs/viasat/HAIPE-V4-NETWORKING-MIB");
+        loadMibOLD("mibs/viasat/HAIPE-V4-RCIK-MIB");
+        loadMibOLD("mibs/viasat/HAIPE-V4-ROHC-MIB");
+        loadMibOLD("mibs/viasat/HAIPE-V4-RUZ-MIB");
+        loadMibOLD("mibs/viasat/HAIPE-V4-TEXTUAL-CONVENTIONS-MIB");
+        loadMibOLD("mibs/viasat/HAIPE-V4-TRAFFIC-PROTECTION-MIB");
+        loadMibOLD("mibs/viasat/HOST-RESOURCES-MIB");
+        loadMibOLD("mibs/viasat/IANA-MAU-MIB");
+        loadMibOLD("mibs/viasat/IANA-RTPROTO-MIB");
+        loadMibOLD("mibs/viasat/IANAifType-MIB");
+        loadMibOLD("mibs/viasat/IF-MIB");
+        loadMibOLD("mibs/viasat/INET-ADDRESS-MIB");
+        loadMibOLD("mibs/viasat/IP-FORWARD-MIB");
+        loadMibOLD("mibs/viasat/IP-MIB");
+        loadMibOLD("mibs/viasat/IPV6-ICMP-MIB");
+        loadMibOLD("mibs/viasat/IPV6-MIB");
+        loadMibOLD("mibs/viasat/IPV6-TC");
+        loadMibOLD("mibs/viasat/IPV6-TCP-MIB");
+        loadMibOLD("mibs/viasat/IPV6-UDP-MIB");
+        loadMibOLD("mibs/viasat/MAU-MIB");
+        loadMibOLD("mibs/viasat/MGMD-STD-MIB");
+        loadMibOLD("mibs/viasat/NET-SNMP-AGENT-MIB");
+        loadMibOLD("mibs/viasat/NET-SNMP-MIB");
+        loadMibOLD("mibs/viasat/NET-SNMP-TC");
+        loadMibOLD("mibs/viasat/NOTIFICATION-LOG-MIB");
+        loadMibOLD("mibs/viasat/OSPF-MIB");
+        loadMibOLD("mibs/viasat/RFC1155-SMI");
+        loadMibOLD("mibs/viasat/SNMP-COMMUNITY-MIB");
+        loadMibOLD("mibs/viasat/SNMP-FRAMEWORK-MIB");
+        loadMibOLD("mibs/viasat/SNMP-MPD-MIB");
+        loadMibOLD("mibs/viasat/SNMP-NOTIFICATION-MIB");
+        loadMibOLD("mibs/viasat/SNMP-TARGET-MIB");
+        loadMibOLD("mibs/viasat/SNMP-USER-BASED-SM-MIB");
+        loadMibOLD("mibs/viasat/SNMP-USM-AES-MIB");
+        loadMibOLD("mibs/viasat/SNMP-VIEW-BASED-ACM-MIB");
+        loadMibOLD("mibs/viasat/SNMPv2-CONF");
+        loadMibOLD("mibs/viasat/SNMPv2-MIB");
+        loadMibOLD("mibs/viasat/SNMPv2-SMI");
+        loadMibOLD("mibs/viasat/SNMPv2-TC");
+        loadMibOLD("mibs/viasat/SNMPv2-TM");
+        loadMibOLD("mibs/viasat/TCP-MIB");
+        loadMibOLD("mibs/viasat/TRANSPORT-ADDRESS-MIB");
+        loadMibOLD("mibs/viasat/UDP-MIB");
+        loadMibOLD("mibs/viasat/VIASAT-PRODUCT-MIB");
+
+        
+                refreshTree();
+
+    } catch (IOException ex) {
+        Logger.getLogger(AppGo.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (MibLoaderException ex) {
+        Logger.getLogger(AppGo.class.getName()).log(Level.SEVERE, null, ex);
+    }
+
+
+    }//GEN-LAST:event_jMenuItemPresetViaSatActionPerformed
+
+    private void jMenuItemPresetL3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemPresetL3ActionPerformed
+        try {
+        // TODO add your handling code here:
+                //unloadAllMib();
+
+loadMibOLD("mibs/l3/HAIPE-ASSIGNMENTS-MIB");
+loadMibOLD("mibs/l3/HAIPE-COMPLIANCE-MIB");
+loadMibOLD("mibs/l3/HAIPE-FEATURE-HIERARCHY-MIB");
+loadMibOLD("mibs/l3/HAIPE-KEY-TRANSFER-MIB");
+loadMibOLD("mibs/l3/HAIPE-MANAGEMENT-MIB");
+loadMibOLD("mibs/l3/HAIPE-NETWORKING-DISCOVERY-MIB");
+loadMibOLD("mibs/l3/HAIPE-NETWORKING-MIB");
+loadMibOLD("mibs/l3/HAIPE-TC-MIB");
+loadMibOLD("mibs/l3/HAIPE-TRAFFIC-PROTECTION-MIB");
+loadMibOLD("mibs/l3/HAIPE-V030002-MIB");
+loadMibOLD("mibs/l3/HAIPE-V030102-MIB");
+loadMibOLD("mibs/l3/HAIPE-V040100-MIB");
+loadMibOLD("mibs/l3/HAIPE-V040101-MIB");
+loadMibOLD("mibs/l3/HAIPE-V040102-MIB");
+loadMibOLD("mibs/l3/HAIPE-V040203-MIB");
+loadMibOLD("mibs/l3/HAIPE-V3-MIB");
+loadMibOLD("mibs/l3/HAIPE-V4-BANDWIDTH-MANAGEMENT-MIB");
+loadMibOLD("mibs/l3/HAIPE-V4-COMPLIANCE-MIB");
+loadMibOLD("mibs/l3/HAIPE-V4-CRL-TRANSFER-MIB");
+loadMibOLD("mibs/l3/HAIPE-V4-DISCOVERY-MIB");
+loadMibOLD("mibs/l3/HAIPE-V4-DMDK-MIB");
+loadMibOLD("mibs/l3/HAIPE-V4-FEATURE-HIERARCHY-MIB");
+loadMibOLD("mibs/l3/HAIPE-V4-KEY-INFORMATION-MIB");
+loadMibOLD("mibs/l3/HAIPE-V4-KEY-TRANSFER-MIB");
+loadMibOLD("mibs/l3/HAIPE-V4-KMI-MIB");
+loadMibOLD("mibs/l3/HAIPE-V4-MANAGEMENT-MIB");
+loadMibOLD("mibs/l3/HAIPE-V4-NETWORKING-MIB");
+loadMibOLD("mibs/l3/HAIPE-V4-RCIK-MIB");
+loadMibOLD("mibs/l3/HAIPE-V4-ROHC-MIB");
+loadMibOLD("mibs/l3/HAIPE-V4-RUZ-MIB");
+loadMibOLD("mibs/l3/HAIPE-V4-TEXTUAL-CONVENTIONS-MIB");
+loadMibOLD("mibs/l3/HAIPE-V4-TRAFFIC-PROTECTION-MIB");
+loadMibOLD("mibs/l3/HOST-RESOURCES-MIB");
+loadMibOLD("mibs/l3/IANA-MAU-MIB");
+loadMibOLD("mibs/l3/IANA-RTPROTO-MIB");
+loadMibOLD("mibs/l3/IANAifType-MIB");
+loadMibOLD("mibs/l3/IF-MIB");
+loadMibOLD("mibs/l3/INET-ADDRESS-MIB");
+loadMibOLD("mibs/l3/IP-FORWARD-MIB");
+loadMibOLD("mibs/l3/IP-MIB");
+loadMibOLD("mibs/l3/IPV6-ICMP-MIB");
+loadMibOLD("mibs/l3/IPV6-MIB");
+loadMibOLD("mibs/l3/IPV6-TC");
+loadMibOLD("mibs/l3/IPV6-TCP-MIB");
+loadMibOLD("mibs/l3/IPV6-UDP-MIB");
+loadMibOLD("mibs/l3/L3");
+loadMibOLD("mibs/l3/L3-PROPRIETARY-MIB");
+loadMibOLD("mibs/l3/MAU-MIB");
+loadMibOLD("mibs/l3/MGMD-STD-MIB");
+loadMibOLD("mibs/l3/NET-SNMP-AGENT-MIB");
+loadMibOLD("mibs/l3/NET-SNMP-MIB");
+loadMibOLD("mibs/l3/NET-SNMP-TC");
+loadMibOLD("mibs/l3/NOTIFICATION-LOG-MIB");
+loadMibOLD("mibs/l3/OSPF-MIB");
+loadMibOLD("mibs/l3/RFC1155-SMI");
+loadMibOLD("mibs/l3/SNMP-COMMUNITY-MIB");
+loadMibOLD("mibs/l3/SNMP-FRAMEWORK-MIB");
+loadMibOLD("mibs/l3/SNMP-MPD-MIB");
+loadMibOLD("mibs/l3/SNMP-NOTIFICATION-MIB");
+loadMibOLD("mibs/l3/SNMP-TARGET-MIB");
+loadMibOLD("mibs/l3/SNMP-USER-BASED-SM-MIB");
+loadMibOLD("mibs/l3/SNMP-USM-AES-MIB");
+loadMibOLD("mibs/l3/SNMP-VIEW-BASED-ACM-MIB");
+loadMibOLD("mibs/l3/SNMPv2-CONF");
+loadMibOLD("mibs/l3/SNMPv2-MIB");
+loadMibOLD("mibs/l3/SNMPv2-SMI");
+loadMibOLD("mibs/l3/SNMPv2-TC");
+loadMibOLD("mibs/l3/SNMPv2-TM");
+loadMibOLD("mibs/l3/TCP-MIB");
+loadMibOLD("mibs/l3/TRANSPORT-ADDRESS-MIB");
+loadMibOLD("mibs/l3/UDP-MIB");
+
+        
+                refreshTree();
+
+    } catch (IOException ex) {
+        Logger.getLogger(AppGo.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (MibLoaderException ex) {
+        Logger.getLogger(AppGo.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    }//GEN-LAST:event_jMenuItemPresetL3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -4097,6 +4426,7 @@ loadMibOLD("mibs/ALL/SNMPv2-MIB.txt");
             public void run() {
                 try {
                     new AppGo().setVisible(true);
+                    
                 } catch (ClassNotFoundException ex) {
                     Logger.getLogger(AppGo.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (InstantiationException ex) {
@@ -4110,6 +4440,7 @@ loadMibOLD("mibs/ALL/SNMPv2-MIB.txt");
                 }
             }
         });
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -4150,14 +4481,11 @@ loadMibOLD("mibs/ALL/SNMPv2-MIB.txt");
     private javax.swing.JLabel jLabel9;
     private javax.swing.JList<String> jListSessions;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItemLoadMIB;
+    private javax.swing.JMenuItem jMenuItemMIBTest;
+    private javax.swing.JMenuItem jMenuItemPresetGD;
+    private javax.swing.JMenuItem jMenuItemPresetL3;
+    private javax.swing.JMenuItem jMenuItemPresetViaSat;
     private javax.swing.JMenu jMenuMIBTreeMIBLoader;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;

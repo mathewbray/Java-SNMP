@@ -25,6 +25,7 @@
           <Properties>
             <Property name="mnemonic" type="int" value="101"/>
             <Property name="text" type="java.lang.String" value="MIBs"/>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="MenuItemImportMIB">
@@ -50,40 +51,29 @@
                 <Property name="text" type="java.lang.String" value="Presets"/>
               </Properties>
               <SubComponents>
-                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+                <MenuItem class="javax.swing.JMenuItem" name="jMenuItemPresetGD">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="3.5"/>
+                    <Property name="text" type="java.lang.String" value="General Dynamics"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemPresetGDActionPerformed"/>
+                  </Events>
                 </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
+                <MenuItem class="javax.swing.JMenuItem" name="jMenuItemPresetViaSat">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="4.1"/>
+                    <Property name="text" type="java.lang.String" value="ViaSat"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemPresetViaSatActionPerformed"/>
+                  </Events>
                 </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem3">
+                <MenuItem class="javax.swing.JMenuItem" name="jMenuItemPresetL3">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="4.1v2"/>
+                    <Property name="text" type="java.lang.String" value="L3"/>
                   </Properties>
-                </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem4">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="4.1v5"/>
-                  </Properties>
-                </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem5">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="4.1v6"/>
-                  </Properties>
-                </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem6">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="4.1v7"/>
-                  </Properties>
-                </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem7">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="4.2v1"/>
-                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemPresetL3ActionPerformed"/>
+                  </Events>
                 </MenuItem>
               </SubComponents>
             </Menu>
@@ -94,9 +84,18 @@
             <Property name="text" type="java.lang.String" value="Test"/>
           </Properties>
           <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemMIBTest">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="MIB Checker"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemMIBTestActionPerformed"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemLoadMIB">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Load MIB"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemLoadMIBActionPerformed"/>
@@ -493,6 +492,9 @@
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout"/>
       <SubComponents>
         <Container class="javax.swing.JTabbedPane" name="jTabbedPane2">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="This is where Mr. Bray tests things."/>
+          </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
               <JSplitPaneConstraints position="left"/>

@@ -15,7 +15,6 @@ import java.net.*;
 
 //Para importar las mibs 
 import net.percederberg.mibble.*;
-import net.percederberg.mibble.value.*;
 import mibblebrowser.MibNode;
 import mibblebrowser.MibTreeBuilder;
 
@@ -23,8 +22,6 @@ import mibblebrowser.MibTreeBuilder;
 import javax.swing.tree.*;
 
 //Para usar las versiones y comandos de snmp
-import puppeteer.SNMPv1.SNMPv1;
-import puppeteer.SNMPv2c.SNMPv2c;
 import puppeteer.SNMPv3.SNMPv3;
 import puppeteer.TrapInform.enviarTrapInform;
 import puppeteer.TrapInform.recibirTrapInform;
@@ -32,17 +29,9 @@ import puppeteer.WALK.walk;
 import puppeteer.GetTable.getTable;
 
 //Para usar los comandos de la biblioteca snmp4j
-import org.snmp4j.*;
-import org.snmp4j.event.*;
-import org.snmp4j.log.*;
 import org.snmp4j.mp.*;
 import org.snmp4j.security.*;
 import org.snmp4j.smi.*;
-import org.snmp4j.asn1.*;
-import org.snmp4j.test.*;
-import org.snmp4j.tools.console.*;
-import org.snmp4j.transport.*;
-import org.snmp4j.util.*;
 
 
 

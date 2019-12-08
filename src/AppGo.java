@@ -2819,8 +2819,7 @@ private String errorGeneral25 = "Unknown data type. The operation has been cance
     private void unzipfiles() {
           //Open the file
           
-  
-          
+         
         try {
             InputStream input = getClass().getResourceAsStream("mibs.zip"); 
                 File tempfile = File.createTempFile("tempfile", ".zip");
